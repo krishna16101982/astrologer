@@ -6,9 +6,7 @@
 
         <!-- Left: Logo + App Name -->
         <ion-col size="6" class="logo-col">
-          <div class="logo-wrapper">
-            <img src="./../../assets/images/logo.png" alt="logo" />
-          </div>
+         <div class="backBtn"><img src="../../../assets/images/backIcon.png" />Profile</div>
         </ion-col>
 
         <!-- Right: Wallet + Profile -->
@@ -26,21 +24,26 @@
     </ion-grid>
 
   </ion-toolbar>
-
-  <!-- Search Bar -->
-  <ion-toolbar>
-    <ion-searchbar placeholder="Search"></ion-searchbar>
-  </ion-toolbar>
 </ion-header>
 
-
 <ion-content [fullscreen]="true">
-  <app-homeslider></app-homeslider>
- <app-fouroption></app-fouroption>
- <app-topastrologers></app-topastrologers>
-<app-astrology-predictions></app-astrology-predictions>
-  <app-news></app-news>
-  <app-totalcount></app-totalcount>
+  <div class="p15">
+  <div class="topAstroBox">
+        <span class="topAstroBoxactive"></span>
+       
+<div class="topAstroBoxImg"><img src="../../../assets/images/topAstroimg.png"></div>
+<div class="astroDetails">
+  <div class="topAstroName">Acharya Aarshi</div>
+ 
+    <div class="astroLang">English, Hindi, Bangla and Gujrati</div>
+    <div class="totalExp">Exp. : <strong>5 Yrs</strong></div>
+    <div class="astroCallorChatbtn">
+      <a class="astrochaybtn" href="#"><img src="../../../assets/images/chat 1.png"> 20/Min </a> <a class="astrochaybtn" href="#"><img src="../../../assets/images/call.png"> 20/Min </a>
+    </div>
+ 
+</div>
+</div>
+       </div>
 </ion-content>
 
 <ion-footer>
@@ -49,5 +52,3 @@
   
 
 </ion-footer>
-
-

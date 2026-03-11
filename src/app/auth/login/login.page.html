@@ -1,0 +1,35 @@
+
+<ion-content [fullscreen]="true">
+<div class="logoContainer">
+  <div class="skipbtn"><a [routerLink]="['/home']">Skip</a></div>
+  <div class="logo"><img src="../../../assets/images/logo.png"></div>
+  <div class="title">Astrotalk</div>
+  <div class="logoFooter">
+    <div class="boxDesign1">First Chat with Astrologer is FREE!</div>
+<div class="">
+  <ion-item lines="none" class="phone-item">
+  <ion-select slot="start" interface="popover" value="+91">
+    <ion-select-option value="+91">🇮🇳 +91</ion-select-option>
+    <ion-select-option value="+1">🇺🇸 +1</ion-select-option>
+  </ion-select>
+  <ion-input type="tel" placeholder="Phone number">  </ion-input>
+</ion-item>
+
+<ion-button expand="block"  class="custom-btn">
+  Get OTP
+</ion-button>
+</div>
+
+<p class="terms-text">
+  By signing up, you agree to our 
+  <a [routerLink]="['/home']">Terms of Use</a> 
+  and 
+  <a [routerLink]="['/home']">Privacy Policy</a>.
+</p>
+    
+  </div>
+</div>
+<app-totalcount></app-totalcount>
+</ion-content>
+
+

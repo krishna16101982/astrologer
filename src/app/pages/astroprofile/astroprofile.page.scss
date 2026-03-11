@@ -1,0 +1,38 @@
+.topAstroBox{ margin-bottom: 30px; background: #fff; border: 1px solid rgba(243, 218, 75, 1); border-radius: 10px; position: relative; padding: 10px; display: flex; gap: 20px; }
+.topAstroBoxImg{ border-radius: 100%;}
+.topAstroBoxactive{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(19, 239, 0, 1);
+    width: 7px;
+    height: 7px;
+    border-radius: 100%;
+}
+
+    .topAstroName{ font-size: 18px; font-weight: 700;}
+    .astroLang{ font-size: 10px; font-weight: 400;     padding: 2px 0;}
+    .topAstroWork{ font-size: 10px; font-weight: 400; text-transform:uppercase;     padding: 2px 0;    line-height: 18px;}
+    .totalExp{ font-size: 10px; font-weight: 400;     padding: 4px 0;    line-height: 18px;}
+    
+    .astroCallorChatbtn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+   a.astrochaybtn {
+    display: flex;
+    font-size: 11px;
+    background: rgba(251, 217, 26, 1);
+    color: #000;
+    border-radius: 0 15px 0 15px;
+    padding: 2px 11px;
+    justify-content: space-between;
+    min-width: 77px;
+    align-items: center;
+}
+.astroDetails{ min-width: 200px;}
+
+.customBred{ font-size: 16px; font-weight: 800; padding: 40px 0 15px;}
+.customBred a{  color: #000;}
