@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {
@@ -23,6 +23,7 @@ import { AstrologyPredictionsPage } from '../include/astrology-predictions/astro
 import { NewsPage } from '../include/news/news.page';
 import { TotalcountPage } from '../include/totalcount/totalcount.page';
 import { FooterPage } from '../include/footer/footer.page';
+import { ApiService } from '../services/api-service';
 
 @Component({
   selector: 'app-home',
@@ -52,7 +53,7 @@ RouterLink,
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss']
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
  slideOpts = {
     initialSlide: 0,
@@ -61,4 +62,10 @@ export class HomePage {
     pagination: { clickable: true },
     autoplay: { delay: 3000, disableOnInteraction: false }
   };
+  constructor(private apiService: ApiService) { }
+
+  ngOnInit() {
+
+  }
+
 }

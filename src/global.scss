@@ -34,8 +34,8 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
-@import 'swiper/css/bundle';
+// @import '@ionic/angular/css/palettes/dark.system.css';
+// @import 'swiper/css/bundle';
 
 
 .logoContainer{ height: 100vh;}
@@ -45,7 +45,7 @@
 .boxDesign1{     font-size: 19px;    color: #3d3d3d;    border: 2px solid #c0c0c0;
     padding: 14px 15px;    display: block;    font-weight: 600;     text-align: center;
     border-radius: 34px;    position: relative;    top: -26px;    background: #fff;}
-    .phone-item {  --background: #f3f3f3;  --border-radius: 10px;}
+    .phone-item {  --background: #f3f3f3;  --border-radius: 10px; margin-top: 10px;}
     .custom-btn{    --background: #000;
     min-height: 50px;
     margin-top: 20px;

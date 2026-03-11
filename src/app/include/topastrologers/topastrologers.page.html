@@ -11,17 +11,19 @@
     "1024": { "slidesPerView": 2.5 }
   }'>
 
-      <swiper-slide>
+      <swiper-slide *ngFor="let astro of topAstrologers">
         <div class="topAstroBox" [routerLink]="['/astroprofile']">
           <span class="topAstroBoxactive"></span>
 
-          <div class="topAstroBoxImg"[routerLink]="['/astroprofile']"><img src="../../../assets/images/topAstroimg.png"></div>
+          <div class="topAstroBoxImg"[routerLink]="['/astroprofile']"><img [src]="astro.profile_image_url" style="height: 60px;"></div>
           <div class="astroDetails">
-            <div class="topAstroName">Acharya Aarshi</div>
+            <div class="topAstroName">{{astro.display_name}}</div>
 
-            <div class="astroLang">English, Hindi, Bangla and Gujrati</div>
+            <span class="astroLang" *ngFor="let languages of astro.languages">
+              <span>{{languages.name}}, </span>
+            </span>
 
-            <div class="totalExp">Exp. : <strong>5 Yrs</strong></div>
+            <div class="totalExp">Exp. : <strong>{{astro.experience_years}}</strong></div>
             <div class="astroCallorChatbtn">
               <a class="astrochaybtn" href="#"><img src="../../../assets/images/chat 1.png"> 20/Min </a> <a
                 class="astrochaybtn" href="#"><img src="../../../assets/images/call.png"> 20/Min </a>
@@ -30,7 +32,11 @@
           </div>
         </div>
       </swiper-slide>
-      <swiper-slide>
+
+
+
+
+      <!-- <swiper-slide>
         <div class="topAstroBox">
           <span class="topAstroBoxactive"></span>
 
@@ -105,7 +111,7 @@
 
           </div>
         </div>
-      </swiper-slide>
+      </swiper-slide> -->
 
     </swiper-container>
   </div>

@@ -12,10 +12,12 @@
     <ion-select-option value="+91">🇮🇳 +91</ion-select-option>
     <ion-select-option value="+1">🇺🇸 +1</ion-select-option>
   </ion-select>
-  <ion-input type="tel" placeholder="Phone number">  </ion-input>
+  <ion-input type="tel" placeholder="Phone number" [(ngModel)]="postData.email">  </ion-input>
 </ion-item>
-
-<ion-button expand="block"  class="custom-btn">
+ <ion-item lines="none" class="phone-item">
+<ion-input type="password" placeholder="Password" [(ngModel)]="postData.password">  </ion-input>
+</ion-item>
+<ion-button expand="block"  class="custom-btn" (click)="submitPost()">
   Get OTP
 </ion-button>
 </div>
