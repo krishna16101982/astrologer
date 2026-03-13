@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { IonContent, IonFooter, IonHeader, IonGrid, IonCol, IonRow, IonTitle, IonButton, IonToolbar, IonItem,IonInput, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
 import { TotalcountPage } from 'src/app/include/totalcount/totalcount.page';
 import { ApiService } from 'src/app/services/api-service';
@@ -15,7 +15,7 @@ import { ApiService } from 'src/app/services/api-service';
 })
 export class LoginPage implements OnInit {
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService,private router:Router) { }
  postData = {
     email: '',
     password: '',
@@ -28,8 +28,10 @@ export class LoginPage implements OnInit {
  submitPost() {
     this.apiService.login(this.postData).subscribe({
       next: (res) => {
+        localStorage.setItem('accessToken',res.data.access_token);
         console.log('Response:', res);
         alert('Login successful!');
+        this.router.navigateByUrl('/home')
       },
       error: (err) => {
         console.log('Error:', err);

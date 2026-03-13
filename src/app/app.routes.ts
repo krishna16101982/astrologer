@@ -49,7 +49,7 @@ export const routes: Routes = [
     loadComponent: () => import('./include/footer/footer.page').then( m => m.FooterPage)
   },
   {
-    path: 'astroprofile',
+    path: 'astroprofile/:id',
     loadComponent: () => import('./pages/astroprofile/astroprofile.page').then( m => m.AstroprofilePage)
   }
 ];

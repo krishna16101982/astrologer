@@ -6,13 +6,13 @@
 
         <!-- Left: Logo + App Name -->
         <ion-col size="6" class="logo-col">
-         <div class="backBtn"><img src="../../../assets/images/backIcon.png" />Profile</div>
+          <div class="backBtn"><img src="../../../assets/images/backIcon.pn" />Profile</div>
         </ion-col>
 
         <!-- Right: Wallet + Profile -->
         <ion-col size="6" class="wallet-profile" text-end>
           <div class="wallet">
-             <img src="./../../assets/images/wallet.png" />
+            <img src="./../../assets/images/wallet.png" />
             <span>$ 100.40</span>
           </div>
           <ion-avatar class="profile-avatar">
@@ -28,27 +28,30 @@
 
 <ion-content [fullscreen]="true">
   <div class="p15">
-  <div class="topAstroBox">
-        <span class="topAstroBoxactive"></span>
-       
-<div class="topAstroBoxImg"><img src="../../../assets/images/topAstroimg.png"></div>
-<div class="astroDetails">
-  <div class="topAstroName">Acharya Aarshi</div>
- 
-    <div class="astroLang">English, Hindi, Bangla and Gujrati</div>
-    <div class="totalExp">Exp. : <strong>5 Yrs</strong></div>
-    <div class="astroCallorChatbtn">
-      <a class="astrochaybtn" href="#"><img src="../../../assets/images/chat 1.png"> 20/Min </a> <a class="astrochaybtn" href="#"><img src="../../../assets/images/call.png"> 20/Min </a>
+    <div class="topAstroBox">
+      <span class="topAstroBoxactive"></span>
+
+      <div class="topAstroBoxImg"><img [src]="astrologerDetails.profile_image_url" style="height: 60px;"></div>
+      <div class="astroDetails">
+        <div class="topAstroName">{{astrologerDetails.display_name}}</div>
+
+        <div class="astroLang"><span *ngFor="let language of astrologerDetails.language">{{language.name}}, </span>
+        </div>
+        <div class="totalExp">Exp. : <strong></strong>{{astrologerDetails.experience_years}}</div>
+        <div class="astroCallorChatbtn">
+          <a class="astrochaybtn" href="#"><img src="../../../assets/images/chat 1.png"> {{astrologerDetails.chat_price
+            | number:'1.0-0'}}/Min </a> <a class="astrochaybtn" href="#"><img src="../../../assets/images/call.png">
+            {{astrologerDetails.call_price | number:'1.0-0'}}/Min </a>
+        </div>
+
+      </div>
     </div>
- 
-</div>
-</div>
-       </div>
+  </div>
 </ion-content>
 
 <ion-footer>
 
-    <app-footer></app-footer>
-  
+  <app-footer></app-footer>
+
 
 </ion-footer>

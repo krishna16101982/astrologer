@@ -23,7 +23,7 @@ export class TopastrologersPage implements OnInit {
   }
 
   getHomeData() {
-    this.apiService.getHomeData().subscribe({
+    this.apiService.getAstrologersData().subscribe({
       next: (res) => {
         console.log('Home Data:', res);
         this.topAstrologers = res.data.data;

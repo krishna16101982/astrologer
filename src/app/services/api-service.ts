@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
   baseUrl = 'https://astroauraa.com/api';
-  apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+  token = localStorage.getItem('accessToken');
 
   constructor(private http: HttpClient) { }
 
@@ -21,10 +21,18 @@ export class ApiService {
   }
 
   createPost(data: any): Observable<any> {
-    return this.http.post(this.apiUrl, data);
+    return this.http.post(this.baseUrl, data);
   }
 // GET API
-  getHomeData(): Observable<any> {
+  getAstrologersData(): Observable<any> {
     return this.http.get(`${this.baseUrl}/astrologers`);
+  }
+
+  getAstrologerProfile(id:any): Observable<any> {
+        const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.get(`${this.baseUrl}/astrologers/${id}`, { headers });
   }
 }
