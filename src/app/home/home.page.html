@@ -1,21 +1,16 @@
 <ion-header>
-  <ion-toolbar>
-
+  <!-- <ion-toolbar>
     <ion-grid>
       <ion-row class="ion-align-items-center ion-justify-content-between">
-
-        <!-- Left: Logo + App Name -->
         <ion-col size="6" class="logo-col">
           <div class="logo-wrapper">
             <img src="./../../assets/images/logo.png" alt="logo" />
           </div>
         </ion-col>
-
-        <!-- Right: Wallet + Profile -->
         <ion-col size="6" class="wallet-profile" text-end>
           <div class="wallet">
-             <img src="./../../assets/images/wallet.png" />
-            <span>$ 100.40</span>
+            <img src="./../../assets/images/wallet.png" />
+            <span>₹{{ walletBalance | number:'1.2-2' }}</span>
           </div>
           <ion-avatar class="profile-avatar">
             <img src="./../../assets/images/profileicon.png" />
@@ -25,29 +20,54 @@
       </ion-row>
     </ion-grid>
 
-  </ion-toolbar>
+  </ion-toolbar> -->
 
   <!-- Search Bar -->
   <ion-toolbar>
-    <ion-searchbar placeholder="Search"></ion-searchbar>
+    <div class="search-wrapper">
+      <ion-searchbar placeholder="Search astrologer, blog, service..." (ionInput)="onSearch($event)" debounce="500">
+      </ion-searchbar>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content [fullscreen]="true">
+
+  <!-- 🔥 SEARCH RESULT DROPDOWN -->
+  <div class="search-results" *ngIf="showResults">
+
+    <div *ngIf="loading" class="loading">Searching...</div>
+
+    <div *ngIf="!loading && searchResults.length === 0" class="no-data">
+      No results found
+    </div>
+
+    <div *ngFor="let item of searchResults" class="result-item" (click)="goToDetail(item)">
+
+      <img [src]="item.image || 'assets/images/default.png'" />
+      <div>
+        <h4>{{ item.name || item.title }}</h4>
+        <p>{{ item.type }}</p>
+      </div>
+
+    </div>
+
+  </div>
+
   <app-homeslider></app-homeslider>
- <app-fouroption></app-fouroption>
- <app-topastrologers></app-topastrologers>
-<app-astrology-predictions></app-astrology-predictions>
+  <app-fouroption></app-fouroption>
+  <app-topastrologers></app-topastrologers>
+  <app-astrology-predictions></app-astrology-predictions>
   <app-news></app-news>
-  <app-totalcount></app-totalcount>
+  <!-- <app-blog></app-blog> -->
+  <div class="mlr10"><app-totalcount></app-totalcount></div>
+  
 </ion-content>
 
 <ion-footer>
 
-    <app-footer></app-footer>
-  
+  <app-footer></app-footer>
+
 
 </ion-footer>
-
-

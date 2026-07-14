@@ -1,7 +1,7 @@
 swiper-container {
   width: 100%;
   height: 220px;
-  padding-left: 10px; 
+  padding-left: 10px;
 }
 
 swiper-slide {
@@ -17,4 +17,86 @@ swiper-slide {
 ion-icon {
   font-size: 22px;
   color: #000;
+}
+
+.search-wrapper {
+  position: relative;
+  padding-top: 78px;
+}
+.toolbar-searchbar{ --border-width: 0px !important;}
+.toolbar-searchbar .sc-ion-searchbar-ios-h {
+  padding-top: 1px;
+  padding-bottom: 0;
+  min-height: 40px;
+  height: 40px;
+}
+
+.searchbar-input-container.sc-ion-searchbar-ios {
+  min-height: 36px !important;
+  height: 39px !important;
+}
+
+ion-searchbar::part(container) {
+ height: 39px !important;
+}
+
+ion-searchbar {
+    --box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.searchbar-input.sc-ion-searchbar-ios{background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  height: 39px !important;
+  line-height: 40px;
+  border-radius: 10px;}
+
+/* RESULT BOX */
+.search-results {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  right: 10px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  z-index: 10000;
+
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+/* RESULT ITEM */
+.result-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  h4 {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  p {
+    font-size: 12px;
+    color: gray;
+    margin: 0;
+  }
+}
+
+/* STATES */
+.loading,
+.no-data {
+  padding: 15px;
+  text-align: center;
+  font-size: 13px;
 }

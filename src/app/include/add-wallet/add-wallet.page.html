@@ -1,0 +1,148 @@
+<!-- TOP HEADER -->
+
+<ion-header>
+  <br /><br /><br /><br />
+  <ion-toolbar>
+
+    <!-- BACK BUTTON -->
+
+    <ion-buttons slot="start">
+
+      <ion-back-button defaultHref="/home">
+      </ion-back-button>
+
+    </ion-buttons>
+
+    <!-- TITLE -->
+
+    <ion-title>
+
+      Add Money
+
+    </ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+<ion-content>
+
+  <div class="wallet-container">
+
+    <div class="wallet-card">
+
+      <!-- HEADER -->
+
+      <div class="wallet-header">
+        My Wallet
+      </div>
+
+      <!-- BALANCE -->
+
+      <div class="balance-section">
+
+        <p class="balance-title">
+          Current Balance
+        </p>
+
+        <h1 class="balance">
+          ₹{{ walletBalance | number:'1.2-2' }}
+        </h1>
+
+      </div>
+
+      <hr>
+
+      <!-- ADD MONEY -->
+
+      <div class="add-money-section">
+
+        <h3>Add Money to Wallet</h3>
+
+        <div class="add-money-box">
+
+          <div class="rupee-box">
+            ₹
+          </div>
+
+          <ion-input type="number" placeholder="Enter Amount" [(ngModel)]="amount">
+          </ion-input>
+
+          <ion-button class="add-btn" (click)="addMoney()">
+
+            Add Money
+
+          </ion-button>
+
+        </div>
+
+      </div>
+
+      <!-- TRANSACTIONS -->
+
+      <div class="transaction-section">
+
+        <h4>Recent Transactions</h4>
+
+        <div class="table-wrapper">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Amount</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let item of transactions">
+
+                <td>
+                  {{ item.created_at | date:'dd MMM yyyy, hh:mm a' }}
+                </td>
+
+                <td>
+                  {{ item.description }}
+                </td>
+
+                <td>
+
+                  <span class="type" [ngClass]="{
+                      'credit': item.type === 'credit',
+                      'debit': item.type === 'debit'
+                    }">
+
+                    {{ item.type }}
+
+                  </span>
+
+                </td>
+
+                <td>
+                  ₹{{ item.amount | number:'1.2-2' }}
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <app-footer></app-footer>
+</ion-footer>

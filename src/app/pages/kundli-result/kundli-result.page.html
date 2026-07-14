@@ -1,0 +1,90 @@
+<ion-header class="pt50">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/kundli"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Your Kundli</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="kundli-wrapper" *ngIf="view">
+
+    <div class="result-actions">
+      <a routerLink="/kundli" class="secondary-btn">← Generate another</a>
+      <button class="download-btn" (click)="downloadPdf()" [disabled]="isDownloading">
+        {{ isDownloading ? 'Preparing PDF…' : '⬇ Download PDF' }}
+      </button>
+    </div>
+
+    <!-- Everything inside #pdfArea is what gets captured into the PDF -->
+    <div class="styled-result" #pdfArea>
+
+      <div class="result-header">
+        <img class="result-logo" src="assets/images/logo.png" alt="logo" />
+        <div class="title">Your Janma Kundli</div>
+        <div class="sub" *ngIf="birth">{{ birth.name }}</div>
+        <div class="sub" *ngIf="birth">{{ birth.dob }} | {{ birth.tob }}</div>
+        <div class="sub" *ngIf="birth?.place">{{ birth?.place }}</div>
+      </div>
+
+      <div class="cards-row">
+        <div class="card nak">
+          <div class="label">Nakshatra</div>
+          <div class="value">{{ view.nakshatra || '-' }}</div>
+          <div class="meta" *ngIf="view.nakshatraPada">Pada {{ view.nakshatraPada }}</div>
+        </div>
+        <div class="card moon">
+          <div class="label">Moon Sign</div>
+          <div class="value">{{ view.moonSign || '-' }}</div>
+        </div>
+        <div class="card sun">
+          <div class="label">Sun Sign</div>
+          <div class="value">{{ view.sunSign || '-' }}</div>
+        </div>
+      </div>
+
+      <h4 class="section-heading">Detailed Attributes</h4>
+      <div class="details-grid">
+        <div class="detail"><div class="k">Deity</div><div class="v">{{ view.deity || '-' }}</div></div>
+        <div class="detail"><div class="k">Ganam</div><div class="v">{{ view.ganam || '-' }}</div></div>
+        <div class="detail"><div class="k">Animal</div><div class="v">{{ view.animalSign || '-' }}</div></div>
+        <div class="detail"><div class="k">Nadi</div><div class="v">{{ view.nadi || '-' }}</div></div>
+        <div class="detail"><div class="k">Color</div><div class="v">{{ view.color || '-' }}</div></div>
+        <div class="detail"><div class="k">Direction</div><div class="v">{{ view.bestDirection || '-' }}</div></div>
+        <div class="detail"><div class="k">Birth Stone</div><div class="v">{{ view.birthStone || '-' }}</div></div>
+        <div class="detail"><div class="k">Zodiac</div><div class="v">{{ view.zodiac || '-' }}</div></div>
+      </div>
+
+      <div class="lower-row">
+        <div class="dosha">
+          <div class="k">Mangal Dosha</div>
+          <div class="v">{{ view.hasMangalDosha ? 'Has Dosha' : 'No Mangalik Dosha' }}</div>
+          <div class="desc">{{ view.mangalDoshaDescription }}</div>
+        </div>
+        <div class="yogas">
+          <div class="k">Astrological Yogas</div>
+          <div class="list">
+            <div class="yoga" *ngFor="let y of view.yogas">
+              <strong>{{ y.name }}</strong>
+              <div class="desc">{{ y.description }}</div>
+            </div>
+            <div class="desc" *ngIf="!view.yogas.length">No yogas reported for this chart.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="privacy-note">
+      Your birth details are used only for calculating your astrological chart.
+    </p>
+
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <app-footer></app-footer>
+</ion-footer>

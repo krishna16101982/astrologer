@@ -1,25 +1,10 @@
-
-<div class="p15">
-  <swiper-container
-    slides-per-view="1"
-    loop="true"
-    pagination="true"
-    autoplay-delay="3000"
-    
-  >
-
-    <swiper-slide>
-      <img src="../../../assets/images/homeSlider.jpg"  />
+<div class="hero-slider" *ngIf="sliders.length > 0">
+  <swiper-container #swiperEl init="false" class="astro-slider" slides-per-view="1" loop="true" effect="fade" fade-effect='{"crossFade": true}'
+    speed="1200" pagination="true" navigation="false" autoplay='{"delay":3500,"disableOnInteraction":false}'>
+    <swiper-slide *ngFor="let slide of sliders">
+      <div class="slide">
+        <img [src]="slide.image_url" class="bg-img" />      
+      </div>
     </swiper-slide>
-
-    <swiper-slide>
-      <img src="../../../assets/images/homeSlider.jpg"  />
-    </swiper-slide>
-
-    <swiper-slide>
-      <img src="../../../assets/images/homeSlider.jpg"  />
-    </swiper-slide>
-
   </swiper-container>
 </div>
-

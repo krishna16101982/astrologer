@@ -1,0 +1,136 @@
+<ion-header class="pt50">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Free Kundli</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="kundli-wrapper">
+
+    <!-- TABS -->
+    <div class="kundli-tabs">
+      <a routerLink="/kundli" class="active">Free Kundli</a>
+      <a routerLink="/kundli-matching">Kundli Matching</a>
+    </div>
+
+    <div class="kundli-card">
+
+      <!-- HERO -->
+      <div class="kundli-hero">
+        <h1>Free Janma Kundli</h1>
+        <p>Discover your destiny with our precise Vedic Astrology charts</p>
+      </div>
+
+      <!-- FORM -->
+      <form class="kundli-form" (ngSubmit)="generate()">
+
+        <!-- PERSONAL DETAILS -->
+        <div class="section-title">👤 Personal Details</div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Name</label>
+            <input type="text" name="name" [(ngModel)]="form.name" placeholder="Enter your name" />
+          </div>
+          <div class="field">
+            <label>Gender</label>
+            <select name="gender" [(ngModel)]="form.gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- BIRTH DETAILS -->
+        <div class="section-title">📅 Birth Details</div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Date of Birth</label>
+            <input type="date" name="dob" [(ngModel)]="form.dob" />
+          </div>
+          <div class="field">
+            <label>Time of Birth</label>
+            <input type="time" name="tob" [(ngModel)]="form.tob" />
+          </div>
+        </div>
+
+        <!-- BIRTH LOCATION -->
+        <div class="section-title">📍 Birth Location</div>
+        <div class="field">
+          <label>City, State, Country</label>
+          <input
+            type="text"
+            name="place"
+            [(ngModel)]="form.place"
+            placeholder="Type birth city name..."
+            (input)="onPlaceInput($event)"
+            (blur)="closeSuggestions()"
+          />
+          <div class="location-suggestions" *ngIf="showLocationSuggestions">
+            <div
+              *ngFor="let suggestion of locationSuggestions"
+              (mousedown)="selectLocation(suggestion)"
+              class="suggestion-row"
+            >
+              <strong>{{ suggestion[1] }}</strong>
+              <span *ngIf="suggestion[2]" class="muted">, {{ suggestion[2] }}</span>
+              <span *ngIf="suggestion[3]" class="muted-light">, {{ suggestion[3] }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADVANCED OPTIONS -->
+        <div class="section-title">⚙️ Advanced Options</div>
+        <div class="grid-3">
+          <div class="field">
+            <label>Ayanamsa</label>
+            <select name="ayanamsa" [(ngModel)]="form.ayanamsa">
+              <option>Lahiri</option>
+              <option>Raman</option>
+              <option>KP</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Language</label>
+            <select name="language" [(ngModel)]="form.language">
+              <option>English</option>
+              <option>Hindi</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Chart Type</label>
+            <select name="chartType" [(ngModel)]="form.chartType">
+              <option>Basic</option>
+              <option>North Indian</option>
+              <option>South Indian</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="generate-btn" [disabled]="isLoading">
+          {{ isLoading ? 'GENERATING…' : '✨ GENERATE KUNDLI' }}
+        </button>
+
+      </form>
+
+      <div class="result-card" *ngIf="isLoading">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Generating your kundli…</p>
+      </div>
+
+      <p class="privacy-note">
+        Your birth details are used only for calculating your astrological chart.
+      </p>
+
+    </div>
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <app-footer></app-footer>
+</ion-footer>

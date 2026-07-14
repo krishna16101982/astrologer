@@ -1,0 +1,89 @@
+// NOTE: colours here are kept as plain hex/rgb on purpose. html2canvas (v1.x) cannot
+// parse modern colour functions such as oklch()/lab(), and throws while rasterising.
+
+.kundli-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.result-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.secondary-btn {
+  color: #6e2b6e;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.download-btn {
+  background: #ffd54a;
+  border: none;
+  color: #111;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.download-btn[disabled] {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.styled-result {
+  background: #fff;
+  padding: 18px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.result-header {
+  background: linear-gradient(90deg, #6e2b6e, #b02e46);
+  color: #fff;
+  padding: 22px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.result-logo { display: block; margin: 0 auto 8px auto; height: 38px; object-fit: contain; }
+.result-header .title { font-size: 20px; font-weight: 700; margin-top: 6px; }
+.result-header .sub { font-size: 12px; opacity: 0.95; margin-top: 4px; }
+
+.section-heading { margin: 18px 0 0; font-size: 15px; color: #333; }
+
+.cards-row { display: flex; gap: 12px; margin-top: 14px; }
+.card { flex: 1; padding: 14px; border-radius: 8px; color: #fff; }
+.card .label { font-size: 12px; opacity: 0.9; }
+.card .value { font-size: 18px; font-weight: 700; margin-top: 6px; }
+.card .meta { font-size: 11px; opacity: 0.9; margin-top: 4px; }
+.card.nak { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+.card.moon { background: linear-gradient(90deg, #16a34a, #059669); }
+.card.sun { background: linear-gradient(90deg, #f59e0b, #f97316); }
+
+.details-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; }
+.detail { background: #fff; border: 1px solid #eee; padding: 10px; border-radius: 6px; }
+.detail .k { font-size: 11px; color: #666; }
+.detail .v { font-size: 13px; font-weight: 600; margin-top: 6px; }
+
+.lower-row { display: flex; gap: 12px; margin-top: 16px; }
+.dosha { flex: 1; padding: 12px; border-radius: 6px; border: 1px solid #eee; }
+.yogas { flex: 2; padding: 12px; border-radius: 6px; border: 1px solid #eee; }
+.dosha .k, .yogas .k { font-size: 12px; color: #666; }
+.dosha .v { font-size: 13px; font-weight: 700; margin-top: 6px; }
+.desc { font-size: 12px; color: #555; margin-top: 6px; }
+.yogas .yoga { margin-bottom: 8px; }
+
+.privacy-note { font-size: 12px; color: #777; text-align: center; margin-top: 16px; }
+
+@media (max-width: 720px) {
+  .cards-row { flex-direction: column; }
+  .details-grid { grid-template-columns: repeat(2, 1fr); }
+  .lower-row { flex-direction: column; }
+}

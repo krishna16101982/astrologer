@@ -1,0 +1,97 @@
+<ion-header class="pt50">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>All Astrologers</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <div class="spec-filters">
+      <button class="spec-chip" [class.active]="selectedSpec === ''" (click)="filterBySpec('')">
+        ALL
+      </button>
+      <button class="spec-chip" *ngFor="let s of specializations"
+        [class.active]="selectedSpec === s.slug" (click)="filterBySpec(s.slug)">
+        {{ s.name }}
+      </button>
+    </div>
+  </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-searchbar
+      placeholder="Search astrologer by name..."
+      (ionInput)="onSearch($event)"
+      debounce="500">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- LOADING -->
+  <div class="loading-wrap" *ngIf="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading astrologers...</p>
+  </div>
+
+  <!-- EMPTY -->
+  <div class="empty-state" *ngIf="!loading && astrologers.length === 0">
+    <p>No astrologers found.</p>
+  </div>
+
+  <!-- GRID -->
+  <div class="astro-grid" *ngIf="!loading && astrologers.length > 0">
+
+    <div class="topAstroBox" *ngFor="let astro of astrologers" [routerLink]="['/astroprofile', astro.id]">
+
+      <span class="topAstroBoxactive"
+        [class.online]="astro.is_chat_online || astro.is_call_online"
+        [class.offline]="!astro.is_chat_online && !astro.is_call_online">
+      </span>
+
+      <div class="topAstroBoxImg">
+        <img [src]="astro.profile_image_url" />
+      </div>
+
+      <div class="astroDetails">
+        <div class="topAstroName">{{ astro.display_name }}</div>
+
+        <div class="astroLang">
+          <span *ngFor="let lang of astro.languages; let last = last">
+            <span>{{ lang.name }}</span> <span *ngIf="!last">, </span>
+          </span>
+        </div>
+
+        <div class="totalExp">Exp. : <strong>{{ astro.experience_years }} Yrs</strong></div>
+
+        <div class="astroCallorChatbtn">
+
+          <!-- CHAT BUTTON -->
+          <a class="astrochaybtn"
+            [class.btn-online]="astro.is_chat_online"
+            [class.btn-offline]="!astro.is_chat_online"
+            (click)="openChat($event, astro)">
+            <img src="../../../assets/images/chat-footer.png" />
+            <span>{{ astro.chat_price | number:'1.0-0' }}/Min</span>
+          </a>
+
+          <!-- CALL BUTTON -->
+          <a class="astrochaybtn"
+            [class.btn-online]="astro.is_call_online"
+            [class.btn-offline]="!astro.is_call_online"
+            (click)="openCall($event, astro)">
+            <img src="../../../assets/images/call-footer.png" />
+            <span>{{ astro.call_price | number:'1.0-0' }}/Min</span>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <app-footer></app-footer>
+</ion-footer>

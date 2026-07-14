@@ -1,0 +1,55 @@
+<ion-header>
+  <br /><br /><br /><br />
+  <ion-toolbar class="chat-toolbar">
+
+    <div class="toolbar-center">
+      <img
+        [src]="astrologer?.profile_image ? astrologer?.profile_image : 'assets/user.png'"
+        class="profile-img"
+      />
+      <div class="user-details">
+        <div class="user-name">{{ astrologer?.name || 'Astrologer' }}</div>
+        <div class="timer">{{ formattedTime }}</div>
+      </div>
+    </div>
+
+    <ion-buttons slot="end">
+      <ion-button fill="solid" color="danger" (click)="endChat()">End</ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="chat-content">
+
+  <div *ngIf="loading" class="loading-box">
+    Connecting chat...
+  </div>
+
+  <div class="messages" *ngIf="!loading">
+    <div
+      *ngFor="let msg of messages"
+      class="message-wrapper"
+      [class.my-message]="msg.author === identity"
+    >
+      <div class="message-bubble">
+        <div class="message-body">{{ msg.body }}</div>
+        <div class="message-time">{{ msg.dateCreated | date:'shortTime' }}</div>
+      </div>
+    </div>
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <div class="chat-footer">
+    <input
+      type="text"
+      [(ngModel)]="messageText"
+      placeholder="Type message..."
+      class="chat-input"
+      (keyup.enter)="sendMessage()"
+    />
+    <button class="send-btn" (click)="sendMessage()">Send</button>
+  </div>
+</ion-footer>

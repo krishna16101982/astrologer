@@ -1,0 +1,158 @@
+<ion-header class="pt50">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/kundli-matching"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Matching Result</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="match-wrapper" *ngIf="view">
+
+    <div class="result-actions">
+      <a routerLink="/kundli-matching" class="secondary-btn">← Match another pair</a>
+      <button class="download-btn" (click)="downloadPdf()" [disabled]="isDownloading">
+        {{ isDownloading ? 'Preparing PDF…' : '⬇ Download PDF' }}
+      </button>
+    </div>
+
+    <!-- Everything inside #pdfArea is what gets captured into the PDF -->
+    <div class="report" #pdfArea>
+
+      <!-- COMPATIBILITY BANNER -->
+      <div class="banner">
+        ♥ Compatibility Result: {{ boy?.name }} &amp; {{ girl?.name }}
+      </div>
+
+      <div class="panel">
+        <div class="score-badge">{{ view.totalPoints }}/{{ view.maximumPoints }}</div>
+
+        <div class="total-meter">
+          <div class="total-fill" [style.width.%]="view.percentage">
+            <span class="total-label">TOTAL</span>
+          </div>
+        </div>
+
+        <div class="analysis" *ngIf="view.analysis">
+          <span class="dot"></span>{{ view.analysis }}
+        </div>
+      </div>
+
+      <!-- BIRTH DETAILS -->
+      <div class="two-col">
+        <div class="info-card">
+          <div class="info-head boy">♂ {{ boy?.name }} - Birth Details</div>
+          <div class="info-body">
+            <div class="row">
+              <span class="label">Nakshatra:</span>
+              <span class="value">
+                {{ view.boyChart.nakshatra || '-' }}
+                <ng-container *ngIf="view.boyChart.nakshatraPada">(Pada {{ view.boyChart.nakshatraPada }})</ng-container>
+              </span>
+            </div>
+            <div class="row">
+              <span class="label">Nakshatra Lord:</span>
+              <span class="value">{{ view.boyChart.nakshatraLord || '-' }}</span>
+            </div>
+            <div class="row">
+              <span class="label">Rasi (Moon Sign):</span>
+              <span class="value">{{ view.boyChart.rasi || '-' }}</span>
+            </div>
+            <div class="row">
+              <span class="label">Rasi Lord:</span>
+              <span class="value">{{ view.boyChart.rasiLord || '-' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-head girl">♀ {{ girl?.name }} - Birth Details</div>
+          <div class="info-body">
+            <div class="row">
+              <span class="label">Nakshatra:</span>
+              <span class="value">
+                {{ view.girlChart.nakshatra || '-' }}
+                <ng-container *ngIf="view.girlChart.nakshatraPada">(Pada {{ view.girlChart.nakshatraPada }})</ng-container>
+              </span>
+            </div>
+            <div class="row">
+              <span class="label">Nakshatra Lord:</span>
+              <span class="value">{{ view.girlChart.nakshatraLord || '-' }}</span>
+            </div>
+            <div class="row">
+              <span class="label">Rasi (Moon Sign):</span>
+              <span class="value">{{ view.girlChart.rasi || '-' }}</span>
+            </div>
+            <div class="row">
+              <span class="label">Rasi Lord:</span>
+              <span class="value">{{ view.girlChart.rasiLord || '-' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GUNA MILAN -->
+      <div class="section-bar guna">☷ Guna Milan (Ashtakoot) Details</div>
+
+      <div class="koota-grid">
+        <div class="koota-tile" *ngFor="let k of view.kootas">
+          <div class="koota-top">
+            <div class="koota-meter">
+              <div class="koota-fill" [class]="k.tone" [style.width.%]="k.percentage"></div>
+            </div>
+            <span class="koota-badge" [class]="k.tone">{{ k.points }}/{{ k.maximum }}</span>
+          </div>
+          <div class="koota-name">{{ k.name || '—' }}</div>
+          <div class="koota-pair">Boy: {{ k.boy }} | Girl: {{ k.girl }}</div>
+          <div class="koota-desc" *ngIf="k.description">{{ k.description }}</div>
+        </div>
+      </div>
+
+      <!-- MANGAL DOSHA -->
+      <div class="two-col">
+        <div class="info-card">
+          <div class="info-head boy">♂ {{ boy?.name }} - Mangal Dosha</div>
+          <div class="info-body center">
+            <span class="pill" [class.ok]="!view.boyChart.manglik" [class.bad]="view.boyChart.manglik">
+              {{ view.boyChart.manglik ? '⚠ ' + view.boyChart.manglikLabel : '● Not Manglik' }}
+            </span>
+            <div class="note" *ngIf="view.boyChart.manglikDescription">{{ view.boyChart.manglikDescription }}</div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-head girl">♀ {{ girl?.name }} - Mangal Dosha</div>
+          <div class="info-body center">
+            <span class="pill" [class.ok]="!view.girlChart.manglik" [class.bad]="view.girlChart.manglik">
+              {{ view.girlChart.manglik ? '⚠ ' + view.girlChart.manglikLabel : '● Not Manglik' }}
+            </span>
+            <div class="note" *ngIf="view.girlChart.manglikDescription">{{ view.girlChart.manglikDescription }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTES -->
+      <div class="section-bar notes">● Important Notes &amp; Exceptions</div>
+      <div class="notes-body">
+        <div class="note-item" *ngFor="let n of view.notes">• {{ n }}</div>
+        <div class="note-item muted" *ngIf="!view.notes.length">
+          Guna Milan reflects Moon-sign compatibility only. A full consultation also weighs
+          the ascendant, planetary periods, and any dosha cancellations.
+        </div>
+      </div>
+
+    </div>
+
+    <p class="privacy-note">
+      Birth details are used only for calculating compatibility.
+    </p>
+
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <app-footer></app-footer>
+</ion-footer>

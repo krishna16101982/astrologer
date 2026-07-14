@@ -1,0 +1,183 @@
+.match-wrapper {
+  padding: 14px;
+  background: #f2f2f7;
+  min-height: 100%;
+}
+
+/* Tabs to switch between the two tools */
+.kundli-tabs {
+  display: flex;
+  gap: 8px;
+  max-width: 720px;
+  margin: 0 auto 14px;
+
+  a {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+
+    &.active {
+      background: #f5c518;
+      border-color: #f5c518;
+      color: #1c1c1e;
+    }
+  }
+}
+
+.match-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1c1c1e;
+  margin: 6px 0 18px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  max-width: 960px;
+  margin: 0 auto;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.person-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  // No `overflow: hidden` here: the place-of-birth field is the last one in the card, so its
+  // location dropdown opens past the card's bottom edge and would be clipped away. The header
+  // rounds its own top corners instead of relying on the card to clip it.
+}
+
+.person-head {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 14px;
+  border-radius: 10px 10px 0 0;
+
+  &.boy  { background: #2f6fed; }
+  &.girl { background: #e0364f; }
+}
+
+.person-body {
+  padding: 14px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+  // Positioning context for the absolutely-positioned location dropdown.
+  position: relative;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+
+    .req { color: #e0364f; }
+  }
+
+  input,
+  select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d8d8e0;
+    border-radius: 8px;
+    padding: 11px 12px;
+    font-size: 14px;
+    background: #fff;
+    color: #1c1c1e;
+
+    &:focus {
+      outline: none;
+      border-color: #2f6fed;
+    }
+  }
+}
+
+.match-footer-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  max-width: 960px;
+  margin: 16px auto 0;
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  .ayanamsa-field {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .calc-btn {
+    flex: 1;
+    border: none;
+    border-radius: 8px;
+    padding: 13px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    background: #2f6fed;
+    cursor: pointer;
+
+    &:active { background: #2559c5; }
+  }
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    .calc-btn { width: 100%; }
+  }
+}
+
+.location-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-top: none;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 99999;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  border-radius: 0 0 8px 8px;
+  margin-top: -1px;
+}
+
+.location-suggestions .suggestion-row {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.location-suggestions .suggestion-row:hover { background: #f6f6f6; }
+.location-suggestions .muted { color: #666; }
+.location-suggestions .muted-light { color: #999; }
+
+.calc-btn[disabled] { opacity: 0.6; cursor: default; }

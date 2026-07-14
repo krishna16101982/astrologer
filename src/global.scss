@@ -38,11 +38,24 @@
 // @import 'swiper/css/bundle';
 
 
-.logoContainer{ height: 100vh;}
-.logo{ text-align: center; padding-top: 20px; padding-bottom: 30px;}
+// .logoContainer{ height: 100vh;}
+
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+:root {
+  --ion-font-family: 'Montserrat', sans-serif;
+}
+
+html {
+  --ion-font-family: 'Montserrat', sans-serif;
+}
+
+.logo{ text-align: center; padding-top: 20px; padding-bottom: 70px;}
 .title{ font-size: 42px; color: #000; font-weight: 700; text-align: center; padding-bottom: 50px;}
-.logoFooter{ background: rgba(251, 217, 26, 1); height: 100vh; padding: 0 20px;}
-.boxDesign1{     font-size: 19px;    color: #3d3d3d;    border: 2px solid #c0c0c0;
+.logoFooter{ background: rgba(251, 217, 26, 1);  padding: 0 20px 30px;}
+.boxDesign1{     font-size: 15px;    color: #3d3d3d;    border: 2px solid #c0c0c0;
     padding: 14px 15px;    display: block;    font-weight: 600;     text-align: center;
     border-radius: 34px;    position: relative;    top: -26px;    background: #fff;}
     .phone-item {  --background: #f3f3f3;  --border-radius: 10px; margin-top: 10px;}
@@ -62,10 +75,14 @@
 .terms-text a {
   color: #52665a;
   font-weight: 500;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
+ion-header {
+  box-shadow: inherit !important;
+}
 
+.mlr10{ margin: 0 10px;}
 
 .stat-col h2 {
   font-weight: 700;
@@ -84,9 +101,11 @@
 }
 
 
+ion-menu{ z-index: 999999999;}
 
-
-
+ion-header.pt50.md.header-md.header-collapse-none.hydrated {
+    padding-top: 49px;
+}
 
 
 
@@ -120,17 +139,33 @@
 .profile-avatar {
   width: 36px;
   height: 36px;
-  border: 2px solid #ccc;
+  
 }
 
-ion-searchbar {
-  --background: #f4f4f4;
-  --border-radius: 12px;
+ion-header.pt50.ios.header-ios.header-collapse-none.hydrated {
+    padding-top: 67px;
 }
+
+
+
 .p15{ padding: 15px 15px 0 15px;}
 .hesdingWithBtn{ display: flex; justify-content: space-between; align-items: center; padding-top: 15px; padding-bottom: 15px;}
 .leftAlignTitle{ font-size: 20px; font-weight: 900;}
 .viewAll{ text-decoration: underline; color: #000; font-size: 13px; cursor: pointer;}
-.skipbtn{ display: flex; justify-content: end; padding: 30px 20px 0 0;}
+.skipbtn{ display: flex; justify-content: end; padding: 60px 20px 30px 0;}
 .backBtn{ display: flex; justify-content: left; align-items: center; gap: 5px; font-size: 16px; font-weight: bold;}
 
+.chat-summary-alert .alert-message {
+  white-space: pre-line;
+}
+
+ion-searchbar .searchbar-input-container input {
+   --background:rgba(251, 217, 26, 0.1) !important;
+  --border-radius: 12px !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+  height: 39px !important;
+  line-height: 39px !important;
+  border-radius: 10px !important;font-size: 14px !important;
+}
+
+.astroDetails{ padding-top: 12px;}

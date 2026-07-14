@@ -1,0 +1,32 @@
+<ion-header class="plr20">
+  <ion-toolbar class="bo0">
+
+    <!-- Left: Logo -->
+    <ion-buttons slot="start">
+      <div class="logo-wrapper">
+        <img src="./../../assets/images/logo.png" alt="logo" />
+      </div>
+    </ion-buttons>
+
+   
+
+    <!-- Right: Wallet + Profile -->
+    <ion-buttons slot="end">
+
+      <!-- WALLET -->
+      <ion-button fill="clear" class="wallet-btn" (click)="openWallet()">
+        <img src="./../../assets/images/wallet.png" class="wallet-icon" />
+        <span class="wallet-amount">₹{{ (walletBalance || 0) | number:'1.2-2' }}</span>
+      </ion-button>
+
+      <!-- PROFILE -->
+      <ion-button fill="clear" class="profile-btn" (click)="navigateToProfile()">
+        <ion-avatar class="profile-avatar">
+          <img [src]="profileImageUrl()" />
+        </ion-avatar>
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>

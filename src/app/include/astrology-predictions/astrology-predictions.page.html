@@ -1,33 +1,33 @@
 <div class="p15">
   <div class="hesdingWithBtn">
-  <div class="leftAlignTitle">Astrology Predictions</div>
-  <a href="#" class="viewAll">View All</a>
-</div>
+    <div class="leftAlignTitle">Astrology Predictions</div>
+    <a class="viewAll" (click)="viewAll()">View All</a>
+  </div>
   <div class="sec5-grid">
-  <div class="sec5Box">
-          <a href="#">
-            <span class="sec5icon"><img src="../../../assets/images/taurus.png"></span>
+    <div class="sec5Box" *ngFor="let zodiac of zodiacSigns">
+      <a (click)=goToHoroscope(zodiac)>
+        <span class="sec5icon"><img [src]="zodiac.icon"></span>
+        <span class="sec5text">{{ zodiac.name }}</span>
+      </a>
+    </div>
+    <!-- <div class="sec5Box">
+      <a href="#">
+        <span class="sec5icon"><img src="../../../assets/images/taurus.png"></span>
         <span class="sec5text">Taurus</span>
-          </a>
-        </div>
-        <div class="sec5Box">
-          <a href="#">
-            <span class="sec5icon"><img src="../../../assets/images/taurus.png"></span>
+      </a>
+    </div>
+    <div class="sec5Box">
+      <a href="#">
+        <span class="sec5icon"><img src="../../../assets/images/taurus.png"></span>
         <span class="sec5text">Taurus</span>
-          </a>
-        </div>
-        <div class="sec5Box">
-          <a href="#">
-            <span class="sec5icon"><img src="../../../assets/images/taurus.png"></span>
+      </a>
+    </div>
+    <div class="sec5Box">
+      <a href="#">
+        <span class="sec5icon"><img src="../../../assets/images/taurus.png"></span>
         <span class="sec5text">Taurus</span>
-          </a>
-        </div>
-        <div class="sec5Box">
-          <a href="#">
-            <span class="sec5icon"><img src="../../../assets/images/taurus.png"></span>
-        <span class="sec5text">Taurus</span>
-          </a>
-        </div>
-       
-</div>
+      </a>
+    </div> -->
+
+  </div>
 </div>

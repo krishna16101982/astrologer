@@ -1,0 +1,61 @@
+<ion-header>
+  <br /><br /><br /><br />
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/user/dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Chat History</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="history-page">
+
+  <div class="history-container">
+
+    <div class="history-card">
+
+      <div class="history-header">
+        Chat History
+      </div>
+
+      <!-- LOADING -->
+      <div class="loading-wrap" *ngIf="loading">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Loading history...</p>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div class="empty-state" *ngIf="!loading && sessions.length === 0">
+        <ion-icon name="chatbubble-outline" class="empty-icon"></ion-icon>
+        <p>No chat sessions found.</p>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-wrapper" *ngIf="!loading && sessions.length > 0">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of sessions">
+              <td class="date-col">{{ item.created_at | date:'dd MMM yyyy, hh:mm a' }}</td>
+              <td>{{ item.description }}</td>
+              <td class="amount-col">₹{{ item.amount | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <app-footer></app-footer>
+</ion-footer>

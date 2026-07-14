@@ -1,0 +1,142 @@
+<ion-header class="pt50">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Kundli Matching</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="match-wrapper">
+
+    <!-- TABS -->
+    <div class="kundli-tabs">
+      <a routerLink="/kundli">Free Kundli</a>
+      <a routerLink="/kundli-matching" class="active">Kundli Matching</a>
+    </div>
+
+    <h1 class="match-title">Kundli Matching</h1>
+
+    <form class="match-form" (ngSubmit)="calculate()">
+
+      <div class="cards">
+
+        <!-- BOY -->
+        <div class="person-card">
+          <div class="person-head boy">♂ Boy's Details</div>
+          <div class="person-body">
+            <div class="field">
+              <label>Name <span class="req">*</span></label>
+              <input type="text" name="boyName" [(ngModel)]="boy.name" placeholder="Enter name" />
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label>Date of Birth <span class="req">*</span></label>
+                <input type="date" name="boyDob" [(ngModel)]="boy.dob" />
+              </div>
+              <div class="field">
+                <label>Time of Birth <span class="req">*</span></label>
+                <input type="time" name="boyTob" [(ngModel)]="boy.tob" />
+              </div>
+            </div>
+            <div class="field">
+              <label>Place of Birth <span class="req">*</span></label>
+              <input
+                type="text"
+                name="boyPlace"
+                [(ngModel)]="boy.place"
+                placeholder="Type birth city name..."
+                (input)="onPlaceInput('boy', $event)"
+                (blur)="closeSuggestions('boy')"
+              />
+              <div class="location-suggestions" *ngIf="showSuggestions.boy">
+                <div
+                  *ngFor="let suggestion of suggestions.boy"
+                  (mousedown)="selectLocation('boy', suggestion)"
+                  class="suggestion-row"
+                >
+                  <strong>{{ suggestion[1] }}</strong>
+                  <span *ngIf="suggestion[2]" class="muted">, {{ suggestion[2] }}</span>
+                  <span *ngIf="suggestion[3]" class="muted-light">, {{ suggestion[3] }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GIRL -->
+        <div class="person-card">
+          <div class="person-head girl">♀ Girl's Details</div>
+          <div class="person-body">
+            <div class="field">
+              <label>Name <span class="req">*</span></label>
+              <input type="text" name="girlName" [(ngModel)]="girl.name" placeholder="Enter name" />
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label>Date of Birth <span class="req">*</span></label>
+                <input type="date" name="girlDob" [(ngModel)]="girl.dob" />
+              </div>
+              <div class="field">
+                <label>Time of Birth <span class="req">*</span></label>
+                <input type="time" name="girlTob" [(ngModel)]="girl.tob" />
+              </div>
+            </div>
+            <div class="field">
+              <label>Place of Birth <span class="req">*</span></label>
+              <input
+                type="text"
+                name="girlPlace"
+                [(ngModel)]="girl.place"
+                placeholder="Type birth city name..."
+                (input)="onPlaceInput('girl', $event)"
+                (blur)="closeSuggestions('girl')"
+              />
+              <div class="location-suggestions" *ngIf="showSuggestions.girl">
+                <div
+                  *ngFor="let suggestion of suggestions.girl"
+                  (mousedown)="selectLocation('girl', suggestion)"
+                  class="suggestion-row"
+                >
+                  <strong>{{ suggestion[1] }}</strong>
+                  <span *ngIf="suggestion[2]" class="muted">, {{ suggestion[2] }}</span>
+                  <span *ngIf="suggestion[3]" class="muted-light">, {{ suggestion[3] }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FOOTER ROW -->
+      <div class="match-footer-row">
+        <div class="field ayanamsa-field">
+          <label>Ayanamsa <span class="req">*</span></label>
+          <select name="ayanamsa" [(ngModel)]="ayanamsa">
+            <option>Lahiri</option>
+            <option>Raman</option>
+            <option>KP</option>
+          </select>
+        </div>
+        <button type="submit" class="calc-btn" [disabled]="isLoading">
+          {{ isLoading ? 'CALCULATING…' : '♥ Calculate Compatibility' }}
+        </button>
+      </div>
+
+    </form>
+
+    <div class="result-card" *ngIf="isLoading">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Calculating compatibility…</p>
+    </div>
+
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <app-footer></app-footer>
+</ion-footer>

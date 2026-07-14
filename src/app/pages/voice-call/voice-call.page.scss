@@ -1,0 +1,154 @@
+ion-toolbar {
+  --background: transparent;
+  --color: #fff;
+}
+
+ion-header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  --background: transparent;
+}
+
+.call-screen {
+  --background: linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.call-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* AVATAR */
+.avatar-wrap {
+  position: relative;
+  margin-bottom: 28px;
+  margin-top: 60px;
+}
+
+.astro-avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 30px rgba(100, 160, 255, 0.4);
+}
+
+/* PULSE RING when connected */
+.pulse-ring {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 50%;
+  border: 3px solid rgba(44, 211, 111, 0.6);
+  animation: pulse 1.8s ease-out infinite;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  70%  { transform: scale(1.15); opacity: 0;   }
+  100% { transform: scale(1.15); opacity: 0;   }
+}
+
+/* NAME */
+.astro-name {
+  color: #fff;
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+/* STATUS */
+.call-status {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 15px;
+  margin: 0 0 6px;
+  letter-spacing: 0.5px;
+}
+
+/* TIMER */
+.call-timer {
+  color: #2cd36f;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin: 0 0 40px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* WALLET BALANCE */
+.wallet-balance {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+  margin: -30px 0 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 4px 14px;
+  letter-spacing: 0.3px;
+}
+
+/* SPINNER */
+.connect-spinner {
+  color: #2cd36f;
+  width: 36px;
+  height: 36px;
+  margin: 12px 0 40px;
+}
+
+/* CONTROLS */
+.controls {
+  display: flex;
+  gap: 50px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.ctrl-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.ctrl-btn {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: none;
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  &:active {
+    transform: scale(0.93);
+  }
+}
+
+.mute-btn {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.end-btn {
+  background: #e53935;
+  box-shadow: 0 4px 20px rgba(229, 57, 53, 0.55);
+}
+
+.ctrl-label {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+  font-weight: 500;
+}

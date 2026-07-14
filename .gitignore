@@ -69,3 +69,12 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Local environment variables
+.env
+
+# Dated snapshots of src/ kept as local backups — duplicated source, not history
+/src--/
+/src-[0-9]*/
+/src[0-9]*/
+*.zip

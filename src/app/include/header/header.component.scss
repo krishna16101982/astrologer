@@ -1,0 +1,219 @@
+:host {
+  display: block;
+  position: relative;
+  z-index: 9999;
+}
+
+.logo-wrapper img {
+  height: 36px;
+  display: block;
+}
+.plr20{ padding: 0 10px;}
+.header-ios ion-toolbar.bo0:last-of-type {
+  --border-width: 0;
+}
+
+ion-buttons {
+  height: auto;
+}
+
+ion-header{    box-shadow: inherit;}
+
+.header-md{    box-shadow: inherit;}
+
+.wallet-btn {
+ height: 32px !important;
+  min-height: 32px !important;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 9px;
+  --padding-end: 9px;
+  background: #fbd91a;
+  border-radius: 5px;
+}
+
+.wallet-btn::part(native) {
+  height: 30px !important;
+  min-height: 30px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.wallet-icon {
+  height: 22px;
+  width: 22px;
+}
+
+.wallet-amount {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ion-color-dark, #222);
+}
+
+.profile-btn {
+  --padding-start: 4px;
+  --padding-end: 4px;
+}
+
+.profile-avatar {
+  width: 32px;
+  height: 32px;
+}
+
+// /* HEADER */
+// .custom-header {
+//   --background: #fff;
+//   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+// }
+
+// /* NAV */
+// .nav-container {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   padding: 10px 15px;
+// }
+
+// /* LOGO */
+// .logo img {
+//   height: 40px;
+// }
+
+// /* DESKTOP MENU */
+// .menu.desktop {
+//   display: flex;
+//   gap: 25px;
+
+//   a {
+//     font-size: 14px;
+//     color: #333;
+//     cursor: pointer;
+//   }
+// }
+
+// /* RIGHT */
+// .right-section {
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+// }
+
+// /* LOGIN BUTTON */
+// .login-btn {
+//   background: #fbd91a;
+//   border-radius: 25px;
+//   padding: 6px 15px;
+//   border: none;
+//   display: flex;
+//   align-items: center;
+//   gap: 5px;
+// }
+
+// /* MOBILE LOGIN FULL */
+// .login-btn.mobile {
+//   width: 100%;
+//   margin-top: 15px;
+//   justify-content: center;
+//   padding: 12px;
+// }
+
+// /* MENU ICON */
+// .menu-icon {
+//   font-size: 26px;
+//   display: none;
+//   cursor: pointer;
+//   border: 1px solid #ddd;
+//   padding: 5px;
+//   border-radius: 6px;
+// }
+
+// /* 🔥 MOBILE DROPDOWN */
+// .dropdown-menu {
+//   position: absolute;
+//   top: 56px;
+//   left: 0;
+//   width: 100%;
+//   background: #fff;
+//   padding: 15px;
+
+//   transform: translateY(-10px);
+//   opacity: 0;
+//   pointer-events: none;
+//   transition: 0.3s ease;
+//   z-index: 999;
+// }
+
+// /* OPEN STATE */
+// .dropdown-menu.open {
+//   transform: translateY(0);
+//   opacity: 1;
+//   pointer-events: auto;
+// }
+
+// /* MENU ITEMS */
+// .dropdown-menu a {
+//   display: block;
+//   padding: 14px 5px;
+//   font-size: 15px;
+//   color: #333;
+//   border-bottom: 1px solid #eee;
+// }
+
+// /* 🔥 RESPONSIVE */
+// @media (max-width: 768px) {
+
+//   /* HIDE DESKTOP */
+//   .desktop {
+//     display: none;
+//   }
+
+//   /* SHOW MOBILE ICON */
+//   .menu-icon {
+//     display: block;
+//   }
+
+//   /* SHOW DROPDOWN ONLY ON MOBILE */
+//   .dropdown-menu {
+//     display: block;
+//   }
+
+//   .logo img {
+//     height: 32px;
+//   }
+// }
+
+// /* HIDE DROPDOWN ON DESKTOP */
+// @media (min-width: 769px) {
+//   .dropdown-menu {
+//     display: none !important;
+//   }
+// }
+
+// /* MOBILE FIX */
+// @media (max-width: 768px) {
+
+//   .desktop {
+//     display: none !important;
+//   }
+
+//   .menu-icon {
+//     display: block !important;
+//   }
+// }
+
+// .menu-icon {
+//   font-size: 26px;
+//   cursor: pointer;
+//   border: 1px solid #ddd;
+//   padding: 6px;
+//   border-radius: 6px;
+
+//   display: none !important; /* default hidden */
+// }
+
+// /* ✅ MOBILE ONLY */
+// @media (max-width: 768px) {
+//   .menu-icon {
+//     display: block !important;
+//   }
+// }

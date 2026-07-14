@@ -1,0 +1,70 @@
+.logoContainer{ background: #fff;  }
+ion-content {
+    --background: #fbd91a;
+}
+
+.error-msg {
+  color: #c0392b;
+  font-size: 12px;
+  padding: 4px 16px 0 16px;
+  margin-top: -6px;
+  margin-bottom: 4px;
+}
+
+.signup-section {  
+
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    position: relative;
+
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background-color: #000;
+    }
+
+    span {
+      padding: 0 10px;
+      color: #000;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+  }
+
+  .signup-text {
+    text-align: center;
+    color: #000;
+    font-size: 14px;
+    margin: 12px 0 20px 0;
+    font-weight: 500;
+  }
+
+  .signup-btn {
+    --background: linear-gradient(135deg, #d4af37, #ffc107) !important;
+    --background-activated: linear-gradient(135deg, #b8932b, #ffb300) !important;
+    --color: #1a1a1a !important;
+    font-weight: 700;
+    font-size: 15px;
+    margin-top: 0 !important;
+    letter-spacing: 0.5px;
+    text-transform: none;
+
+    &:hover {
+      --background: linear-gradient(135deg, #b8932b, #ffb300) !important;
+    }
+  }
+}
+
+// Responsive
+
+@media (max-width: 480px) {
+  .signup-btn {
+    font-size: 14px;
+  }
+}

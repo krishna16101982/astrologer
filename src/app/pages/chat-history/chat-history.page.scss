@@ -1,0 +1,88 @@
+ion-content {
+  --background: #f6f7fb;
+}
+
+.history-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 30px 15px;
+}
+
+.history-card {
+  width: 100%;
+  max-width: 760px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.history-header {
+  background: #1565ff;
+  color: white;
+  font-size: 28px;
+  font-weight: 600;
+  padding: 18px 25px;
+}
+
+.loading-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 20px;
+  color: #888;
+  gap: 12px;
+
+  p { font-size: 16px; margin: 0; }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  color: #aaa;
+
+  .empty-icon {
+    font-size: 56px;
+    margin-bottom: 14px;
+    color: #ccc;
+  }
+
+  p { font-size: 17px; margin: 0; }
+}
+
+.table-wrapper {
+  padding: 25px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th {
+  background: #f7f7f7;
+  padding: 14px;
+  text-align: left;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+table td {
+  padding: 14px;
+  border: 1px solid #ddd;
+  font-size: 17px;
+}
+
+.date-col {
+  white-space: nowrap;
+}
+
+.amount-col {
+  white-space: nowrap;
+  font-weight: 600;
+  color: #c0392b;
+}

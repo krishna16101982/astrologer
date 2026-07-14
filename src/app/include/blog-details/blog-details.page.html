@@ -1,0 +1,140 @@
+<ion-header class="pt50">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>Back
+    </ion-buttons>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="blog-container">
+  <div class="content-wrapper">
+    <!-- ================= BLOG DETAIL ================= -->
+    <div class="blog-detail-view" *ngIf="selectedBlog">
+      <article class="blog-post">
+        <div class="featured-image">
+          <img [src]="selectedBlog.image_url || 'assets/images/placeholder.jpg'" />
+          <div class="heading-design"></div>
+        </div>
+
+        <h1 class="post-title">{{ selectedBlog.title }}</h1>
+        <div class="post-meta">
+          <div class="meta-item">
+            📅 {{ selectedBlog.created_at | date:'MMM dd, yyyy' }}
+          </div>
+          <div class="meta-item">
+            ✍️ {{ selectedBlog.author || 'Astroaura' }}
+          </div>
+        </div>
+
+        <!-- IMPORTANT: render HTML -->
+        <div class="post-content" [innerHTML]="selectedBlog.content"></div>
+        <!-- <div class="post-actions">
+          <button class="btn-back" (click)="goBack()">← Back to Blogs</button>
+        </div> -->
+      </article>
+    </div>
+
+    <!-- ================= BLOG LIST ================= -->
+    <ng-container *ngIf="!selectedBlog">
+      <!-- CATEGORY FILTER TOP -->
+      <div class="category-filter">
+        <button *ngFor="let cat of categories" (click)="filterByCategory(cat.slug)"
+          [class.active]="activeCategory === cat.slug">
+          {{ cat.name }} ({{ getCategoryCount(cat.slug) }})
+        </button>
+        <button (click)="blogs = allBlogs; activeCategory=''">
+          All
+        </button>
+      </div>
+      <!-- MAIN GRID -->
+      <div class="blog-list-wrapper">
+        <!-- LEFT -->
+        <div class="blog-list-grid">
+          <div class="blog-card small" *ngFor="let blog of blogs" (click)="selectBlog(blog)">
+            <div class="blog-card-image">
+              <img [src]="blog.image_url || 'assets/images/placeholder.jpg'" />
+            </div>
+            <div class="blog-card-content">
+              <div class="card-meta">
+                <span>📅 {{ blog.created_at | date:'MMM dd, yyyy' }}</span>
+                <span>✍️ {{ blog.author }}</span>
+              </div>
+              <h3 class="card-title">{{ blog.title }}</h3>
+              <p class="card-excerpt">
+                {{ stripHtml(blog.content) | slice:0:90 }}...
+              </p>
+              <div class="blogreadmorebtn" ><img src="../../../assets/images/readmore.png"></div>
+              
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+        
+        <!-- RIGHT SIDEBAR -->
+        <aside class="sidebar">
+           <div class="sidebar-widget">
+            <h4>Recent Posts</h4>
+            <div *ngFor="let post of getRecentPosts()" class="recent-post-item" (click)="selectBlog(post)">
+              <img [src]="post.image_url" width="60" />
+              <div>
+                <h5>{{ post.title }}</h5>
+                <small>{{ post.created_at | date:'MMM dd' }}</small>
+              </div>
+            </div>
+          </div>
+          <!-- SEARCH -->
+          <!-- <div class="sidebar-widget">
+            <input type="text" [(ngModel)]="searchTerm" (keyup)="searchBlogs()" placeholder="Search blogs..."
+              class="search-input" />
+          </div> -->
+          <!-- CATEGORIES -->
+          <!-- <div class="sidebar-widget">
+            <h4>Categories</h4>
+            <ul class="category-list">
+              <li *ngFor="let cat of categories" (click)="filterByCategory(cat.slug)" class="category-item">
+                <a href="javascript:void(0)" [class.active]="activeCategory === cat.slug">
+                  {{ cat.name }}
+                </a>
+                <span>
+                  ({{ getCategoryCount(cat.slug) }})
+                </span>
+              </li>
+              <li (click)="blogs = allBlogs; activeCategory=''">
+                <a class="active">View All</a>
+                <span>({{ allBlogs.length }})</span>
+              </li>
+            </ul>
+          </div> -->
+
+          <!-- RECENT POSTS -->
+         
+
+          <!-- NEWSLETTER -->
+          <!-- <div class="sidebar-widget">
+            <h4>Newsletter</h4>
+            <form (ngSubmit)="subscribeNewsletter()">
+              <input type="email" [(ngModel)]="newsletter.email" name="email" placeholder="Enter email" required />
+              <button type="submit">Subscribe</button>
+            </form>
+          </div> -->
+        </aside>
+      </div>
+      
+    </ng-container>
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <app-footer></app-footer>
+</ion-footer>

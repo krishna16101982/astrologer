@@ -3,10 +3,10 @@
  
     .blogStyle .owl-item img{ max-width: 100%; width: auto;}
     .dateandAstroaura{display: flex;
-  justify-content:end;
+  justify-content:space-between;
   padding: 0px 5px 0px;}
-  .blogDate{display: flex; align-items: center; gap: 10px; font-size: 8px; font-weight: 400;}
-  .blogTitle{padding: 5px 0px 5px; min-height: 41px; font-size: 12px; }
+  .blogDate{display: flex; align-items: center; gap: 10px; font-size: 10px; font-weight: 400;}
+  .blogTitle{padding: 5px; min-height: 67px; font-size: 10px; }
  .blogreadmorebtn{ background: #fff; border-radius: 100%; position: absolute; width: 25px; height: 25px;
   bottom: -13px; left: 50%; transform: translateX(-50%);} 
   .blogBox:hover .readmorebtn{ background: transparent; }

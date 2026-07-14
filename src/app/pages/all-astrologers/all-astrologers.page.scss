@@ -1,0 +1,120 @@
+/* Specialization filter chips */
+.spec-filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 6px 10px;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar { display: none; }
+
+  .spec-chip {
+    flex: 0 0 auto;
+    border: 1px solid rgba(243, 218, 75, 1);
+    background: #fff;
+    color: #000;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 8px 16px;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &.active {
+      background: rgba(251, 217, 26, 1);
+    }
+  }
+}
+
+.loading-wrap,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 60px 20px;
+  color: #777;
+}
+
+/* 2-column responsive grid of astrologer cards */
+.astro-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 14px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.topAstroBox {
+  background: #fff;
+  border: 1px solid rgba(243, 218, 75, 1);
+  border-radius: 10px;
+  position: relative;
+  padding: 15px 10px;
+}
+
+.topAstroBoxImg {
+  border-radius: 100%;
+  text-align: center;
+  border: 1px solid rgb(248, 219, 64);
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  margin: 0 auto;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* ── Online / Offline indicator dot (top-left corner) ── */
+.topAstroBoxactive {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+
+  &.online  { background: #13ef00; }
+  &.offline { background: #bbb; }
+}
+
+.astroDetails { margin-top: 8px; }
+
+.topAstroName { font-size: 13px; font-weight: 700; }
+.astroLang    { font-size: 10px; font-weight: 400; padding: 4px 0; line-height: 10px; height: 18px; }
+.totalExp     { font-size: 10px; font-weight: 400; padding: 4px 0; line-height: 10px; height: 18px; }
+
+/* ── Chat / Call buttons ── */
+.astroCallorChatbtn {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5px;
+  margin-top: 14px;
+}
+
+a.astrochaybtn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  border-radius: 0 5px 0 5px;
+  padding: 5px 6px;
+  color: #000;
+  text-decoration: none;
+  background: rgba(251, 217, 26, 1);
+  font-weight: 600;
+
+  img { height: 17px; }
+
+  &.btn-online  { background: rgba(251, 217, 26, 1); }
+  &.btn-offline { background: rgba(251, 217, 26, 1); color: #000; }
+}

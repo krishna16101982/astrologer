@@ -1,7 +1,8 @@
 <div class="p15">
   <div class="hesdingWithBtn">
   <div class="leftAlignTitle">In The News</div>
-  <a href="#" class="viewAll">View All</a>
+ 
+  <a class="viewAll" routerLink="/blog-details">View All</a>
 </div>
 
  <div id="container">
@@ -12,81 +13,27 @@
     "1024": { "slidesPerView": 2.5 }
   }'>
 
-      <swiper-slide>
-       <div class="blogBox">
-                <div class="blogImg"><a href="#"><img src="../../../assets/images/news.png" alt=""></a></div>
+      <swiper-slide *ngFor="let blog of relatedBlogs">
+       <div class="blogBox" [routerLink]="['/blog-details', blog.slug]">
+                <div class="blogImg"><img [src]="blog.image_url" /></div>
                 <div class="blogTitle">
-                 <a href="#">Bhai Dooj Story and Rituals You Should Know</a>
+                 {{ blog.title }} 
                 </div>
                 <div class="dateandAstroaura">
-<div class="blogDate"> Wed, Oct 22, 2025</div>
+<div class="blogDate">✍️ {{ blog.author }} </div>
+<div class="blogDate"> 📅 {{ blog.created_at | date: 'MMM dd, yyyy' }}</div>
                 </div>
-                
-                <div class="blogreadmorebtn">
-                 <a href="#"><img src="../../../assets/images/readmore.png"></a>
+                  <div  class="blogreadmorebtn" [routerLink]="['/blog-details', blog.slug]">
+               
+                <img src="../../../assets/images/readmore.png">
+               
                 </div>
               </div>
       </swiper-slide>
-     <swiper-slide>
-       <div class="blogBox">
-                <div class="blogImg"><a href="#"><img src="../../../assets/images/news.png" alt=""></a></div>
-                <div class="blogTitle">
-                 <a href="#">Bhai Dooj Story and Rituals You Should Know</a>
-                </div>
-                <div class="dateandAstroaura">
-<div class="blogDate"> Wed, Oct 22, 2025</div>
-                </div>
-                
-                <div class="blogreadmorebtn">
-                 <a href="#"><img src="../../../assets/images/readmore.png"></a>
-                </div>
-              </div>
-      </swiper-slide>
-      <swiper-slide>
-       <div class="blogBox">
-                <div class="blogImg"><a href="#"><img src="../../../assets/images/news.png" alt=""></a></div>
-                <div class="blogTitle">
-                 <a href="#">Bhai Dooj Story and Rituals You Should Know</a>
-                </div>
-                <div class="dateandAstroaura">
-<div class="blogDate"> Wed, Oct 22, 2025</div>
-                </div>
-                
-                <div class="blogreadmorebtn">
-                 <a href="#"><img src="../../../assets/images/readmore.png"></a>
-                </div>
-              </div>
-      </swiper-slide>
-      <swiper-slide>
-       <div class="blogBox">
-                <div class="blogImg"><a href="#"><img src="../../../assets/images/news.png" alt=""></a></div>
-                <div class="blogTitle">
-                 <a href="#">Bhai Dooj Story and Rituals You Should Know</a>
-                </div>
-                <div class="dateandAstroaura">
-<div class="blogDate"> Wed, Oct 22, 2025</div>
-                </div>
-                
-                <div class="blogreadmorebtn">
-                 <a href="#"><img src="../../../assets/images/readmore.png"></a>
-                </div>
-              </div>
-      </swiper-slide>
-      <swiper-slide>
-       <div class="blogBox">
-                <div class="blogImg"><a href="#"><img src="../../../assets/images/news.png" alt=""></a></div>
-                <div class="blogTitle">
-                 <a href="#">Bhai Dooj Story and Rituals You Should Know</a>
-                </div>
-                <div class="dateandAstroaura">
-<div class="blogDate"> Wed, Oct 22, 2025</div>
-                </div>
-                
-                <div class="blogreadmorebtn">
-                 <a href="#"><img src="../../../assets/images/readmore.png"></a>
-                </div>
-              </div>
-      </swiper-slide>
+     
+    
+   
+ 
 
     </swiper-container>
   </div>

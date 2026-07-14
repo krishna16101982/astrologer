@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Astrologer</string>
+    <string name="title_activity_main">Astrologer</string>
+    <string name="package_name">com.example.astrologer</string>
+    <string name="custom_url_scheme">com.example.astrologer</string>
+</resources>

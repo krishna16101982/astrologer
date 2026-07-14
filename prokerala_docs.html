@@ -1,0 +1,513 @@
+﻿
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>	API V2 Documentation
+</title>
+<meta name=description content="">
+	<link rel="stylesheet" href="/build/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+	<style>
+	body {
+	    margin: 0;
+	    padding: 0;
+	}
+	body > .header {
+	    background: linear-gradient(#6e0fde, #802cc7) !important;
+	}
+	.navbar-main {
+		margin-bottom: 0;
+	}
+	code {
+		white-space: nowrap;
+	}
+	</style>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "oyscw866je");
+</script>
+
+                                <script>!function(a){var e="https://s.go-mpulse.net/boomerang/",t="addEventListener";if("False"=="True")a.BOOMR_config=a.BOOMR_config||{},a.BOOMR_config.PageParams=a.BOOMR_config.PageParams||{},a.BOOMR_config.PageParams.pci=!0,e="https://s2.go-mpulse.net/boomerang/";if(window.BOOMR_API_key="2NAHT-GE7CH-GYS45-G56LN-V5Z65",function(){function n(e){a.BOOMR_onload=e&&e.timeStamp||(new Date).getTime()}if(!a.BOOMR||!a.BOOMR.version&&!a.BOOMR.snippetExecuted){a.BOOMR=a.BOOMR||{},a.BOOMR.snippetExecuted=!0;var i,_,o,r=document.createElement("iframe");if(a[t])a[t]("load",n,!1);else if(a.attachEvent)a.attachEvent("onload",n);r.src="javascript:void(0)",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="width:0;height:0;border:0;display:none;",o=document.getElementsByTagName("script")[0],o.parentNode.insertBefore(r,o);try{_=r.contentWindow.document}catch(O){i=document.domain,r.src="javascript:var d=document.open();d.domain='"+i+"';void(0);",_=r.contentWindow.document}_.open()._l=function(){var a=this.createElement("script");if(i)this.domain=i;a.id="boomr-if-as",a.src=e+"2NAHT-GE7CH-GYS45-G56LN-V5Z65",BOOMR_lstart=(new Date).getTime(),this.body.appendChild(a)},_.write("<bo"+'dy onload="document._l();">'),_.close()}}(),"".length>0)if(a&&"performance"in a&&a.performance&&"function"==typeof a.performance.setResourceTimingBufferSize)a.performance.setResourceTimingBufferSize();!function(){if(BOOMR=a.BOOMR||{},BOOMR.plugins=BOOMR.plugins||{},!BOOMR.plugins.AK){var e=""=="true"?1:0,t="",n="pqpfofaxiaa6g2sodaha-f-783cc3220-clientnsv4-s.akamaihd.net",i="false"=="true"?2:1,_={"ak.v":"41","ak.cp":"1101525","ak.ai":parseInt("656783",10),"ak.ol":"0","ak.cr":4,"ak.ipv":4,"ak.proto":"http/1.1","ak.rid":"239fd138","ak.r":49695,"ak.a2":e,"ak.m":"dsca","ak.n":"essl","ak.cport":22924,"ak.gh":"23.64.1.223","ak.quicv":"","ak.tlsv":"tls1.3","ak.0rtt":"","ak.0rtt.ed":"","ak.csrc":"-","ak.acc":"bbr","ak.t":"1783502862","ak.ak":"hOBiQwZUYzCg5VSAfCLimQ==rrj9A6c9dBsnmz6OgAff3lIcUTYeP1zayxfTKOR3DG+ZybV1tt+CM7za78pRoSLzeMyVLJU0AvjS4Jj90NBD/pg1VXEnWMeyPniHjRvEliFMvJeRgxm0IlPDLJPEBYjkTqXAJOrQb8XZib8nhl6Dp+WAi8AFv3OSKdl3jIfRUcaKCH/sv12+HY1X7/fBWrQCdEUHT4euzCKKzI65Z2+23ZKcxAvUWkwaNTOHtYlGcoAC8/cZkxiPiF1gsd33MQHXewKEB+PK6zx7WosyUj3TugXeKxp/8z931zETbKZynKWFwulH8dLhoPFtFDUHpJBMBZv/g3qcjG2HHMUHXpV9leaAdaYlfUiQQ+BTSo0uCCtK+RVTFkmdcBMhaX35Q075VUIRam7MljFSSLJ2YNbAwuZr1mamYEAhqKheIlMeOfY=","ak.pv":"9","ak.dpoabenc":"","ak.tf":i};if(""!==t)_["ak.ruds"]=t;var o={i:!1,av:function(e){var t="http.initiator";if(e&&(!e[t]||"spa_hard"===e[t]))_["ak.feo"]=void 0!==a.aFeoApplied?1:0,BOOMR.addVar(_)},rv:function(){var a=["ak.cport","ak.cr","ak.csrc","ak.gh","ak.ipv","ak.m","ak.n","ak.ol","ak.proto","ak.quicv","ak.tlsv","ak.0rtt","ak.0rtt.ed","ak.r","ak.acc","ak.t","ak.tf"];BOOMR.removeVar(a)}};BOOMR.plugins.AK={akVars:_,akDNSPreFetchDomain:n,init:function(){if(!o.i){var a=BOOMR.subscribe;a("before_beacon",o.av,null,null),a("onbeacon",o.rv,null,null),o.i=!0}return this},is_complete:function(){return!0}}}}()}(window);</script></head>
+<body>
+<header class="header header-transparent bg-header" id="header-main">
+    <!-- Main navbar -->
+    <nav class="navbar navbar navbar-main navbar-expand-lg navbar-transparent navbar-dark d-flex flex-row flex-nowrap" id="navbar-main">
+        <!-- Navbar collapse trigger -->
+
+
+		<div class="container">
+			<div style="display: flex; flex-direction: row; align-items: center;">
+				<button class="navbar-toggler collapsed" type="button" data-toggle="collapse" onclick="toggleSideBarFunction()" data-target="#navbar-main-collapse" aria-controls="navbar-main-collapse" aria-expanded="false" aria-label="Toggle navigation">
+					<img alt="menu" src="/assets/img/menu-link.png" class="toggle-menu" >
+				</button>
+				<a class="navbar-brand d-flex align-items-center ml-3" href="/">
+					<img alt="Image placeholder" src="/assets/img/logo-large.png" id="navbar-logo" >
+				</a>
+			</div>
+			<div class="navbar-container">
+				<div class="justify-content-center" id="navbar-main-collapse">
+					<div class="py-2 py-lg-0">
+						<ul class="navbar-nav">
+							<li class="nav-item">
+								<div class="header-dropdown-toggle">
+									<div class="nav-link dropdown-toggle" type="button" id="dropdownFeatureButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<a class="drop-down-option-tag" href="/api-credits">Features</a>
+									</div>
+									<div class="hover-div"></div>
+									<div class="header-dropdown-toggle-options feature-menu box-shadow" aria-labelledby="dropdownMenuButton">
+										<div class="container drop-down-option">
+											<div class="drop-option" data-page-path="api-credits/#daily-horoscope-credits">
+												<span>Daily Horoscope</span>
+												<span>Get daily insights into love, career, and health based on zodiac sign.</span>
+											</div>
+											<div class="drop-option" data-page-path="api-credits/#daily-panchang-credits">
+												<span>Daily Panchang</span>
+												<span>Includes Panchang, auspicious timings, Choghadiya, Yogas, and more.</span>
+											</div>
+											<div class="drop-option" data-page-path="api-credits/#kp-astrology-credits">
+												<span>KP Astrology</span>
+												<span>KP Chart, KP Planet Position, KP Planet and KP House Significators.</span>
+											</div>
+											<div class="drop-option" data-page-path="api-credits/#calendar-credits">
+												<span>Calendar</span>
+												<span>Covers traditional calendars like Amanta, Purnimanta, Vikram Samvat, etc.</span>
+											</div>
+											<div class="drop-option" data-page-path="api-credits/#vedic-astrology-credits">
+												<span>Vedic Astrology</span>
+												<span>Explore birth chart, Mangal Dosha, marriage compatibility, and more.</span>
+											</div>
+											<div class="drop-option" data-page-path="api-credits/#western-astrology-credits">
+												<span>Western Astrology</span>
+												<span>Natal chart, aspects, transit chart, synastry chart etc.</span>
+											</div>
+											<div class="drop-option" data-page-path="api-credits/#numerology-credits">
+												<span>Numerology</span>
+												<span>Based on both Pythagorean and Chaldean numerology systems.</span>
+											</div>
+											<div class="drop-option" data-page-path="api-credits/#pdf-reports-credits">
+												<span>PDF Reports</span>
+												<span>Customizable and comprehensive PDF reports on horoscopes, compatibility, and transits.</span>
+											</div>
+											<div class="drop-option" data-page-path="getting-started#wordpress-plugin">
+												<span>Wordpress Plugin</span>
+												<span>Powerful WordPress plugins to enhance and manage astrology website.</span>
+											</div>
+											<div class="drop-option" data-page-path="getting-started">
+												<span>Sample API Client</span>
+												<span>Get started with our API clients available in PHP, C#, Python, and Ruby.</span>
+											</div>
+											<div class="drop-option" data-page-path="pdf-reports">
+												<span>Sample PDF Reports</span>
+												<span>Sample Reports and source code for various available PDF Reports</span>
+											</div>
+											<div class="drop-option" data-page-path="api-credits/#batch-compatibility-credits">
+												<span>Batch Compatibility</span>
+												<span>Get Batch Marriage Compatibility â€“ Up to 500 Batches Supported</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li class="nav-item">
+								<a href="/pricing" class="nav-link">Pricing</a>
+							</li>
+							<li class="nav-item">
+								<a href="/demo" class="nav-link">Demo</a>
+							</li>
+							<li class="nav-item">
+								<div class="header-dropdown-toggle">
+									<div class="dropdown docs-dropdown">
+										<div class="nav-link dropdown-toggle" type="button" id="dropdownDocsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<a class="drop-down-option-tag" href="/docs">API Docs</a>
+										</div>
+										<div class="hover-div"></div>
+										<div class="header-dropdown-toggle-options feature-menu box-shadow" aria-labelledby="dropdownMenuButton">
+											<div class="container drop-down-option">
+												<div class="drop-option" data-page-path="docs#section/Getting-Started">
+													<span>Getting Started</span>
+													<span>Quick start guide with API clients, WordPress plugin, OpenAPI, and Postman support.</span>
+												</div>
+												<div class="drop-option" data-page-path="docs#tag/Horoscope">
+													<span>Vedic Horoscope</span>
+													<span>Personal horoscope based on Vedic Astrology, including charts, Dasha, Yogas, and more.</span>
+												</div>
+												<div class="drop-option" data-page-path="docs#tag/Daily-Panchang">
+													<span>Daily Panchang</span>
+													<span>Panchang, auspicious and inauspicious timings, Choghadiya, and more.</span>
+												</div>
+												<div class="drop-option" data-page-path="docs#tag/KP-Astrology">
+													<span>KP Astrology</span>
+													<span>KP Chart, KP Planet Position, KP Planet and KP House Significators.</span>
+												</div>
+												<div class="drop-option" data-page-path="docs#tag/Marriage-Matching">
+													<span>Marriage Matching</span>
+													<span>Kundli matching using Ashta Kuta and Dasha Kuta systems for compatibility.</span>
+												</div>
+												<div class="drop-option" data-page-path="docs#tag/Prediction">
+													<span>Daily Horoscope</span>
+													<span>Daily predictions for zodiac signs based on date and sign.</span>
+												</div>
+												<div class="drop-option" data-page-path="docs#tag/Calendar">
+													<span>Calendar</span>
+													<span>Includes Amanta, Purnimanta, and other regional calendar systems.</span>
+												</div>
+												<div class="drop-option" data-page-path="docs#tag/Numerology">
+													<span>Numerology</span>
+													<span>Insights based on numbers, guiding lifeâ€™s path using numerological principles.</span>
+												</div>
+												<div class="drop-option" data-page-path="docs#tag/Chaldean-Numerology">
+													<span>Chaldean Numerology</span>
+													<span>Numerology insights based on the Chaldean system.</span>
+												</div>
+												<div class="drop-option" data-page-path="docs#tag/Western-Astrology">
+													<span>Western Astrology</span>
+													<span>Natal chart, aspects, synastry, planetary positions, and more.</span>
+												</div>
+												<div class="drop-option" data-page-path="docs#tag/PDF-Report">
+													<span>PDF Report</span>
+													<span>Comprehensive and customizable PDF reports for both Western and Vedic astrology.</span>
+												</div>
+												<div class="drop-option" data-page-path="docs#operation/get-batch-compatibility">
+													<span>Batch Compatibility</span>
+													<span>Get Batch Marriage Compatibility â€“ Up to 500 Batches Supported</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li class="nav-item">
+								<a href="/articles" target="_blank" class="nav-link">Articles</a>
+							</li>
+							<li class="nav-item">
+								<a href="/faq" class="nav-link">FAQ</a>
+							</li>
+							<li class="nav-item">
+								<a href="/contact" class="nav-link">Contact</a>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+							<div class="authentication-container" style="position: absolute; right: 10px;">
+					<a href="/login" class="nav-link text-white  px-3">Login</a>
+					<a href="/register" class="nav-link btn-signup bg-warning px-3">Sign Up</a>
+				</div>
+			
+		</div>
+
+    </nav>
+</header>
+
+
+
+	<div class="main-content" style="min-height: 500px;">
+		<redoc spec-url="/spec/astrology.v2.yaml"></redoc>
+		<script src="/theme/site/js/redoc.standalone.min.js"></script>
+	</div>
+
+<!-- Footer -->
+
+<footer id="footer">
+    <div class="footer-wrapper">
+        <div class="bg-footer footer-rotate"></div>
+        <div class="bg-footer footer-content">
+            <div class="container">
+                <div class="row">
+                    <div class="social-share-button-wrapper mb-5 col-lg-3 col-xl-3 col-12">
+                        <span class="text-white px-3">FOLLOW US ON</span>
+                        <div class="share-buttons pt-3">
+                            <div>
+                                <a href="https://www.facebook.com/Prokerala" class="share-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/1999/xlink" width="20" height="20">
+                                        <path d="M11.344,5.71c0-0.73,0.074-1.122,1.199-1.122h1.502V1.871h-2.404c-2.886,0-3.903,1.36-3.903,3.646v1.765h-1.8V10h1.8v8.128h3.601V10h2.403l0.32-2.718h-2.724L11.344,5.71z"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="https://twitter.com/Prokerala" class="share-icon ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/1999/xlink" width="20" height="20">
+                                        <path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="https://www.youtube.com/c/Prokerala" class="share-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/1999/xlink" width="20" height="20">
+                                        <path class="a" d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-link-wrapper col-sm-6 col-lg-5 col-xl-6 col-12 mb-5">
+                        <ul class="nav">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/demo">Demo</a></li>
+                            <li><a href="/pricing">Pricing</a></li>
+                            <li><a href="/getting-started" target="_blank">Getting Started</a></li>
+                            <li><a href="/faq">FAQ</a></li>
+                        </ul>
+                        <ul class="nav">
+                            <li><a href="/about">About</a></li>
+                            <li><a href="/docs" target="_blank">Documentation</a></li>
+                            <li><a href="https://www.prokerala.com/">Prokerala</a></li>
+                            <li><a href="https://www.prokerala.com/astrology">Prokerala Astrology</a></li>
+                            <li><a href="/articles">Blogs</a></li>
+
+                        </ul>
+                    </div>
+                    <div class="contact-us col-sm-6 col-lg-4 col-xl-3 col-12 mb-5">
+                        <div class="text-white">
+                            <span class="text-left d-block">Toll Free</span>
+                            <span class="text-xxlarge">1800 425 0053</span>
+                            <div class="call-button mb-5">
+									<a href="tel:18004250053" class="btn btn-sm rounded btn-warning">Talk to us</a>
+                            </div>
+                            <div class="contact-wrapper row  px-lg-3">
+                                <span class="col-1 text-left icon-map p-0"><img src="/assets/img/icon-map.png"></span>
+                                <span class="col-11 i ">Ennexa Technologies Pvt.Ltd. XI/476, Manganam, Kottayam, Kerala, India</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav-bar border-top border-white">
+                    <div class="py-5 ">
+                        <ul class="nav  text-center text-lg-left">
+                            <li class="nav-item px-3">
+                                <a href="/privacy" class="nav-link">Privacy</a>
+                            </li>
+                            <li class="nav-item px-3">
+                                <a href="/tos" class="nav-link">TOS</a>
+                            </li>
+                              <li class="nav-item px-3">
+                                  <a href="#" class="nav-link">Disclaimer</a>
+                              </li>
+                              <li class="nav-item px-3">
+                                  <a href="" class="nav-link">Cookies</a>
+                              </li>
+                            <li class="nav-item px-3">
+                                <a href="/contact" class="nav-link">Contact</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<aside id="sidebarContent" class="sidebar unfold-hidden " aria-labelledby="sidebarNavToggler">
+
+    <div class="sidebar-container">
+        <div class="sidebar-panel-footer-offset">
+            <!-- Toggle Button -->
+            <div class="sidebar-close">
+                <span>Ã—</span>
+            </div>
+            <!-- End Toggle Button -->
+
+            <!-- Content -->
+            <div class="sidebar-body">
+                <div class="sidebar-content py-5">
+                    <ul class="mb-3 navbar-nav">
+                        <li class="align-items-center sidebar-panel-link py-3">
+                            <a href="/">Home</a>
+                        </li>
+                        <li class="align-items-center sidebar-panel-link py-3">
+                            <a href="/pricing">Pricing</a>
+                        </li>
+                        <li class="align-items-center sidebar-panel-link dropdown py-3">
+                            <span class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Features
+                            </span>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+								<a class="dropdown-item" target="_blank" href="api-credits/#daily-horoscope-credits">Daily Horoscope</a>
+                                <a class="dropdown-item" target="_blank" href="api-credits/#daily-panchang-credits">Daily Panchang</a>
+                                <a class="dropdown-item" target="_blank" href="api-credits/#calendar-credits">Calendar</a>
+                                <a class="dropdown-item" target="_blank" href="api-credits/#vedic-astrology-credits">Vedic Astrology</a>
+                                <a class="dropdown-item" target="_blank" href="api-credits/#western-astrology-credits">Western Astrology</a>
+                                <a class="dropdown-item" target="_blank" href="api-credits/#numerology-credits">Numerology</a>
+                                <a class="dropdown-item" target="_blank" href="api-credits/#pdf-reports-credits">PDF Reports</a>
+                                <a class="dropdown-item" target="_blank" href="getting-started#wordpress-plugin">Wordpress Plugin</a>
+                                <a class="dropdown-item" target="_blank" href="getting-started">Sample API Client</a>
+                            </div>
+                        </li>
+						<li class="align-items-center sidebar-panel-link dropdown py-3">
+                            <span class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            API Docs
+                            </span>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+								<a class="dropdown-item" target="_blank" href="docs#section/Getting-Started">Getting Started</a>
+								<a class="dropdown-item" target="_blank" href="docs#tag/Horoscope">Vedic Horoscope</a>
+								<a class="dropdown-item" target="_blank" href="docs#tag/Daily-Panchang">Daily Panchang</a>
+								<a class="dropdown-item" target="_blank" href="docs#tag/Marriage-Matching">Marriage Matching</a>
+								<a class="dropdown-item" target="_blank" href="docs#tag/Prediction">Daily Horoscope</a>
+								<a class="dropdown-item" target="_blank" href="docs#tag/Calendar">Calendar</a>
+								<a class="dropdown-item" target="_blank" href="docs#tag/Numerology">Numerology</a>
+								<a class="dropdown-item" target="_blank" href="docs#tag/Chaldean-Numerology">Chaldean Numerology</a>
+								<a class="dropdown-item" target="_blank" href="docs#tag/Western-Astrology">Western Astrology</a>
+								<a class="dropdown-item" target="_blank" href="docs#tag/PDF-Report">PDF Report</a>
+							</div>
+						</li>
+						<li class="align-items-center sidebar-panel-link py-3">
+							<a href="/pdf-reports" target="_blank">PDF Reports</a>
+						</li>
+						<li class="align-items-center sidebar-panel-link py-3">
+							<a href="/api-credits" target="_blank">API Credits</a>
+						</li>
+						<li class="align-items-center sidebar-panel-link py-3">
+							<a href="/docs" target="_blank">Documentation</a>
+						</li>
+						<li class="align-items-center sidebar-panel-link py-3">
+							<a href="/getting-started" target="_blank">Getting Started</a>
+						</li>
+                        <li class="align-items-center sidebar-panel-link py-3">
+                            <a href="/articles">Blogs</a>
+                        </li>
+                        <li class="align-items-center sidebar-panel-link py-3">
+                            <a href="/faq">FAQ</a>
+                        </li>
+                        <li class="align-items-center sidebar-panel-link py-3">
+                            <a href="/about">About</a>
+                        </li>
+                        <li class="align-items-center sidebar-panel-link py-3">
+                            <a href="/contact">Contact</a>
+                        </li>
+						<li class="align-items-center sidebar-panel-link py-3">
+							<a href="/tos">Terms of Service</a>
+						</li>
+                    </ul>
+                    <div class="text-center">
+                        <a class="btn btn-warning" href="/login">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<script src="/theme/site/js/app.js" defer></script>
+<script src="/theme/site/js/manifest.js" defer></script>
+<script src="/theme/site/js/vendor.js" defer></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-1458794-18"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-1458794-18');
+</script>
+
+<script>
+    document.querySelectorAll('.sidebar-panel-link.dropdown').forEach(function (dropdown) {
+        dropdown.addEventListener('click', function(){
+            this.classList.toggle('show');
+            this.querySelector('.dropdown-menu').classList.toggle('show')
+        })
+    });
+    function toggleSideBarFunction() {
+        let sidebarContent = document.getElementById('sidebarContent');
+        sidebarContent.classList.toggle('unfold-hidden');
+        sidebarContent.classList.toggle('fadeInLeft')
+    }
+    document.getElementById('sidebarContent').addEventListener("click", function(evt) {
+        var flyoutElement = document.querySelector('.sidebar-body');
+        var targetElement = evt.target;  // clicked element
+
+        do {
+            if (targetElement == flyoutElement) {
+                // This is a click inside. Do nothing, just return.
+                return;
+            }
+            // Go up the DOM
+            targetElement = targetElement.parentNode;
+        } while (targetElement);
+
+        // This is a click outside.
+        toggleSideBarFunction();
+    });
+	const dropDowns = document.querySelectorAll('.header-dropdown-toggle');
+
+	dropDowns.forEach((el) => {
+		const dropDownButton = el.querySelector('div.dropdown-toggle');
+		const hoverDiv = el.querySelector('div.hover-div');
+		const toggleOptions = el.querySelector('div.header-dropdown-toggle-options');
+
+		let isHovered = false;
+
+		const showOptions = () => {
+			toggleOptions.style.display = 'flex';
+		};
+
+		const hideOptions = () => {
+			toggleOptions.style.display = 'none';
+		};
+
+		// Track if mouse is inside any of the relevant elements
+		const handleMouseEnter = () => {
+			isHovered = true;
+			showOptions();
+		};
+
+		const handleMouseLeave = () => {
+			isHovered = false;
+			setTimeout(() => {
+				if (!isHovered) hideOptions();
+			}, 100); // slight delay to allow moving between elements
+		};
+
+		[dropDownButton, hoverDiv, toggleOptions].forEach(elem => {
+			elem.addEventListener('mouseenter', handleMouseEnter);
+			elem.addEventListener('mouseleave', handleMouseLeave);
+		});
+
+		// Toggle on click of button
+		let isOpen = false;
+		dropDownButton.addEventListener('click', () => {
+			isOpen = !isOpen;
+			toggleOptions.style.display = isOpen ? 'flex' : 'none';
+		});
+
+		// Hide when option is clicked
+		const options = toggleOptions.querySelectorAll('.drop-option');
+		options.forEach(option => {
+			option.addEventListener('click', () => {
+				isOpen = false;
+				hideOptions();
+
+				const pagePath = option.dataset.pagePath;
+				if (pagePath) {
+					window.location.href = pagePath;
+				}
+			});
+		});
+
+	});
+
+</script>
+
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/5f96709a2915ea4ba096a590/default';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+</html>
+

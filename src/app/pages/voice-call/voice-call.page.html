@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ astrologerName || 'Voice Call' }}</ion-title>
+    <ion-buttons slot="end" *ngIf="isCallActive || callStatus === 'Connecting...'">
+      <ion-button fill="solid" color="danger" (click)="hangUp()">End</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="call-screen">
+
+  <div class="call-container">
+
+    <!-- AVATAR -->
+    <div class="avatar-wrap">
+      <img
+        class="astro-avatar"
+        [src]="astrologerImage"
+        onerror="this.src='assets/default-avatar.png'"
+      />
+      <div class="pulse-ring" *ngIf="isCallActive"></div>
+    </div>
+
+    <!-- NAME & STATUS -->
+    <h2 class="astro-name">{{ astrologerName }}</h2>
+
+    <p class="call-status">{{ callStatus }}</p>
+
+    <!-- TIMER -->
+    <p class="call-timer" *ngIf="isCallActive">{{ formattedDuration }}</p>
+
+    <!-- WALLET BALANCE (updates every 60s via billing ping) -->
+    <p class="wallet-balance" *ngIf="walletBalance && isCallActive">
+      &#8377;{{ walletBalance }} remaining
+    </p>
+
+    <!-- CONNECTING SPINNER -->
+    <ion-spinner
+      name="crescent"
+      class="connect-spinner"
+      *ngIf="!isCallActive && callStatus !== 'Call Ended' && callStatus !== 'Failed to connect'"
+    ></ion-spinner>
+
+    <!-- CONTROLS -->
+    <div class="controls" *ngIf="callStatus !== 'Call Ended' && callStatus !== 'Failed to connect'">
+
+      <!-- MUTE -->
+      <div class="ctrl-wrap">
+        <button class="ctrl-btn mute-btn" (click)="toggleMute()">
+          {{ isMuted ? '🔇' : '🎤' }}
+        </button>
+        <span class="ctrl-label">{{ isMuted ? 'Unmute' : 'Mute' }}</span>
+      </div>
+
+      <!-- END -->
+      <div class="ctrl-wrap">
+        <button class="ctrl-btn end-btn" (click)="hangUp()">
+          📵
+        </button>
+        <span class="ctrl-label">End</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

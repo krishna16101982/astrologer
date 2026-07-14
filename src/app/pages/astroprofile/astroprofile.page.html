@@ -1,57 +1,221 @@
-<ion-header>
+<!-- HEADER WITH BACK BUTTON -->
+<ion-header class="pt50">
   <ion-toolbar>
-
-    <ion-grid>
-      <ion-row class="ion-align-items-center ion-justify-content-between">
-
-        <!-- Left: Logo + App Name -->
-        <ion-col size="6" class="logo-col">
-          <div class="backBtn"><img src="../../../assets/images/backIcon.pn" />Profile</div>
-        </ion-col>
-
-        <!-- Right: Wallet + Profile -->
-        <ion-col size="6" class="wallet-profile" text-end>
-          <div class="wallet">
-            <img src="./../../assets/images/wallet.png" />
-            <span>$ 100.40</span>
-          </div>
-          <ion-avatar class="profile-avatar">
-            <img src="./../../assets/images/profileicon.png" />
-          </ion-avatar>
-        </ion-col>
-
-      </ion-row>
-    </ion-grid>
-
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button> Back
+    </ion-buttons>
+   
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <div class="p15">
-    <div class="topAstroBox">
-      <span class="topAstroBoxactive"></span>
 
-      <div class="topAstroBoxImg"><img [src]="astrologerDetails.profile_image_url" style="height: 60px;"></div>
-      <div class="astroDetails">
-        <div class="topAstroName">{{astrologerDetails.display_name}}</div>
 
-        <div class="astroLang"><span *ngFor="let language of astrologerDetails.language">{{language.name}}, </span>
+<ion-content>
+  <!-- TOP BANNER -->
+<div class="top-banner">
+  <div class="overlay">
+    <span class="verified">✔ VERIFIED ASTROLOGER</span>
+    <h1>{{ astrologerDetails?.display_name }}</h1>
+    <p>{{ astrologerDetails?.skills || 'Relationship' }}</p>
+  </div>
+</div>
+
+  <div class="profile-wrapper">
+
+    <!-- LEFT CARD -->
+    <div class="left-card">
+
+      <div class="online-status-row">
+        <span class="status-badge" [class.badge-online]="astrologerDetails?.is_online" [class.badge-offline]="!astrologerDetails?.is_online">
+          <span class="status-dot-sm"></span>
+          {{ astrologerDetails?.is_online ? 'Online' : 'Offline' }}
+        </span>
+      </div>
+
+      <img class="profile-img" [src]="astrologerDetails?.profile_image_url" />
+
+      <div class="stats">
+        <div>
+          <h3>0.0</h3>
+          <p>Rating</p>
         </div>
-        <div class="totalExp">Exp. : <strong></strong>{{astrologerDetails.experience_years}}</div>
-        <div class="astroCallorChatbtn">
-          <a class="astrochaybtn" href="#"><img src="../../../assets/images/chat 1.png"> {{astrologerDetails.chat_price
-            | number:'1.0-0'}}/Min </a> <a class="astrochaybtn" href="#"><img src="../../../assets/images/call.png">
-            {{astrologerDetails.call_price | number:'1.0-0'}}/Min </a>
+        <div>
+          <h3>{{ astrologerDetails?.experience_years }}+</h3>
+          <p>Years Exp</p>
+        </div>
+        <div>
+          <h3>0</h3>
+          <p>Sessions</p>
+        </div>
+      </div>
+
+      <div class="price">
+        <div class="wallet-balance" *ngIf="walletDetails">
+          <span>💰 Wallet: ₹{{ (walletDetails?.wallet_balance || 0) | number:'1.2-2' }}</span>
+        </div>
+
+        <div class="service-row">
+          <p>Voice Call <span>₹{{ astrologerDetails?.call_price }}/min</span></p>
+          <span class="service-status" [class.svc-online]="astrologerDetails?.is_call_online" [class.svc-offline]="!astrologerDetails?.is_call_online">
+            <span class="status-dot-sm"></span>
+            {{ astrologerDetails?.is_call_online ? 'Available' : 'Unavailable' }}
+          </span>
+        </div>
+        <button class="call-btn" [class.btn-disabled]="!astrologerDetails?.is_call_online" (click)="startVoiceCall()">📞 Start Call Now</button>
+
+        <div class="service-row">
+          <p>Online Chat <span>₹{{ astrologerDetails?.chat_price }}/min</span></p>
+          <span class="service-status" [class.svc-online]="astrologerDetails?.is_chat_online" [class.svc-offline]="!astrologerDetails?.is_chat_online">
+            <span class="status-dot-sm"></span>
+            {{ astrologerDetails?.is_chat_online ? 'Available' : 'Unavailable' }}
+          </span>
+        </div>
+        <button class="chat-btn" [class.btn-disabled]="!astrologerDetails?.is_chat_online" (click)="startChat()">💬 Chat with Me</button>
+      </div>
+
+      <!-- LANGUAGES -->
+      <div class="languages">
+        <h4>Languages</h4>
+        <span *ngFor="let l of astrologerDetails?.languages">
+          {{ l.name }}
+        </span>
+      </div>
+
+    </div>
+
+    <!-- RIGHT CONTENT -->
+    <div class="right-content">
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button [class.active]="activeTab==='about'" (click)="activeTab='about'">About</button>
+        <button [class.active]="activeTab==='skills'" (click)="activeTab='skills'">Specializations</button>
+        <button [class.active]="activeTab==='reviews'" (click)="activeTab='reviews'">Reviews</button>
+      </div>
+
+      <!-- ABOUT -->
+      <div class="content-box" *ngIf="activeTab==='about'">
+        <h2>About Me</h2>
+        <p>{{ astrologerDetails?.about || 'No description available' }}</p>
+      </div>
+
+      <!-- SPECIALIZATIONS -->
+      <div class="content-box" *ngIf="activeTab==='skills'">
+        <h2>Specializations</h2>
+
+        <div class="skills-grid">
+
+          <div class="skill-item" *ngFor="let skill of skillsArray">
+            <!-- <span class="dot"></span> -->
+            ⭐ {{ skill.name }}
+          </div>
+
         </div>
 
       </div>
+
+      <!-- REVIEWS -->
+      <div class="content-box" *ngIf="activeTab==='reviews'">
+        <h2>Customer Reviews</h2>
+
+        <!-- WRITE A REVIEW (only after a consultation with this astrologer) -->
+        <div class="write-review" *ngIf="lastConsult">
+          <h3>Rate your consultation</h3>
+          <div class="star-input">
+            <span *ngFor="let s of [1,2,3,4,5]" [class.filled]="s <= newRating" (click)="setRating(s)">★</span>
+          </div>
+          <textarea [(ngModel)]="newComment" rows="3" placeholder="Share your experience (optional)"></textarea>
+          <button class="submit-review-btn" [disabled]="submittingRating || newRating === 0" (click)="submitRating()">
+            {{ submittingRating ? 'Submitting...' : 'Submit Review' }}
+          </button>
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="review-summary" *ngIf="reviews.length">
+
+          <div class="avg-rating">
+            <h1>{{ getAverageRating() }}</h1>
+            <div class="stars">
+              <ng-container *ngFor="let s of [1,2,3,4,5]">
+                <span [class.filled]="s <= getAverageRating()">★</span>
+              </ng-container>
+            </div>
+            <p>{{ reviews.length }} reviews</p>
+          </div>
+
+          <div class="rating-breakdown">
+            <div *ngFor="let star of [5,4,3,2,1]" class="bar-row">
+              <span>{{ star }}★</span>
+              <div class="bar">
+                <div class="fill" [style.width.%]="getRatingPercentage(star)">
+                </div>
+              </div>
+              <span>{{ getRatingCount(star) }}</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- NO REVIEW -->
+        <div *ngIf="reviews.length === 0" class="no-review">
+          No reviews available
+        </div>
+
+        <!-- REVIEW LIST -->
+        <div class="review-card" *ngFor="let r of reviews">
+          <div class="review-header">
+
+            <div class="user-info">
+              <div class="avatar">
+                {{ getInitials(r.user?.name) }}
+              </div>
+              <div>
+                <strong>{{ r.user.name }}</strong>
+                <div class="stars small">
+                  <span *ngFor="let s of [1,2,3,4,5]" [class.filled]="s <= r.rating">★</span>
+                </div>
+              </div>
+            </div>
+
+            <span class="date">
+              {{ r.created_at | date:'MMM dd, yyyy' }}
+            </span>
+
+          </div>
+
+          <p class="review-text">{{ r.comment }}</p>
+        </div>
+
+      </div>
+
     </div>
+
   </div>
+<!-- CUSTOM APK LOADER -->
+
+<div
+  class="custom-loader"
+  *ngIf="loadingChat"
+>
+
+  <div class="loader-box">
+
+    <ion-spinner
+      name="crescent"
+    >
+    </ion-spinner>
+
+    <div class="loader-text">
+
+      {{ loadingMessage }}
+
+    </div>
+
+  </div>
+
+</div>
 </ion-content>
 
 <ion-footer>
-
   <app-footer></app-footer>
-
-
 </ion-footer>

@@ -1,0 +1,168 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Blog</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- HEADER -->
+<app-blog-header
+  [title]="blog?.title || 'Blog'"
+  [breadcrumb]="'Home / Blog'"
+  [headerImage]="'assets/images/homeSlider.jpg'"
+></app-blog-header>
+
+<!-- MAIN CONTENT -->
+<ion-content class="blog-container">
+  <div class="content-wrapper" *ngIf="!loading">
+    <!-- LOADING STATE -->
+    <div class="loading-state" *ngIf="!blog">
+      <p>Blog not found</p>
+    </div>
+
+    <!-- BLOG DETAIL WITH SIDEBAR -->
+    <div class="blog-detail-wrapper" *ngIf="blog">
+      <!-- LEFT MAIN CONTENT -->
+      <div class="blog-main">
+        <article class="blog-post">
+          <!-- Featured Image -->
+          <div class="featured-image">
+            <img
+              [src]="blog.image || blog.image_url || 'assets/images/placeholder.jpg'"
+              alt="{{ blog.title }}"
+            />
+            <div class="heading-design"></div>
+          </div>
+
+          <!-- Post Metadata -->
+          <div class="post-meta">
+            <div class="meta-item">
+              <span class="meta-icon">📅</span>
+              <span class="meta-text">{{ blog.date | date: 'MMM dd, yyyy' }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-icon">✍️</span>
+              <span class="meta-text">{{ blog.author || 'Astroaura' }}</span>
+            </div>
+          </div>
+
+          <!-- Post Title -->
+          <h1 class="post-title">{{ blog.title }}</h1>
+
+          <!-- Post Content -->
+          <div class="post-content">
+            <p>
+              {{
+                blog.description ||
+                  blog.content ||
+                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+              }}
+            </p>
+          </div>
+
+          <!-- Post Footer -->
+          <div class="post-footer">
+            <div class="post-category" *ngIf="blog.category">
+              <span class="category-tag">{{ blog.category }}</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- RELATED POSTS -->
+        <div class="related-posts" *ngIf="relatedBlogs.length > 0">
+          <h2>Related Posts</h2>
+          <div class="related-posts-grid">
+            <div class="related-post-card" *ngFor="let post of relatedBlogs">
+              <img
+                [src]="post.image || post.image_url || 'assets/images/placeholder.jpg'"
+                alt="{{ post.title }}"
+              />
+              <h4>{{ post.title }}</h4>
+              <p class="date">{{ post.date | date: 'MMM dd, yyyy' }}</p>
+              <a (click)="goToBlog(post)" class="read-link">Read More →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDEBAR -->
+      <aside class="sidebar">
+        <!-- SEARCH WIDGET -->
+        <div class="sidebar-widget search-widget">
+          <div class="search-box">
+            <input
+              type="text"
+              [(ngModel)]="searchTerm"
+              (keyup)="searchBlogs()"
+              placeholder="Search blogs..."
+              class="search-input"
+            />
+            <span class="search-icon">🔍</span>
+          </div>
+        </div>
+
+        <!-- CATEGORIES WIDGET -->
+        <div class="sidebar-widget categories-widget">
+          <div class="widget-header">
+            <span class="widget-icon">🏷️</span>
+            <h4>Categories</h4>
+            <div class="header-underline"></div>
+          </div>
+          <ul class="category-list">
+            <li (click)="filterByCategory(cat)" *ngFor="let cat of categories" class="category-item">
+              <a href="javascript:void(0)">{{ cat }}</a>
+              <span class="category-count">({{ getCategoryCount(cat) }})</span>
+            </li>
+            <li class="category-item">
+              <a href="javascript:void(0)" class="active">View All</a>
+              <span class="category-count">({{ allBlogs.length }})</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- RECENT POSTS WIDGET -->
+        <div class="sidebar-widget recent-widget">
+          <div class="widget-header">
+            <span class="widget-icon">📰</span>
+            <h4>Recent Posts</h4>
+            <div class="header-underline"></div>
+          </div>
+          <div class="recent-posts">
+            <div class="recent-post-item" *ngFor="let post of allBlogs.slice(0, 5)" (click)="goToBlog(post)">
+              <div class="recent-post-image">
+                <img [src]="post.image || post.image_url || 'assets/images/placeholder.jpg'" alt="{{ post.title }}" />
+              </div>
+              <div class="recent-post-content">
+                <h5>{{ post.title }}</h5>
+                <span class="recent-date">{{ post.date | date: 'MMM dd, yyyy' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEWSLETTER WIDGET -->
+        <div class="sidebar-widget newsletter-widget">
+          <div class="widget-header">
+            <h4>Newsletter</h4>
+            <div class="header-underline"></div>
+          </div>
+          <p class="newsletter-text">Subscribe to get latest astrology tips and updates</p>
+          <form (ngSubmit)="subscribeNewsletter()" class="newsletter-form">
+            <input
+              type="email"
+              [(ngModel)]="newsletter.email"
+              name="email"
+              placeholder="Enter your email"
+              required
+              class="newsletter-input"
+            />
+            <button type="submit" class="newsletter-btn">Subscribe</button>
+          </form>
+          <p class="disclaimer">We don't spam. Unsubscribe anytime.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,137 @@
+.blog-section {
+  padding: 30px 15px;
+  background: #f7f7f7;
+  text-align: center;
+}
+
+/* TITLE */
+.title {
+  font-size: 26px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+/* GOLD DIVIDER */
+.divider {
+  width: 100px;
+  height: 3px;
+  margin: 0 auto 25px;
+  background: linear-gradient(to right, #d4af37, transparent);
+  border-radius: 5px;
+}
+
+/* CARD */
+.blog-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e6d8a3;
+  overflow: visible;
+  text-align: left;
+  position: relative;
+  padding-bottom: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* HOVER EFFECT */
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* IMAGE */
+.img-box img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+/* META */
+.meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  padding: 8px 10px;
+  color: #888;
+  border-bottom: 1px solid #eee;
+}
+
+/* TITLE TEXT */
+.blog-card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px;
+  line-height: 1.4;
+
+  /* 2 line clamp */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  // overflow: hidden;
+}
+
+/* ARROW BUTTON */
+.arrow {
+  position: absolute;
+  bottom: -22px;
+  /* push outside */
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 48px;
+  height: 48px;
+
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  z-index: 5;
+}
+
+/* ICON STYLE */
+.arrow ion-icon {
+  font-size: 22px;
+  color: #000;
+}
+
+/* BUTTON */
+.view-btn {
+  margin-top: 40px;
+}
+
+.view-btn button {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 25px;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.3s;
+}
+
+.view-btn button:hover {
+  background: #d4af37;
+  color: #000;
+}
+
+swiper-container {
+  padding-bottom: 30px;
+}
+
+.arrow:hover {
+  background: #d4af37;
+  border-color: #d4af37;
+}
+
+.arrow:hover ion-icon {
+  color: #000;
+}

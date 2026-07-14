@@ -1,24 +1,178 @@
-
-
-
 <ion-app>
 
-  <ion-menu contentId="main-content" swipeGesture="true">
-    <ion-header>
-      <ion-toolbar color="primary">
-        <ion-title>Menu</ion-title>
-      </ion-toolbar>
-    </ion-header>
+  <ion-menu contentId="main-content" menuId="first" swipeGesture="true" class="side-menu">
 
-    <ion-content>
-      <ion-list>
-        <ion-item routerLink="/home">Home</ion-item>
-        <ion-item routerLink="/profile">Profile</ion-item>
-        <ion-item routerLink="/settings">Settings</ion-item>
-      </ion-list>
+    <!-- ============ LOGGED IN : PROFILE ============ -->
+    <ion-content *ngIf="isLoggedIn" class="profile-menu">
+
+      <div class="profile-hero">
+        <button class="hero-back" (click)="closeMenu()">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </button>
+        <span class="hero-title">Profile</span>
+      </div>
+
+      <div class="profile-info">
+        <div class="avatar-ring">
+          <img [src]="profileImageUrl()" />
+        </div>
+        <h3 class="user-name">{{ user?.name || 'User' }}</h3>
+        <p class="user-phone" *ngIf="user?.phone_number">+91 {{ user?.phone_number }}</p>
+      </div>
+
+      <div class="menu-list">
+
+        <div class="menu-row" (click)="navigate('/home')">
+          <span class="row-left"><ion-icon name="home-outline"></ion-icon> Home</span>
+          <ion-icon name="arrow-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-row" (click)="navigate('/user/dashboard')">
+          <span class="row-left"><ion-icon name="person-outline"></ion-icon> Edit Profile</span>
+          <ion-icon name="arrow-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-row" (click)="navigate('/wallet')">
+          <span class="row-left"><ion-icon name="wallet-outline"></ion-icon> Wallet</span>
+          <ion-icon name="arrow-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-row" (click)="navigate('/chat-history')">
+          <span class="row-left"><ion-icon name="time-outline"></ion-icon> Chat History</span>
+          <ion-icon name="arrow-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-row" (click)="navigateAuth('/kundli')">
+          <span class="row-left"><ion-icon name="sparkles-outline"></ion-icon> Free Kundli</span>
+          <ion-icon name="arrow-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-row" (click)="navigateAuth('/kundli-matching')">
+          <span class="row-left"><ion-icon name="heart-outline"></ion-icon> Kundli Matching</span>
+          <ion-icon name="arrow-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-row" (click)="comingSoon('App Language')">
+          <span class="row-left"><ion-icon name="language-outline"></ion-icon> App Language</span>
+          <ion-icon name="arrow-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-row" (click)="comingSoon('Total Following')">
+          <span class="row-left"><ion-icon name="people-outline"></ion-icon> Total Following</span>
+          <ion-icon name="arrow-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-row" (click)="openExternal('terms-and-conditions')">
+          <span class="row-left"><ion-icon name="document-text-outline"></ion-icon> Terms of Use</span>
+          <ion-icon name="arrow-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-row" (click)="openExternal('refund-and-cancellation-policy')">
+          <span class="row-left"><ion-icon name="sync-circle-outline"></ion-icon> Refund &amp; Cancellation Policy</span>
+          <ion-icon name="arrow-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-row" (click)="openExternal('privacy-policy')">
+          <span class="row-left"><ion-icon name="shield-checkmark-outline"></ion-icon> Privacy Policy</span>
+          <ion-icon name="arrow-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-row danger" (click)="logout()">
+          <span class="row-left"><ion-icon name="log-out-outline"></ion-icon> Logout</span>
+        </div>
+
+        <div class="menu-row danger" (click)="deleteAccount()">
+          <span class="row-left"><ion-icon name="trash-outline"></ion-icon> Delete my account</span>
+        </div>
+
+      </div>
+
     </ion-content>
+
+    <!-- ============ LOGGED OUT : MY ACCOUNT ============ -->
+    <ion-content *ngIf="!isLoggedIn" class="account-menu">
+
+      <div class="account-head">
+        <h2>My Account</h2>
+        <ion-icon name="close" (click)="closeMenu()"></ion-icon>
+      </div>
+
+      <div class="welcome-card">
+        <div class="welcome-top">
+          <div class="welcome-avatar"><ion-icon name="person"></ion-icon></div>
+          <div class="welcome-text">
+            <h3>Hey there!</h3>
+            <p>Welcome to Astroaura</p>
+          </div>
+        </div>
+        <button class="login-btn" (click)="navigate('/login')">Log in/Sign up</button>
+      </div>
+
+      <div class="account-list">
+
+        <div class="account-row" (click)="comingSoon('Notifications')">
+          <span class="row-left"><ion-icon name="notifications-outline"></ion-icon> Notifications <span class="red-dot"></span></span>
+          <ion-icon name="chevron-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="account-row" (click)="comingSoon('Settings')">
+          <span class="row-left"><ion-icon name="settings-outline"></ion-icon> Settings</span>
+          <ion-icon name="chevron-down" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="account-row" (click)="navigateAuth('/kundli')">
+          <span class="row-left"><ion-icon name="sparkles-outline"></ion-icon> Free Kundli</span>
+          <ion-icon name="chevron-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="account-row" (click)="navigateAuth('/kundli-matching')">
+          <span class="row-left"><ion-icon name="heart-outline"></ion-icon> Kundli Matching</span>
+          <ion-icon name="chevron-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="account-row" (click)="comingSoon('Register as an Astrologer')">
+          <span class="row-left"><ion-icon name="person-add-outline"></ion-icon> Register as an Astrologer</span>
+          <ion-icon name="chevron-forward" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="account-row" (click)="openExternal('contact-us')">
+          <span class="row-left"><ion-icon name="help-buoy-outline"></ion-icon> Help &amp; Support</span>
+          <ion-icon name="chevron-down" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="account-row" (click)="openExternal('about-us')">
+          <span class="row-left"><ion-icon name="information-circle-outline"></ion-icon> About Astroaura</span>
+          <ion-icon name="chevron-down" class="row-arrow"></ion-icon>
+        </div>
+
+        <div class="account-row" (click)="rateUs()">
+          <span class="row-left"><ion-icon name="star-outline"></ion-icon> Rate Us</span>
+          <ion-icon name="chevron-forward" class="row-arrow"></ion-icon>
+        </div>
+
+      </div>
+
+      <div class="share-card" (click)="share()">
+        <ion-icon name="people-circle-outline" class="share-illus"></ion-icon>
+        <div class="share-text"><strong>Share with</strong><br>Friends &amp; Family</div>
+        <ion-icon name="share-social-outline" class="share-arrow"></ion-icon>
+      </div>
+
+      <div class="social-card">
+        <p>Also available on</p>
+        <div class="social-icons">
+          <ion-icon name="logo-facebook" class="fb" (click)="openUrl('https://facebook.com')"></ion-icon>
+          <ion-icon name="logo-instagram" class="ig" (click)="openUrl('https://instagram.com')"></ion-icon>
+          <ion-icon name="logo-linkedin" class="li" (click)="openUrl('https://linkedin.com')"></ion-icon>
+          <ion-icon name="logo-youtube" class="yt" (click)="openUrl('https://youtube.com')"></ion-icon>
+        </div>
+      </div>
+
+    </ion-content>
+
   </ion-menu>
 
+  <app-header *ngIf="showHeader"></app-header>
   <ion-router-outlet id="main-content"></ion-router-outlet>
 
 </ion-app>

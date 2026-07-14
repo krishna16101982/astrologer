@@ -1,0 +1,216 @@
+.horoscope-page {
+  background: #f7f7f7;
+  padding: 20px;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 20px;
+
+  h1 {
+    font-size: 32px;
+    font-weight: 600;
+  }
+}
+
+/* Fits as many signs per row as the viewport allows. A fixed 6-column grid overflowed on
+   phones: 6 x 70px icons plus gaps needs ~640px, so a third of the signs were pushed off the
+   edge with nothing to scroll to. */
+.zodiac-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.zodiac-card {
+  text-align: center;
+  padding: 12px 6px;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  border: 2px solid transparent;
+
+  img {
+    width: 100%;
+    max-width: 70px;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+  }
+
+  p {
+    margin: 6px 0 0;
+    font-size: 13px;
+  }
+
+  &.active {
+    background: linear-gradient(135deg, #6a5acd, #9370db);
+    color: #fff;
+  }
+}
+
+.sign-title {
+  text-align: center;
+  margin-bottom: 20px;
+
+  .badges {
+    margin-top: 10px;
+
+    .badge {
+      padding: 5px 10px;
+      border-radius: 6px;
+      margin: 3px;
+      font-size: 12px;
+    }
+
+    .blue { background: #007bff; color: #fff; }
+    .red { background: #dc3545; color: #fff; }
+    .green { background: #28a745; color: #fff; }
+    .yellow { background: #ffc107; }
+  }
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 0;
+  background: #fff;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid #eef1f4;
+  border-bottom: none;
+  padding: 8px;
+
+  span {
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #5a6a73;
+  }
+
+  .active {
+    background: #eef4fd;
+    color: #1f6fd0;
+    font-weight: 700;
+  }
+}
+
+.description {
+  background: #fff;
+  border: 1px solid #eef1f4;
+  border-top: none;
+  padding: 18px;
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #3d4a52;
+  text-align: left;
+
+  &.error { color: #c0392b; }
+
+  ion-spinner { vertical-align: middle; margin-right: 8px; }
+}
+
+.insights {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+
+  .card {
+    padding: 18px;
+    border-radius: 10px;
+
+    h4 { margin: 0 0 8px; font-size: 13px; }
+    p { margin: 0; font-size: 12px; line-height: 1.6; color: #3d4a52; }
+  }
+
+  .blue { background: #dceafa; }
+  .orange { background: #fbe6cf; }
+  .purple { background: #ecd9f7; }
+}
+
+/* Aspects are derived from the planets' real longitudes; tone follows classical reading. */
+.aspects-panel {
+  margin: 20px 0;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #eef1f4;
+}
+
+.panel-header {
+  background: linear-gradient(90deg, #8e7cf0, #b58ff5);
+  color: #fff;
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.aspects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px 20px;
+  padding: 14px;
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    color: #3d4a52;
+  }
+
+  .harmonious { color: #1e9e57; font-weight: 600; margin: 0 6px; }
+  .tense { color: #d63b4e; font-weight: 600; margin: 0 6px; }
+  .neutral { color: #d98b1f; font-weight: 600; margin: 0 6px; }
+}
+
+.table {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #eef1f4;
+
+  .table-header {
+    background: linear-gradient(90deg, #2fb6d8, #6ee0c8);
+    color: #fff;
+    padding: 10px 14px;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  /* Wide table scrolls inside its own container rather than the page body. */
+  .table-scroll { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+
+    th, td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #f0f3f5;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th { color: #24313a; font-weight: 700; }
+    .planet-name { color: #7b4bc9; font-weight: 700; }
+  }
+
+  .badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .badge.green { background: #1e9e57; }
+  .badge.yellow { background: #e8a92b; }
+}
+
+@media (max-width: 720px) {
+  .insights { grid-template-columns: 1fr; }
+  .aspects-grid { grid-template-columns: 1fr; }
+}

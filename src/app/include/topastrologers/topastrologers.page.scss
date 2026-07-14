@@ -1,34 +1,81 @@
-.topAstroBox{  background: #fff; border: 1px solid rgba(243, 218, 75, 1); border-radius: 10px; position: relative; padding: 15px 10px; }
-.topAstroBoxImg{ border-radius: 100%; text-align: center; }
-.topAstroBoxactive{
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    background: rgba(19, 239, 0, 1);
-    width: 10px;
-    height:10px;
-    border-radius: 100%;
+.topAstroBox {
+  background: #fff;
+  border: 1px solid rgba(243, 218, 75, 1);
+  border-radius: 10px;
+  position: relative;
+  padding: 15px 10px;
+}
+
+.topAstroBoxImg {
+  border-radius: 100%;
+  text-align: center;
+  border: 1px solid rgb(248, 219, 64);
+  width: 100px; height: 100px; overflow: hidden; margin: 0 auto;
 }
 
 
+/* ── Online / Offline indicator dot (top-left corner) ── */
+.topAstroBoxactive {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
 
-    .topAstroName{ font-size: 15px; font-weight: 700;}
-    .astroLang{ font-size: 9px; font-weight: 400;     padding: 4px 0;    line-height: 18px;}
-  
-    .totalExp{ font-size: 10px; font-weight: 400;     padding: 4px 0;    line-height: 18px;}
-    
-    .astroCallorChatbtn {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 5px;
+  &.online  { background: #13ef00; }
+  &.offline { background: #bbb; }
+}
+
+.topAstroName  { font-size: 13px; font-weight: 700; }
+.astroLang     { font-size: 10px;  font-weight: 400; padding: 4px 0; line-height: 10px;
+  height: 18px;}
+.totalExp      { font-size: 10px; font-weight: 400; padding: 4px 0; line-height: 10px;   height: 18px;}
+
+/* ── Chat / Call buttons ── */
+.astroCallorChatbtn {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5px;
+  margin-top: 14px;
+}
+
+a.astrochaybtn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  border-radius: 0 5px 0 5px;
+  padding: 5px 6px;
+  color: #000;
+  text-decoration: none;  background: rgba(251, 217, 26, 1); font-weight: 600;
+
+
+  img {  height: 17px; }
+
+  &.btn-online  { background: rgba(251, 217, 26, 1); }
+  &.btn-offline { background:  rgba(251, 217, 26, 1); color: #000; }
+}
+
+/* ── Small status dot inside each button ── */
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 2px;
+
+  &.dot-green { background: #13ef00; }
+  &.dot-grey  { background: #bbb; }
 }
    a.astrochaybtn {
     display: flex;
-    font-size: 11px;
+    font-size: 12px;
     background: rgba(251, 217, 26, 1);
     color: #000;
     border-radius: 0 5px 0 5px;
     padding: 2px 6px;
     justify-content: space-between;
+     font-weight: 600;
 }

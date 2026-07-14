@@ -1,0 +1,258 @@
+// NOTE: colours here are kept as plain hex/rgb on purpose. html2canvas (v1.x) cannot
+// parse modern colour functions such as oklch()/lab(), and throws while rasterising —
+// which silently produces a blank PDF.
+
+.match-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.result-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.secondary-btn {
+  color: #6e2b6e;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.download-btn {
+  background: #ffd54a;
+  border: none;
+  color: #111;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.download-btn[disabled] { opacity: 0.6; cursor: default; }
+
+.report {
+  background: #f7fbfd;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+/* ---- Banner + score ---- */
+
+.banner {
+  background: #f5c518;
+  color: #4a3600;
+  font-weight: 700;
+  font-size: 14px;
+  text-align: center;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #e6eef2;
+  border-top: none;
+  padding: 16px;
+  text-align: center;
+}
+
+.score-badge {
+  display: inline-block;
+  background: #1e9e57;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  padding: 8px 22px;
+  border-radius: 6px;
+}
+
+.total-meter {
+  margin-top: 14px;
+  height: 16px;
+  background: #e9eef1;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.total-fill {
+  height: 100%;
+  background: #1e9e57;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+}
+
+.total-label {
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.analysis {
+  margin-top: 14px;
+  background: #fdf6dd;
+  border: 1px solid #f2e3a8;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: #6b5a1e;
+  text-align: left;
+  line-height: 1.5;
+}
+
+.analysis .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d9a441;
+  margin-right: 8px;
+}
+
+/* ---- Info cards (birth details, mangal dosha) ---- */
+
+.two-col {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.info-card {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #e6eef2;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.info-head {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 12px;
+}
+
+.info-head.boy { background: #2f6fd0; }
+.info-head.girl { background: #d63b4e; }
+
+.info-body { padding: 12px; }
+.info-body.center { text-align: center; }
+
+.info-body .row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 0;
+  font-size: 12px;
+}
+
+.info-body .label { color: #24313a; font-weight: 700; }
+.info-body .value { color: #d98b1f; font-weight: 600; text-align: right; }
+
+.pill {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.pill.ok { background: #1e9e57; }
+.pill.bad { background: #d63b4e; }
+
+.note { font-size: 11px; color: #5a6a73; margin-top: 8px; line-height: 1.5; }
+
+/* ---- Section bars ---- */
+
+.section-bar {
+  margin-top: 12px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 4px 4px 0 0;
+}
+
+.section-bar.guna { background: #6c63c7; }
+.section-bar.notes { background: #17b4d8; }
+
+/* ---- Koota tiles ---- */
+
+.koota-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #e6eef2;
+  border-top: none;
+  padding: 14px;
+}
+
+.koota-tile {
+  border: 1px solid #eef2f4;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.koota-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.koota-meter {
+  flex: 1;
+  height: 4px;
+  background: #eef2f4;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.koota-fill { height: 100%; }
+.koota-fill.full { background: #1e9e57; }
+.koota-fill.partial { background: #e8a92b; }
+.koota-fill.zero { background: #d63b4e; }
+
+.koota-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  padding: 2px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.koota-badge.full { background: #1e9e57; }
+.koota-badge.partial { background: #e8a92b; }
+.koota-badge.zero { background: #d63b4e; }
+
+.koota-name { font-size: 13px; font-weight: 700; color: #24313a; margin-top: 8px; }
+.koota-pair { font-size: 11px; color: #7b8a93; margin-top: 3px; }
+.koota-desc { font-size: 11px; color: #5a6a73; margin-top: 5px; line-height: 1.45; }
+
+/* ---- Notes ---- */
+
+.notes-body {
+  background: #fff;
+  border: 1px solid #e6eef2;
+  border-top: none;
+  padding: 12px;
+}
+
+.note-item { font-size: 12px; color: #44535c; line-height: 1.6; }
+.note-item.muted { color: #7b8a93; }
+
+.privacy-note { font-size: 12px; color: #777; text-align: center; margin-top: 16px; }
+
+@media (max-width: 720px) {
+  .two-col { flex-direction: column; }
+  .koota-grid { grid-template-columns: 1fr; }
+}

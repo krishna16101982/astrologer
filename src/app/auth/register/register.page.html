@@ -1,0 +1,125 @@
+<ion-content [fullscreen]="true">
+  <div class="logoContainer">
+    <div class="backbtn"><a [routerLink]="['/login']">← Back</a></div>
+    <div class="logo"><img src="../../../assets/images/logo.png"></div>
+   
+
+    <div class="logoFooter">
+      <div class="boxDesign1">Join Astroaura Community</div>
+
+      <form #registerForm="ngForm" (ngSubmit)="submitRegistration(registerForm)">
+
+        <!-- Full Name -->
+        <ion-item lines="none" class="phone-item">
+          <ion-input
+            type="text"
+            placeholder="Full Name"
+            name="name"
+            [(ngModel)]="registrationData.name"
+            required
+            minlength="2"
+            #nameField="ngModel"
+            (ionInput)="registrationData.name = ionVal($event)">
+          </ion-input>
+        </ion-item>
+        <div class="error-msg" *ngIf="nameField.invalid && nameField.touched">
+          <span *ngIf="nameField.errors?.['required']">Full name is required.</span>
+          <span *ngIf="nameField.errors?.['minlength']">Name must be at least 2 characters.</span>
+        </div>
+
+        <!-- Email -->
+        <ion-item lines="none" class="phone-item">
+          <ion-input
+            type="email"
+            placeholder="Email Address"
+            name="email"
+            [(ngModel)]="registrationData.email"
+            required
+            email
+            #emailField="ngModel"
+            (ionInput)="registrationData.email = ionVal($event)">
+          </ion-input>
+        </ion-item>
+        <div class="error-msg" *ngIf="emailField.invalid && emailField.touched">
+          <span *ngIf="emailField.errors?.['required']">Email address is required.</span>
+          <span *ngIf="emailField.errors?.['email']">Please enter a valid email address.</span>
+        </div>
+
+        <!-- Phone -->
+        <ion-item lines="none" class="phone-item">
+          <ion-input
+            type="tel"
+            placeholder="10-digit Phone Number"
+            name="phone"
+            [(ngModel)]="registrationData.phone"
+            required
+            minlength="10"
+            maxlength="10"
+            pattern="[0-9]{10}"
+            #phoneField="ngModel"
+            (ionInput)="onPhoneInput($event)">
+          </ion-input>
+        </ion-item>
+        <div class="error-msg" *ngIf="phoneField.invalid && phoneField.touched">
+          <span *ngIf="phoneField.errors?.['required']">Phone number is required.</span>
+          <span *ngIf="!phoneField.errors?.['required'] && (phoneField.errors?.['minlength'] || phoneField.errors?.['pattern'])">
+            Phone number must be exactly 10 digits.
+          </span>
+        </div>
+
+        <!-- Password -->
+        <ion-item lines="none" class="phone-item">
+          <ion-input
+            type="password"
+            placeholder="Password (min. 6 characters)"
+            name="password"
+            [(ngModel)]="registrationData.password"
+            required
+            minlength="6"
+            #passwordField="ngModel"
+            (ionInput)="registrationData.password = ionVal($event)">
+          </ion-input>
+        </ion-item>
+        <div class="error-msg" *ngIf="passwordField.invalid && passwordField.touched">
+          <span *ngIf="passwordField.errors?.['required']">Password is required.</span>
+          <span *ngIf="passwordField.errors?.['minlength']">Password must be at least 6 characters.</span>
+        </div>
+
+        <!-- Confirm Password -->
+        <ion-item lines="none" class="phone-item">
+          <ion-input
+            type="password"
+            placeholder="Confirm Password"
+            name="confirmPassword"
+            [(ngModel)]="registrationData.confirmPassword"
+            required
+            #confirmPasswordField="ngModel"
+            (ionInput)="registrationData.confirmPassword = ionVal($event)">
+          </ion-input>
+        </ion-item>
+        <div class="error-msg" *ngIf="confirmPasswordField.touched">
+          <span *ngIf="confirmPasswordField.errors?.['required']">Please confirm your password.</span>
+          <span *ngIf="!confirmPasswordField.errors?.['required'] && registrationData.confirmPassword && registrationData.password !== registrationData.confirmPassword">
+            Passwords do not match.
+          </span>
+        </div>
+
+        <ion-button expand="block" class="custom-btn" type="submit">
+          Create Account
+        </ion-button>
+      </form>
+
+      <p class="terms-text">
+        By signing up, you agree to our
+        <a [routerLink]="['/home']">Terms of Use</a>
+        and
+        <a [routerLink]="['/home']">Privacy Policy</a>.
+      </p>
+
+      <div class="login-link-container">
+        <span>Already have an account?</span>
+        <a [routerLink]="['/login']" class="login-link">Login here</a>
+      </div>
+    </div>
+  </div>
+</ion-content>

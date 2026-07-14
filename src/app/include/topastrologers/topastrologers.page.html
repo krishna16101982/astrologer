@@ -1,120 +1,77 @@
 <div class="p15">
   <div class="hesdingWithBtn">
     <div class="leftAlignTitle">Top Astrologers</div>
-    <a href="#" class="viewAll">View All</a>
+    <a class="viewAll" routerLink="/all-astrologers">View All</a>
   </div>
   <div id="container">
-    <swiper-container slides-per-view="2.5" space-between="15" loop="true" pagination="false" autoplay-delay="99000"
-      loop="true" space-between="15" breakpoints='{
-    "320":  { "slidesPerView": 2.3 },
-    "640":  { "slidesPerView": 2.2 },
-    "1024": { "slidesPerView": 2.5 }
-  }'>
+    <swiper-container slides-per-view="2.5" space-between="15" pagination="false" autoplay-delay="99000"
+      space-between="15" breakpoints='{
+        "320":  { "slidesPerView": 2.3 },
+        "640":  { "slidesPerView": 2.2 },
+        "1024": { "slidesPerView": 2.5 }
+      }'>
 
       <swiper-slide *ngFor="let astro of topAstrologers">
-        <div class="topAstroBox" [routerLink]="['/astroprofile/'+astro.id]">
-          <span class="topAstroBoxactive"></span>
+        <div class="topAstroBox" [routerLink]="['/astroprofile', astro.id]">
 
-          <div class="topAstroBoxImg" [routerLink]="['/astroprofile/'+astro.id]"><img [src]="astro.profile_image_url"
-              style="height: 60px;"></div>
+          <!-- Top-left dot: green = at least one service online, grey = offline -->
+          <span class="topAstroBoxactive"
+            [class.online]="astro.is_chat_online || astro.is_call_online"
+            [class.offline]="!astro.is_chat_online && !astro.is_call_online">
+          </span>
+
+          <div class="topAstroBoxImg">
+            <img [src]="astro.profile_image_url" >
+          </div>
+
           <div class="astroDetails">
-            <div class="topAstroName">{{astro.display_name}}</div>
+            <div class="topAstroName">{{ astro.display_name }}</div>
 
-            <span class="astroLang" *ngFor="let languages of astro.languages">
-              <span>{{languages.name}}, </span>
-            </span>
+            <div class="astroLang">
+              <span *ngFor="let lang of astro.languages; let last = last">
+                 <span>{{ lang.name }}</span> <span *ngIf="!last">, </span>
+              </span>
+            </div>
 
-            <div class="totalExp">Exp. : <strong>{{astro.experience_years}}</strong></div>
+            <div class="totalExp">Exp. : <strong>{{ astro.experience_years }} Yrs</strong></div>
+
             <div class="astroCallorChatbtn">
-              <a class="astrochaybtn" href="#"><img src="../../../assets/images/chat 1.png"> {{astro.chat_price | number:'1.0-0'}}/Min</a>
-              <a class="astrochaybtn" href="#"><img src="../../../assets/images/call.png"> {{astro.call_price | number:'1.0-0'}}/Min
+
+              <!-- CHAT BUTTON -->
+              <a class="astrochaybtn"
+                [class.btn-online]="astro.is_chat_online"
+                [class.btn-offline]="!astro.is_chat_online"
+                (click)="openChat($event, astro)">
+                <img src="../../../assets/images/chat-footer.png">
+                <span>{{ astro.chat_price | number:'1.0-0' }}/Min</span>
+                <!-- <span class="status-dot"
+                  [class.dot-green]="astro.is_chat_online"
+                  [class.dot-grey]="!astro.is_chat_online">
+                </span> -->
               </a>
-            </div>
 
+              <!-- CALL BUTTON -->
+              <a class="astrochaybtn"
+                [class.btn-online]="astro.is_call_online"
+                [class.btn-offline]="!astro.is_call_online"
+                (click)="openCall($event, astro)">
+                <img src="../../../assets/images/call-footer.png">
+                <span>{{ astro.call_price | number:'1.0-0' }}/Min</span>
+                <!-- <span class="status-dot"
+                  [class.dot-green]="astro.is_call_online"
+                  [class.dot-grey]="!astro.is_call_online">
+                </span> -->
+              </a>
+
+            </div>
           </div>
         </div>
       </swiper-slide>
-
-
-
-
-      <!-- <swiper-slide>
-        <div class="topAstroBox">
-          <span class="topAstroBoxactive"></span>
-
-          <div class="topAstroBoxImg" [routerLink]="['/astroprofile']"><img src="../../../assets/images/topAstroimg.png"></div>
-          <div class="astroDetails">
-            <div class="topAstroName">Acharya Aarshi</div>
-
-            <div class="astroLang">English, Hindi, Bangla and Gujrati</div>
-
-            <div class="totalExp">Exp. : <strong>5 Yrs</strong></div>
-            <div class="astroCallorChatbtn">
-              <a class="astrochaybtn" href="#"><img src="../../../assets/images/chat 1.png"> 20/Min </a> <a
-                class="astrochaybtn" href="#"><img src="../../../assets/images/call.png"> 20/Min </a>
-            </div>
-
-          </div>
-        </div>
-      </swiper-slide>
-       <swiper-slide>
-        <div class="topAstroBox">
-          <span class="topAstroBoxactive"></span>
-
-          <div class="topAstroBoxImg"><img src="../../../assets/images/topAstroimg.png"></div>
-          <div class="astroDetails">
-            <div class="topAstroName">Acharya Aarshi</div>
-
-            <div class="astroLang">English, Hindi, Bangla and Gujrati</div>
-
-            <div class="totalExp">Exp. : <strong>5 Yrs</strong></div>
-            <div class="astroCallorChatbtn">
-              <a class="astrochaybtn" href="#"><img src="../../../assets/images/chat 1.png"> 20/Min </a> <a
-                class="astrochaybtn" href="#"><img src="../../../assets/images/call.png"> 20/Min </a>
-            </div>
-
-          </div>
-        </div>
-      </swiper-slide>
-       <swiper-slide>
-        <div class="topAstroBox">
-          <span class="topAstroBoxactive"></span>
-
-          <div class="topAstroBoxImg"><img src="../../../assets/images/topAstroimg.png"></div>
-          <div class="astroDetails">
-            <div class="topAstroName">Acharya Aarshi</div>
-
-            <div class="astroLang">English, Hindi, Bangla and Gujrati</div>
-
-            <div class="totalExp">Exp. : <strong>5 Yrs</strong></div>
-            <div class="astroCallorChatbtn">
-              <a class="astrochaybtn" href="#"><img src="../../../assets/images/chat 1.png"> 20/Min </a> <a
-                class="astrochaybtn" href="#"><img src="../../../assets/images/call.png"> 20/Min </a>
-            </div>
-
-          </div>
-        </div>
-      </swiper-slide>
-       <swiper-slide>
-        <div class="topAstroBox">
-          <span class="topAstroBoxactive"></span>
-
-          <div class="topAstroBoxImg"><img src="../../../assets/images/topAstroimg.png"></div>
-          <div class="astroDetails">
-            <div class="topAstroName">Acharya Aarshi</div>
-
-            <div class="astroLang">English, Hindi, Bangla and Gujrati</div>
-
-            <div class="totalExp">Exp. : <strong>5 Yrs</strong></div>
-            <div class="astroCallorChatbtn">
-              <a class="astrochaybtn" href="#"><img src="../../../assets/images/chat 1.png"> 20/Min </a> <a
-                class="astrochaybtn" href="#"><img src="../../../assets/images/call.png"> 20/Min </a>
-            </div>
-
-          </div>
-        </div>
-      </swiper-slide> -->
 
     </swiper-container>
   </div>
 </div>
+
+
+
+

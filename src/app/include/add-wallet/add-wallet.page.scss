@@ -1,0 +1,158 @@
+ion-content {
+    --background: #f6f7fb;
+}
+
+.wallet-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 30px 15px;
+}
+
+.wallet-card {
+    width: 100%;
+    max-width: 760px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.wallet-header {
+    background: #1565ff;
+    color: white;
+    font-size: 28px;
+    font-weight: 600;
+    padding: 18px 25px;
+}
+
+.balance-section {
+    text-align: center;
+    padding: 30px 20px 20px;
+}
+
+.balance-title {
+    font-size: 22px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.balance {
+    color: #118847;
+    font-size: 60px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.add-money-section {
+    padding: 25px;
+}
+
+.add-money-section h3 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+.add-money-box {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    max-width: 500px;
+    margin: auto;
+}
+
+.rupee-box {
+    background: #f3f3f3;
+    padding: 14px 18px;
+    border: 1px solid #ddd;
+    border-right: 0;
+    font-size: 22px;
+}
+
+ion-input {
+    border: 1px solid #ddd;
+    --padding-start: 12px;
+    min-height: 50px;
+}
+
+.add-btn {
+    margin: 0;
+    height: 50px;
+    --background: #138c4a;
+    --border-radius: 0;
+}
+
+.transaction-section {
+    padding: 25px;
+}
+
+.transaction-section h4 {
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th {
+    background: #f7f7f7;
+    padding: 14px;
+    text-align: left;
+    border: 1px solid #ddd;
+    font-size: 18px;
+}
+
+table td {
+    padding: 14px;
+    border: 1px solid #ddd;
+    font-size: 17px;
+}
+
+.type {
+    padding: 6px 12px;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.credit {
+    background: #1c9448;
+}
+
+.debit {
+    background: #e53935;
+}
+
+@media(max-width:768px) {
+
+    .balance {
+        font-size: 42px;
+    }
+
+    .add-money-box {
+        flex-direction: column;
+    }
+
+    .rupee-box {
+        width: 100%;
+        text-align: center;
+        border-right: 1px solid #ddd;
+    }
+
+    ion-input {
+        width: 100%;
+    }
+
+    .add-btn {
+        width: 100%;
+    }
+
+}

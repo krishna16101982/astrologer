@@ -1,0 +1,132 @@
+<ion-header>
+  <br /><br /><br /><br />
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Horoscope</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="horoscope-page">
+
+  <!-- HEADER -->
+  <div class="hero">
+    <h1>Today's Astrology Prediction</h1>
+  </div>
+
+  <!-- ZODIAC GRID -->
+  <div class="zodiac-grid">
+    <div 
+      class="zodiac-card"
+      *ngFor="let z of zodiacList"
+      [class.active]="selectedSign === z.slug"
+      (click)="selectSign(z.slug)"
+    >
+      <img [src]="z.icon" />
+      <p>{{ z.name }}</p>
+    </div>
+  </div>
+
+  <!-- TITLE -->
+  <div class="sign-title">
+    <h2>{{ selectedSign | titlecase }}</h2>
+    <p>{{ today | date:'EEEE, MMMM d, y' }}</p>
+
+    <div class="badges" *ngIf="traits.ruler">
+      <span class="badge blue">{{ traits.polarity }}</span>
+      <span class="badge red">{{ traits.element }}</span>
+      <span class="badge green">{{ traits.modality }}</span>
+      <span class="badge yellow">Ruled by {{ traits.ruler }}</span>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <span [class.active]="activeTab==='general'" (click)="changeTab('general')">★ General</span>
+    <span [class.active]="activeTab==='health'" (click)="changeTab('health')">♥ Health</span>
+    <span [class.active]="activeTab==='career'" (click)="changeTab('career')">💼 Career</span>
+    <span [class.active]="activeTab==='love'" (click)="changeTab('love')">❤ Love</span>
+  </div>
+
+  <!-- LOADING / ERROR -->
+  <div class="description" *ngIf="isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading today's prediction…</p>
+  </div>
+
+  <div class="description error" *ngIf="!isLoading && errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <ng-container *ngIf="!isLoading && !errorMessage && current as p">
+
+    <!-- DESCRIPTION -->
+    <div class="description">
+      {{ p.prediction }}
+    </div>
+
+    <!-- INSIGHT CARDS -->
+    <div class="insights">
+      <div class="card blue">
+        <h4>🔍 Seek</h4>
+        <p>{{ p.seek }}</p>
+      </div>
+
+      <div class="card orange">
+        <h4>⚠ Challenge</h4>
+        <p>{{ p.challenge }}</p>
+      </div>
+
+      <div class="card purple">
+        <h4>💡 Insight</h4>
+        <p>{{ p.insight }}</p>
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- PLANETARY ASPECTS (computed from the planets' real longitudes) -->
+  <div class="aspects-panel" *ngIf="aspects.length">
+    <div class="panel-header">✦ Planetary Aspects</div>
+    <div class="aspects-grid">
+      <p *ngFor="let a of aspects">
+        <b>{{ a.from }}</b>
+        <span [class]="a.tone">{{ a.type }}</span>
+        <b>{{ a.to }}</b>
+      </p>
+    </div>
+  </div>
+
+  <!-- PLANETARY TRANSITS TABLE -->
+  <div class="table" *ngIf="planetary.length">
+    <div class="table-header">🌐 Planetary Transits</div>
+
+    <div class="table-scroll">
+      <table>
+        <tr>
+          <th>Planet</th>
+          <th>Zodiac Sign</th>
+          <th>House</th>
+          <th>Status</th>
+        </tr>
+
+        <tr *ngFor="let p of planetary">
+          <td class="planet-name">{{ p.planet }}</td>
+          <td>{{ p.zodiac }}</td>
+          <td>{{ p.house }}</td>
+          <td>
+            <span [class]="p.status === 'Retrograde' ? 'badge yellow' : 'badge green'">
+              {{ p.status === 'Retrograde' ? '↺ Retrograde' : 'Direct' }}
+            </span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <app-footer></app-footer>
+</ion-footer>

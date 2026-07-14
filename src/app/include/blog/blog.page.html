@@ -1,0 +1,41 @@
+<div class="blog-section">
+  <!-- Title -->
+  <h2 class="title">Latest Astrology Blogs</h2>
+  <div class="divider"></div>
+  <!-- Slider -->
+  <div class="blog-wrapper">
+    <swiper-container slides-per-view="1.2" space-between="15" navigation="true"
+      breakpoints='{"768": { "slidesPerView": 2 }, "1024": { "slidesPerView": 4 }}'>
+      <swiper-slide *ngFor="let blog of relatedBlogs">
+        <div class="blog-card">
+          <!-- Image -->
+          <div class="img-box">
+            <img [src]="blog.image_url" />
+          </div>
+
+          <!-- Meta -->
+          <div class="meta">
+            <!-- <span>📅 {{ blog.date }}</span> -->
+            <span class="card-date">📅 {{ blog.created_at | date: 'MMM dd, yyyy' }}</span>
+            <span>⚙ Astroaura</span>
+          </div>
+
+          <!-- Title -->
+          <h3>{{ blog.title }}</h3>
+          <!-- Arrow -->
+          <div class="arrow" [routerLink]="['/blog-details', blog.slug]">
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+          </div>
+        </div>
+      </swiper-slide>
+    </swiper-container>
+  </div>
+
+  <!-- Button -->
+  <div class="view-btn">
+    <button routerLink="/blog-details">
+      VIEW ALL BLOGS
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </button>
+  </div>
+</div>
