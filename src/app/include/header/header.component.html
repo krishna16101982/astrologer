@@ -22,7 +22,7 @@
       <!-- PROFILE -->
       <ion-button fill="clear" class="profile-btn" (click)="navigateToProfile()">
         <ion-avatar class="profile-avatar">
-          <img [src]="profileImageUrl()" />
+          <img [src]="profileImageUrl()" (error)="onImageError($event)" />
         </ion-avatar>
       </ion-button>
 

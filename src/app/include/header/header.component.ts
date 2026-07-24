@@ -159,6 +159,12 @@ export class HeaderComponent
   // PROFILE IMAGE URL
   // =========================
 
+  // Fall back to the local placeholder when the remote avatar URL fails to load.
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/images/profileicon.png';
+  }
+
   profileImageUrl(): string {
 
     const u = this.user || {};

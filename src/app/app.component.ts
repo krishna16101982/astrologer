@@ -115,6 +115,12 @@ export class AppComponent {
   // =========================
   // USER PROFILE
   // =========================
+  // Fall back to the local placeholder when the remote avatar URL fails to load.
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/images/profileicon.png';
+  }
+
   profileImageUrl(): string {
     const u = this.user || {};
     const img = u.profile_image || u.profile_image_url || u.image || u.avatar || '';
@@ -131,6 +137,14 @@ export class AppComponent {
     this.apiService.getWalletDetails().subscribe({
       next: (res: any) => {
         this.user = res?.data?.user || res?.data || null;
+        // TEMP DEBUG: inspect what the profile API returns for the avatar image.
+        console.log('[PROFILE DEBUG] full response =', res);
+        console.log('[PROFILE DEBUG] user =', this.user);
+        console.log('[PROFILE DEBUG] profile_image =', this.user?.profile_image,
+          '| profile_image_url =', this.user?.profile_image_url,
+          '| image =', this.user?.image,
+          '| avatar =', this.user?.avatar);
+        console.log('[PROFILE DEBUG] resolved URL =', this.profileImageUrl());
       },
       error: () => { this.user = null; }
     });
@@ -144,10 +158,13 @@ export class AppComponent {
     this.router.navigateByUrl(path);
   }
 
+  // Routes that stay open without login (astrology tools that don't need an account).
+  private readonly publicPaths = ['/kundli', '/kundli-matching'];
+
   // Navigate to a route that requires login; prompt to log in if not authenticated.
   async navigateAuth(path: string) {
     await this.menuController.close();
-    if (this.isLoggedIn) {
+    if (this.isLoggedIn || this.publicPaths.includes(path)) {
       this.router.navigateByUrl(path);
       return;
     }
