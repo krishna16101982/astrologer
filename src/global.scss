@@ -169,3 +169,27 @@ ion-searchbar .searchbar-input-container input {
 }
 
 .astroDetails{ padding-top: 12px;}
+/* ── Global app-header offset ──────────────────────────────────────────────
+   <app-header> sits in normal flow at the top of ion-app, but ion-router-outlet
+   is absolutely positioned over the full viewport, so every routed page starts
+   underneath it. Pages that render their own ion-header must offset by its
+   height or their toolbar is hidden behind the logo/wallet bar.
+
+   Previously done with a stack of four <br /> tags per page. This is the same
+   spacing expressed once — adjust here if the app-header height changes. */
+:root {
+  --app-header-offset: 56px;
+}
+
+.has-app-header-offset {
+  padding-top: calc(var(--app-header-offset) + env(safe-area-inset-top));
+}
+
+/* ── Call summary alert ────────────────────────────────────────────────────
+   Ionic escapes HTML in alert messages unless innerHTMLTemplatesEnabled is
+   turned on globally, so a <br> in the message reached the customer as the
+   literal text "<br>". The summary is plain text with newlines instead, and
+   this makes those newlines render as line breaks — no raw HTML involved. */
+.call-summary-alert .alert-message {
+  white-space: pre-line;
+}

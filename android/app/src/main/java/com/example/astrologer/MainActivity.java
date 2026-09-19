@@ -12,6 +12,10 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
+        // Must be registered before super.onCreate, which is where the bridge is built
+        // and the plugin list is read.
+        registerPlugin(AudioRoutePlugin.class);
+
         super.onCreate(savedInstanceState);
 
         WebView webView = this.bridge.getWebView();

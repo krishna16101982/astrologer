@@ -26,9 +26,12 @@
     <div class="left-card">
 
       <div class="online-status-row">
-        <span class="status-badge" [class.badge-online]="astrologerDetails?.is_online" [class.badge-offline]="!astrologerDetails?.is_online">
+        <!-- Until the profile arrives the status is unknown, not offline. Asserting
+             'Offline' from absent data made an available astrologer flash as offline
+             on every load and on every 30s poll that had not yet returned. -->
+        <span class="status-badge" [class.badge-online]="astrologerDetails?.is_online" [class.badge-offline]="astrologerDetails && !astrologerDetails.is_online">
           <span class="status-dot-sm"></span>
-          {{ astrologerDetails?.is_online ? 'Online' : 'Offline' }}
+          {{ astrologerDetails ? (astrologerDetails.is_online ? 'Online' : 'Offline') : 'Checking…' }}
         </span>
       </div>
 
@@ -56,18 +59,18 @@
 
         <div class="service-row">
           <p>Voice Call <span>₹{{ astrologerDetails?.call_price }}/min</span></p>
-          <span class="service-status" [class.svc-online]="astrologerDetails?.is_call_online" [class.svc-offline]="!astrologerDetails?.is_call_online">
+          <span class="service-status" [class.svc-online]="astrologerDetails?.is_call_online" [class.svc-offline]="astrologerDetails && !astrologerDetails.is_call_online">
             <span class="status-dot-sm"></span>
-            {{ astrologerDetails?.is_call_online ? 'Available' : 'Unavailable' }}
+            {{ astrologerDetails ? (astrologerDetails.is_call_online ? 'Available' : 'Unavailable') : 'Checking…' }}
           </span>
         </div>
         <button class="call-btn" [class.btn-disabled]="!astrologerDetails?.is_call_online" (click)="startVoiceCall()">📞 Start Call Now</button>
 
         <div class="service-row">
           <p>Online Chat <span>₹{{ astrologerDetails?.chat_price }}/min</span></p>
-          <span class="service-status" [class.svc-online]="astrologerDetails?.is_chat_online" [class.svc-offline]="!astrologerDetails?.is_chat_online">
+          <span class="service-status" [class.svc-online]="astrologerDetails?.is_chat_online" [class.svc-offline]="astrologerDetails && !astrologerDetails.is_chat_online">
             <span class="status-dot-sm"></span>
-            {{ astrologerDetails?.is_chat_online ? 'Available' : 'Unavailable' }}
+            {{ astrologerDetails ? (astrologerDetails.is_chat_online ? 'Available' : 'Unavailable') : 'Checking…' }}
           </span>
         </div>
         <button class="chat-btn" [class.btn-disabled]="!astrologerDetails?.is_chat_online" (click)="startChat()">💬 Chat with Me</button>

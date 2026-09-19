@@ -80,8 +80,6 @@ export class HeaderComponent
 
   ngOnInit() {
 
-    this.checkAuthStatus();
-
     // =========================
     // LIVE WALLET UPDATE
     // =========================
@@ -99,6 +97,18 @@ export class HeaderComponent
         };
 
       });
+
+    // =========================
+    // REACT TO LOGIN / LOGOUT
+    // =========================
+    //
+    // authState$ is a BehaviorSubject, so this also performs the initial check.
+    // Without it the header only ever read the token once, in ngOnInit: after the
+    // session ended the balance stayed on screen, so a logged-out user was still
+    // shown the last known wallet amount next to a "Login Required" prompt.
+    this.authService
+      .authState$
+      .subscribe(() => this.checkAuthStatus());
 
   }
 
@@ -124,11 +134,10 @@ export class HeaderComponent
 
     } else {
 
-      this.walletBalance = 0;
-
-      this.walletDetails = {
-        wallet_balance: 0
-      };
+      // Push the reset through the service rather than only clearing the local
+      // fields — the walletBalance$ subscription would otherwise replay the last
+      // non-zero value straight back over them.
+      this.walletService.setBalance(0);
 
       this.user = null;
 
@@ -231,6 +240,19 @@ export class HeaderComponent
             'WALLET ERROR',
             err
           );
+
+          // A revoked or expired token clears the session server-side without the
+          // app ever calling logout(), so nothing else would zero the balance and
+          // the stale amount would keep showing.
+          if (err?.status === 401 || err?.status === 403) {
+
+            this.isLoggedIn = false;
+
+            this.user = null;
+
+            this.walletService.setBalance(0);
+
+          }
 
         }
 

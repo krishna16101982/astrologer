@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>{{ astrologerName || 'Voice Call' }}</ion-title>
-    <ion-buttons slot="end" *ngIf="isCallActive || callStatus === 'Connecting...'">
+    <ion-buttons slot="end" *ngIf="callStatus !== 'Call Ended' && callStatus !== 'Failed to connect'">
       <ion-button fill="solid" color="danger" (click)="hangUp()">End</ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -50,6 +50,14 @@
           {{ isMuted ? '🔇' : '🎤' }}
         </button>
         <span class="ctrl-label">{{ isMuted ? 'Unmute' : 'Mute' }}</span>
+      </div>
+
+      <!-- SPEAKER -->
+      <div class="ctrl-wrap">
+        <button class="ctrl-btn speaker-btn" [class.ctrl-active]="isSpeakerOn" (click)="toggleSpeaker()">
+          {{ isSpeakerOn ? '🔊' : '📞' }}
+        </button>
+        <span class="ctrl-label">{{ isSpeakerOn ? 'Speaker' : 'Earpiece' }}</span>
       </div>
 
       <!-- END -->

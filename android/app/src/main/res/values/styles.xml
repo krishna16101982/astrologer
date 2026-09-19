@@ -9,18 +9,30 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-<style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
-    <item name="windowActionBar">false</item>
-    <item name="windowNoTitle">true</item>
-    <item name="android:background">@null</item>
-    
-    <!-- Add these two lines -->
-    <item name="android:windowTranslucentStatus">false</item>
-    <item name="android:windowSoftInputMode">adjustResize</item>
-</style>
+    <!--
+        NOTE: MainActivity uses AppTheme.NoActionBarLaunch (below), not this style, so
+        anything added here has no effect at runtime. windowSoftInputMode previously
+        lived here and did nothing; it is declared on the <activity> in
+        AndroidManifest.xml, which is the authoritative place for it.
 
+        Keyboard resizing is handled by the Keyboard plugin's `resize: "ionic"` setting
+        in capacitor.config.ts — the app targets SDK 35, where enforced edge-to-edge
+        makes native adjustResize ineffective on its own.
+    -->
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:background">@null</item>
+    </style>
 
+    <!--
+        android:background drives the splash on Android 11 and below. From Android 12
+        the platform ignores it and builds the splash itself from the adaptive icon on
+        windowSplashScreenBackground, so that colour has to be set too — left at the
+        system default, the icon's white circle sat on a grey field with a visible edge.
+    -->
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
         <item name="android:background">@drawable/splash</item>
+        <item name="windowSplashScreenBackground">@color/splashScreenBackground</item>
     </style>
 </resources>

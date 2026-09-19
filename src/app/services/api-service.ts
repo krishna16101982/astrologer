@@ -100,7 +100,13 @@ export class ApiService {
 
     return new HttpHeaders({
       Authorization: `Bearer ${token || ''}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      // Without this, Laravel's auth middleware sees a non-JSON request and 302-redirects
+      // to the HTML /login page instead of returning 401 JSON. The WebView follows the
+      // redirect, Angular fails to parse the HTML, and the caller sees an opaque parse
+      // error rather than an auth error — which is how an expired token ends up looking
+      // like a silently stalled call.
+      Accept: 'application/json'
     });
   }
 
@@ -615,21 +621,27 @@ export class ApiService {
   getVoiceToken(): Observable<any> {
     const token = localStorage.getItem('accessToken');
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`,
+      Accept: 'application/json'
     });
 
     return this.http.get(`${this.baseUrl}/twilio/voice-token`, { headers });
   }
 
-  requestVoiceCall(astrologer_id: number, twilio_sid: string): Observable<any> {
+  /**
+   * Sends only astrologer_id — no twilio_sid.
+   *
+   * The app has no real Twilio SID at this point in the flow, and the placeholder it used to
+   * invent ('CALL_' + Date.now()) was being stored on the call_requests row and echoed back by
+   * call-status, never replaced by a genuine CA… SID. The backend fills the SID in itself once
+   * Twilio dials, so leaving the field out is what the working client does.
+   */
+  requestVoiceCall(astrologer_id: number): Observable<any> {
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+      'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+      Accept: 'application/json'
     });
-    const body = {
-      astrologer_id,
-      twilio_sid
-    };
-    return this.http.post(`${this.baseUrl}/consultations/request-call`, body, { headers });
+    return this.http.post(`${this.baseUrl}/consultations/request-call`, { astrologer_id }, { headers });
   }
 
 

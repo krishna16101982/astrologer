@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+        Matches the white disc of the generated adaptive icon, so the Android 12+
+        splash reads as one shape instead of a white circle on a grey field.
+    -->
+    <color name="splashScreenBackground">#FFFFFF</color>
+
+</resources>

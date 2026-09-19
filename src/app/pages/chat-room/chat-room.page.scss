@@ -1,5 +1,7 @@
 ion-header {
-  padding-top: env(safe-area-inset-top);
+  /* Top offset comes from .has-app-header-offset in global.scss, which already
+     includes env(safe-area-inset-top) — don't add it again here. */
+
   /* Let touches pass through the spacer area above the toolbar
      so the global app-header buttons remain clickable on Android */
   pointer-events: none;

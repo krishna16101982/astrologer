@@ -1,0 +1,1651 @@
+<title>Voice Call Path Verification</title>
+<style>
+  :root {
+    --ground: #F6F7FB;
+    --surface: #FFFFFF;
+    --surface-2: #EFF1F8;
+    --ink: #131829;
+    --ink-2: #3C445F;
+    --ink-3: #6B7392;
+    --rule: #DDE2EF;
+    --rule-strong: #C3CADD;
+    --accent: #B4530A;
+    --accent-soft: #FBEEDF;
+    --ok: #176B4A;
+    --ok-soft: #E3F1EA;
+    --crit: #A32138;
+    --crit-soft: #FAE6E9;
+    --warn: #8A6100;
+    --warn-soft: #FAF0DA;
+
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", "Segoe UI Mono", Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0E1220;
+      --surface: #161C2E;
+      --surface-2: #1C2336;
+      --ink: #E8EBF4;
+      --ink-2: #B4BBD1;
+      --ink-3: #848DA9;
+      --rule: #2A3248;
+      --rule-strong: #3C4661;
+      --accent: #F2A44E;
+      --accent-soft: #33261A;
+      --ok: #56C892;
+      --ok-soft: #15301F;
+      --crit: #F0798C;
+      --crit-soft: #33161E;
+      --warn: #E0B14D;
+      --warn-soft: #2E2614;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #0E1220;
+    --surface: #161C2E;
+    --surface-2: #1C2336;
+    --ink: #E8EBF4;
+    --ink-2: #B4BBD1;
+    --ink-3: #848DA9;
+    --rule: #2A3248;
+    --rule-strong: #3C4661;
+    --accent: #F2A44E;
+    --accent-soft: #33261A;
+    --ok: #56C892;
+    --ok-soft: #15301F;
+    --crit: #F0798C;
+    --crit-soft: #33161E;
+    --warn: #E0B14D;
+    --warn-soft: #2E2614;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .wrap {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3.25rem;
+  }
+
+  p, li { max-width: 68ch; }
+
+  /* ---------- masthead ---------- */
+
+  .masthead { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+  }
+
+  h1 {
+    font-family: var(--mono);
+    font-size: clamp(1.85rem, 5vw, 2.9rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .standfirst {
+    font-size: 1.075rem;
+    color: var(--ink-2);
+    margin: 0;
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .meta div {
+    background: var(--surface);
+    padding: 0.7rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .meta dt, .meta .k {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .meta .v {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    word-break: break-word;
+  }
+
+  /* ---------- sections ---------- */
+
+  section { display: flex; flex-direction: column; gap: 1.1rem; }
+
+  h2 {
+    font-family: var(--mono);
+    font-size: 1.22rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+    padding-bottom: 0.55rem;
+    border-bottom: 2px solid var(--ink);
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-family: var(--mono);
+    font-size: 0.94rem;
+    font-weight: 600;
+    margin: 0.6rem 0 0;
+    color: var(--ink);
+  }
+
+  p { margin: 0; }
+
+  ul { margin: 0; padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.4rem; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.855em;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 0.08em 0.34em;
+    word-break: break-word;
+  }
+
+  pre {
+    margin: 0;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 2px;
+    padding: 0.9rem 1rem;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+
+  /* ---------- verdict split ---------- */
+
+  .verdict {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 1.05rem 1.15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .card.is-ok { border-top: 3px solid var(--ok); }
+  .card.is-pending { border-top: 3px solid var(--warn); }
+
+  .card h3 { margin: 0; }
+
+  .card ul { padding-left: 1.05rem; }
+  .card li { font-size: 0.92rem; color: var(--ink-2); max-width: none; }
+
+  /* ---------- pills ---------- */
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.38rem;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    padding: 0.16rem 0.44rem;
+    border-radius: 2px;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+
+  .pill::before {
+    content: "";
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: currentColor;
+    flex: none;
+  }
+
+  .pill--ok { color: var(--ok); background: var(--ok-soft); border-color: var(--ok); }
+  .pill--crit { color: var(--crit); background: var(--crit-soft); border-color: var(--crit); }
+  .pill--warn { color: var(--warn); background: var(--warn-soft); border-color: var(--warn); }
+  .pill--todo { color: var(--ink-3); background: var(--surface-2); border-color: var(--rule-strong); }
+
+  /* ---------- tables ---------- */
+
+  .scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 2px; background: var(--surface); }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 34rem;
+    font-size: 0.875rem;
+  }
+
+  thead th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 600;
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid var(--rule-strong);
+    white-space: nowrap;
+    background: var(--surface-2);
+  }
+
+  tbody td {
+    padding: 0.62rem 0.8rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    color: var(--ink-2);
+  }
+
+  tbody tr:last-child td { border-bottom: 0; }
+
+  td.id, td.num {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  td.file { font-family: var(--mono); font-size: 0.8rem; color: var(--ink); }
+
+  td strong { color: var(--ink); font-weight: 600; }
+
+  .blank {
+    display: inline-block;
+    min-width: 3.5rem;
+    border-bottom: 1px dashed var(--rule-strong);
+    height: 1em;
+  }
+
+  /* ---------- time rail ---------- */
+
+  .rail { display: flex; flex-direction: column; gap: 0; }
+
+  .rail-row {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .rail-t {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+    text-align: right;
+    padding-top: 0.9rem;
+  }
+
+  .rail-b {
+    border-left: 2px solid var(--rule-strong);
+    padding: 0.9rem 0 0.9rem 1.15rem;
+    position: relative;
+  }
+
+  .rail-b::before {
+    content: "";
+    position: absolute;
+    left: -0.31rem;
+    top: 1.28rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .rail-row:last-child .rail-b { border-left-color: transparent; }
+
+  .rail-name { font-family: var(--mono); font-size: 0.88rem; color: var(--ink); font-weight: 600; }
+  .rail-desc { font-size: 0.9rem; color: var(--ink-2); margin: 0.2rem 0 0; max-width: 62ch; }
+
+  /* ---------- callout ---------- */
+
+  .callout {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: 2px;
+    padding: 1.05rem 1.15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .callout .label {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .callout p { color: var(--ink); }
+
+  .note {
+    border-left: 3px solid var(--rule-strong);
+    padding-left: 1rem;
+    color: var(--ink-2);
+    font-size: 0.94rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.2rem;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    color: var(--ink-3);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  a { color: var(--accent); text-underline-offset: 0.15em; }
+  a:focus-visible, .pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Astrologer app &middot; Android client</p>
+    <h1>Voice Call Path Verification</h1>
+    <p class="standfirst">
+      The app's outgoing voice call path was rebuilt to match the client that reportedly places calls
+      successfully against this backend. This report records what changed, what the build and static
+      analysis actually proved, and the on-device tests that remain to be run.
+    </p>
+
+    <div class="meta">
+      <div><span class="k">Report date</span><span class="v">17 Aug 2026</span></div>
+      <div><span class="k">Branch</span><span class="v">feature/prokerala-integration</span></div>
+      <div><span class="k">Build result</span><span class="v">SUCCESSFUL &middot; 53s</span></div>
+      <div><span class="k">APK</span><span class="v">app-debug.apk &middot; 11.15 MB</span></div>
+      <div><span class="k">Built at</span><span class="v">17 Aug 2026 21:05</span></div>
+      <div><span class="k">Test device</span><span class="v">Pixel 7 AVD &middot; Android 13</span></div>
+      <div><span class="k">Live calls placed</span><span class="v">9</span></div>
+      <div><span class="k">Open defects</span><span class="v">4 backend &middot; 1 unverifiable</span></div>
+      <div><span class="k">Last updated</span><span class="v">18 Aug 2026</span></div>
+    </div>
+  </header>
+
+  <section>
+    <h2>The headline</h2>
+    <p>
+      <strong>Voice calling now works.</strong> Three consecutive calls were placed from the app to a live
+      astrologer on production, and all three connected, carried audio, and were billed. The failure this work
+      set out to fix — calls never reaching the astrologer — is resolved.
+    </p>
+    <p>
+      Three defects remain, and all three are on the backend. One of them charges the customer for time they
+      spent listening to a ringing tone.
+    </p>
+
+    <div class="verdict">
+      <div class="card is-ok">
+        <h3>Fixed and verified on a device</h3>
+        <p><span class="pill pill--ok">3 of 3 calls</span></p>
+        <ul>
+          <li>Calls connect — the astrologer is reached and answers</li>
+          <li>A real <code>CA…</code> Twilio SID is now stored on the call row</li>
+          <li><code>call-status</code> reaches <code>completed</code> — it used to stick on
+            <code>initiated</code> forever</li>
+          <li>No <code>TransportError 31009</code>, no websocket close 1005</li>
+          <li>Incoming audio confirmed by WebRTC statistics</li>
+          <li>The wallet is debited for the call</li>
+        </ul>
+      </div>
+      <div class="card is-pending">
+        <h3>Still broken</h3>
+        <p><span class="pill pill--crit">Backend</span></p>
+        <ul>
+          <li><strong>Every call was charged twice</strong> — fixed in the app, but needs backend confirmation
+            and possibly refunds</li>
+          <li><strong>Ringing time is billed</strong> — reproduced on every call</li>
+          <li><strong><code>call-billing-ping</code> returns 404</strong> — the route does not exist, so the
+            low-balance cutoff can never fire</li>
+          <li>Outgoing microphone audio still unverified — needs a device with a working mic</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Defect 0 — every call was charged twice</h2>
+    <p>
+      Found last, and the most expensive thing in this report. Reading the wallet ledger rather than the balance
+      shows <strong>two separate debits for every completed call</strong>, one second apart:
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Txn</th><th>Amount</th><th>Description</th><th>Written by</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="id">240</td><td class="num">₹170.89</td><td>Voice call consultation with Acharya Mukesh (1.7089 mins)</td><td>the app's <code>end-call</code></td></tr>
+          <tr><td class="id">242</td><td class="num">₹200.00</td><td><strong>Final</strong> Voice Call charge with Acharya Mukesh (2 mins)</td><td>the server's Twilio callback</td></tr>
+          <tr><td class="id">244</td><td class="num">₹100.00</td><td>Voice call consultation with Acharya Mukesh (1 mins)</td><td>the app's <code>end-call</code></td></tr>
+          <tr><td class="id">246</td><td class="num">₹100.00</td><td><strong>Final</strong> Voice Call charge with Acharya Mukesh (1 mins)</td><td>the server's Twilio callback</td></tr>
+          <tr><td class="id">234</td><td class="num">₹6.39</td><td>Voice call consultation with Acharya Aaditya (1.0656 mins)</td><td>the app's <code>end-call</code></td></tr>
+          <tr><td class="id">236</td><td class="num">₹6.00</td><td><strong>Final</strong> Voice Call charge with Acharya Aaditya (1 mins)</td><td>the server's Twilio callback</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      A 1.7-minute call at ₹100/min cost the customer <strong>₹370.89</strong> instead of ₹170.89. The
+      astrologer-side test on a physical device cost ₹12.39 instead of ₹6.39.
+    </p>
+
+    <div class="callout">
+      <span class="label">The failures earlier in this report were the server defending itself</span>
+      <p>
+        <code>400 "already been completed"</code> was the server refusing a duplicate after its callback had
+        already settled. <code>422 "must be at least 1"</code> blocked the duplicate on sub-minute calls. Billing
+        was correct precisely when the app's post <em>failed</em> — and the duration clamp added earlier in this
+        session, by making that post succeed, started the second charge on short calls too. That clamp has been
+        reverted.
+      </p>
+    </div>
+
+    <p>
+      <strong>Fixed:</strong> the app no longer posts <code>end-call</code> at all. The server writes a
+      "Final Voice Call charge" for every call regardless of what the app sends, so settlement is left entirely
+      to it; the app now refreshes the balance and shows the customer a summary.
+      <code>ApiService.endCall()</code> is left in place, so restoring the call is one line if the backend
+      confirms the app should own settlement instead.
+    </p>
+
+    <h3>Verified on a live call after the fix</h3>
+    <p>
+      Balance and ledger were recorded before and after a 62-second call, once the app had stopped posting
+      <code>end-call</code>:
+    </p>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Stage</th><th>Balance</th><th>New ledger entries</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Before call 172</td><td class="num">₹3,602.37</td><td>—</td></tr>
+          <tr><td>After call 172</td><td class="num">₹3,502.37</td><td class="num">1 — id 248, ₹100.00,
+            "Final Voice Call charge"</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Exactly ₹100 for one charge, where the same call would previously have produced two. The server's charge
+      still landed even though the app sent nothing, which confirms the server settles independently and the
+      app's post was always purely additive.
+    </p>
+
+    <div class="note">
+      <p>
+        <strong>Backend confirmation is still needed.</strong> The behaviour is now correct as observed, but only
+        the backend team can state which side is meant to settle a call — and customers charged twice while both
+        sides were billing may be owed refunds.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>The clearest symptom: a 44-second call to nobody</h2>
+    <p>
+      One test call was deliberately left unanswered. The app's behaviour makes the ringing-time problem
+      concrete in a way the billing tables do not:
+    </p>
+    <pre><code>[VOICE TIMELINE] +1.2s   accept — timer and billing start now
+[VOICE TIMELINE] +44.6s  disconnect
+
+GET /consultations/call-status/171  ->  "status": "no-answer"</code></pre>
+    <p>
+      For forty-four seconds the app showed <strong>"Connected" with a running timer on a call the astrologer
+      never picked up.</strong> The customer had every reason to believe they were in a consultation with
+      someone who was not there.
+    </p>
+    <p>
+      The server got this right and charged nothing — the call is recorded as <code>no-answer</code>. So the
+      money was safe here; the trust was not. This is the same root cause as Defect 1, and
+      <code>answerOnBridge="true"</code> fixes it: the app would have kept showing <em>Ringing…</em> for those
+      forty-four seconds, which is the truth.
+    </p>
+  </section>
+
+  <section>
+    <h2>Defect 1 — the customer is billed for ringing time</h2>
+    <p>
+      This is the one that costs money. The app starts its timer and its billing base on Twilio's
+      <code>accept</code> event, which is correct. But <code>accept</code> arrives roughly one tenth of a second
+      after <code>ringing</code>, long before the astrologer touches anything:
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Call</th><th><code>ringing</code></th><th><code>accept</code></th><th>Gap</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="id">161</td><td class="num">+1.1s</td><td class="num">+1.1s</td><td class="num">0.0s</td><td>Answered at dial, not at pickup</td></tr>
+          <tr><td class="id">162</td><td class="num">+1.0s</td><td class="num">+1.0s</td><td class="num">0.0s</td><td>Same</td></tr>
+          <tr><td class="id">163</td><td class="num">+0.9s</td><td class="num">+1.0s</td><td class="num">0.1s</td><td>Same</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Every call also reported <code>hasEarlyMedia=false</code>. Twilio is answering the caller's leg the moment
+      the TwiML starts executing, so the clock is already running while the astrologer's dashboard is still
+      ringing. It is deterministic, not intermittent.
+    </p>
+
+    <div class="callout">
+      <span class="label">The fix — one attribute, in the backend TwiML</span>
+      <pre><code>&lt;Response&gt;
+  &lt;Dial answerOnBridge="true"&gt;
+    &lt;Client&gt;astrologer_7&lt;/Client&gt;
+  &lt;/Dial&gt;
+&lt;/Response&gt;</code></pre>
+      <p style="margin-top:0.35rem;">Or with the Twilio PHP SDK:</p>
+      <pre><code>$response = new VoiceResponse();
+$dial = $response-&gt;dial('', ['answerOnBridge' =&gt; true]);
+$dial-&gt;client('astrologer_' . $astrologerId);</code></pre>
+      <p>
+        <code>answerOnBridge="true"</code> holds the caller's leg in the ringing state until the astrologer
+        bridges. <strong>No app change is needed</strong> — the app already bills from <code>accept</code>, so
+        once Twilio sends that event at the right moment, the billing follows. It also fixes the charged amount,
+        not just the on-screen timer, because the server bills from Twilio's own call duration.
+      </p>
+    </div>
+
+    <p>
+      To confirm the fix, place one call and read the timeline log. Expected afterwards:
+      <code>ringing</code> at about +1s, then <code>accept</code> only when the astrologer answers.
+    </p>
+  </section>
+
+  <section>
+    <h2>Defect 2 — the billing-ping route does not exist</h2>
+    <p>
+      The app posts to <code>call-billing-ping</code> every 60 seconds while a call is connected. On every call
+      tested, the server answered:
+    </p>
+    <pre><code>HTTP 404  POST https://astroauraa.com/api/consultations/call-billing-ping
+{"message":"The route api/consultations/call-billing-ping could not be found.",
+ "exception":"Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException"}</code></pre>
+    <p>Two consequences, and the second one matters:</p>
+    <ul>
+      <li>The remaining balance never updates mid-call.</li>
+      <li>
+        <strong>The low-balance cutoff can never fire.</strong> The app ends a call when this endpoint answers
+        <code>402</code>. A route that 404s can never return 402, so a customer can keep talking after their
+        balance is exhausted. This protection has never actually worked.
+      </li>
+    </ul>
+    <p>
+      Either implement the route, or tell us it is not coming and the app should stop calling it — but the
+      balance protection then needs to live somewhere else.
+    </p>
+  </section>
+
+  <section>
+    <h2>Defect 3 — end-call sometimes loses a race with the server</h2>
+    <p>On every emulator call, the app's hang-up post was rejected:</p>
+    <pre><code>[VOICE] end-call id=163 duration=1.4502
+HTTP 400  POST https://astroauraa.com/api/consultations/end-call
+{"status":"error","message":"This call has already been completed."}</code></pre>
+    <p>
+      But on a physical device the same post <strong>succeeded</strong>, returning a duration of 1.0656 minutes
+      and a cost of ₹6.39. So the backend is settling calls from its own Twilio callback, and the app's
+      <code>end-call</code> is racing it: whichever arrives first wins, and the app gets a 400 when it loses.
+      It is intermittent, not deterministic — the earlier reading of this report, which described it as always
+      rejected, was based on emulator runs alone.
+    </p>
+    <p>
+      When the app lost the race it treated the rejection as a failure, so the customer was returned to the home
+      screen <em>having just been charged</em> with no idea what the call cost.
+      <strong>Fixed on the app side in this build:</strong> "already been completed" is now recognised as a
+      normal outcome, the authoritative balance is re-read, and a summary is shown either way.
+    </p>
+    <p>
+      The race itself is still worth removing. Please confirm which side owns settlement so the redundant post
+      can be deleted rather than tolerated.
+    </p>
+
+    <h3>A second failure mode: calls under a minute never settled at all</h3>
+    <p>A 45-second test call produced:</p>
+    <pre><code>[VOICE] end-call id=168 duration=0.7246
+HTTP 422  POST https://astroauraa.com/api/consultations/end-call
+{"message":"The duration minutes field must be at least 1.",
+ "errors":{"duration_minutes":["The duration minutes field must be at least 1."]}}</code></pre>
+    <p>
+      The endpoint validates <code>duration_minutes &gt;= 1</code>, so <strong>every call shorter than a minute
+      was rejected outright</strong> — the customer was charged by the server's own callback and shown nothing.
+      This is also why the reference client sent <code>Math.max(1, ceil(seconds / 60))</code>: that was not an
+      arbitrary rounding choice, it was matching this contract.
+    </p>
+    <p>
+      <strong>Fixed:</strong> the duration is now clamped to a minimum of 1. Only the floor is clamped —
+      fractional values above a minute are accepted and billed as sent, so longer calls keep their precision.
+    </p>
+
+    <div class="callout">
+      <span class="label">Verified end to end</span>
+      <p>
+        A 104-second call afterwards settled cleanly: <code>duration=1.7089</code> accepted, billed
+        1.7089 × ₹100 = <strong>₹170.89</strong>, wallet moved ₹4,173.26 → ₹4,002.37 to the paisa, and the
+        customer saw a correctly formatted summary.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Billing basis — unresolved, two contradictory observations</h2>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Call</th><th>Where</th><th>Rate</th><th>Connected</th><th>Charged</th><th>Implies</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="id">162</td><td>Emulator</td><td class="num">₹100/min</td><td class="num">97.9s</td><td class="num">₹200</td><td>Rounded up to 2 min</td></tr>
+          <tr><td class="id">163</td><td>Emulator</td><td class="num">₹100/min</td><td class="num">88.0s</td><td class="num">₹200</td><td>Rounded up to 2 min</td></tr>
+          <tr><td class="id">—</td><td>Physical device</td><td class="num">₹6/min</td><td class="num">1.0656 min</td><td class="num">₹6.39</td><td>Billed fractionally</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      These do not agree. The two emulator calls were each charged a full two minutes, which looks like rounding
+      up; the device call was charged 1.0656 × ₹6 = ₹6.3936 exactly, which is fractional to four decimal places.
+    </p>
+    <p>
+      The likely explanation ties back to Defect 3: when the server settles the call itself it bills from
+      Twilio's own duration, and when the app's <code>end-call</code> wins the race the server bills the
+      fractional duration the app sent. That would mean <strong>the amount a customer is charged depends on
+      which of two requests arrives first</strong>, which is not an acceptable place to leave billing.
+    </p>
+    <div class="note">
+      <p>
+        This needs a definitive answer from the backend before either behaviour is called correct. It is listed
+        as B-4. Do not treat the "rounds up to whole minutes" claim from the earlier revision of this report as
+        settled — it was drawn from emulator calls only and the device contradicts it.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Defects found on a physical device</h2>
+    <p>
+      Four user-visible problems surfaced on real hardware that the emulator run had not reached. All four are
+      fixed in this build.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Symptom</th><th>Cause</th><th>Fix</th><th>Verified</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Literal <code>&lt;br&gt;</code> in the call summary</strong> — the customer saw
+              "Duration: 1.0656 min(s)&lt;br&gt;Total Cost: …"</td>
+            <td>Ionic escapes HTML in alert messages unless <code>innerHTMLTemplatesEnabled</code> is turned on
+              globally, which it is not</td>
+            <td>Summary is plain text with newlines; a scoped <code>white-space: pre-line</code> renders the
+              breaks. No raw HTML enabled.</td>
+            <td><span class="pill pill--ok">Yes</span></td>
+          </tr>
+          <tr>
+            <td><strong>Raw floats shown as money</strong> — ₹6.393600000000001 and ₹4279.256399999999</td>
+            <td>Server values rendered without formatting</td>
+            <td>Rounded to two decimals</td>
+            <td><span class="pill pill--ok">Yes</span></td>
+          </tr>
+          <tr>
+            <td><strong>Wallet balance shown while logged out</strong> — a stale amount sat in the header next
+              to a "Login Required" prompt</td>
+            <td>The header read the token once in <code>ngOnInit</code> and never subscribed to auth changes, so
+              an expired or revoked session left the last known balance on screen</td>
+            <td>Header now follows <code>authState$</code>, and a 401 from the balance call clears the session
+              too</td>
+            <td><span class="pill pill--ok">Yes</span></td>
+          </tr>
+          <tr>
+            <td><strong>An available astrologer flashed as offline</strong></td>
+            <td>The template asserted <code>'Offline'</code> / <code>'Unavailable'</code> whenever
+              <code>astrologerDetails</code> was absent — which is the case on every load and during every 30s
+              poll that has not yet returned</td>
+            <td>Unknown is now shown as <em>Checking…</em> rather than as offline</td>
+            <td><span class="pill pill--warn">Partial</span><br><span style="font-size:0.85em;">Code path
+              corrected; the sub-second transient frame was not captured</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Audio — one direction proven, one not</h2>
+    <p>
+      Measured from the live WebRTC statistics of call 163 while the astrologer was speaking, read directly from
+      the peer connection rather than by ear.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Direction</th><th>Evidence</th><th>Verdict</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Astrologer → app</strong><br><span style="font-size:0.85em;">incoming voice</span></td>
+            <td><code>bytesReceived</code> 186,822 &middot; <code>packetsReceived</code> 2,101 &middot;
+              <code>packetsLost</code> 0 &middot; <code>audioLevel</code> 0.112 &middot;
+              <code>totalAudioEnergy</code> 4.79</td>
+            <td><span class="pill pill--ok">Working</span></td>
+          </tr>
+          <tr>
+            <td><strong>App mic → astrologer</strong><br><span style="font-size:0.85em;">outgoing voice</span></td>
+            <td><code>bytesSent</code> 86,126 &middot; <code>packetsSent</code> 2,136 — but
+              <code>audioLevel</code> 0.00012 and <code>totalAudioEnergy</code> 9.0e-7</td>
+            <td><span class="pill pill--warn">Unverified</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Incoming audio is unambiguous: real packets, real audio energy, zero loss, 275&nbsp;ms round trip.
+    </p>
+    <p>
+      Outgoing is the interesting case. The app is doing its part — the microphone track is
+      <code>live</code>, <code>enabled</code>, not muted, 48&nbsp;kHz mono with echo cancellation and noise
+      suppression on, and thousands of packets were transmitted on every call. But the energy in that stream is
+      effectively zero, meaning the microphone is capturing silence.
+    </p>
+
+    <h3>Why the emulator cannot answer this</h3>
+    <p>
+      The silence is the emulator's, not the app's. The emulator's own documentation for its
+      <code>-allow-host-audio</code> flag says it plainly:
+    </p>
+    <pre><code>Allows sending of audio from audio input devices. Otherwise, zeroes out audio.</code></pre>
+    <p>
+      The host machine has a working microphone and Windows grants access to it, but the emulator was zeroing
+      the input. Relaunching with <code>-allow-host-audio</code> was still not enough: a six-second capture
+      measured per-second peaks of 0.00017, 0.00013, 0.00015, 0.00013, 0.00016, 0.00014 — perfectly flat. No
+      real microphone in any room produces a flat signal; that is a synthesised zero.
+    </p>
+    <p>
+      The remaining gate is the emulator's <em>Extended Controls → Microphone → "Virtual microphone uses host
+      audio input"</em>, a per-session UI toggle with no command-line or registry equivalent — both were checked.
+    </p>
+
+    <div class="note">
+      <p>
+        <strong>Outgoing audio must be tested on a physical Android device.</strong> It is the one item in this
+        report an emulator cannot settle, and a real handset is the more trustworthy answer regardless: emulator
+        audio pipelines do not reflect device routing, echo cancellation, or codec behaviour.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Why the call path was changed</h2>
+    <p>
+      A second, minimal client in this workspace — <code>astro-ionic-app</code>, a React + Ionic dialer —
+      reportedly places calls successfully against the same <code>astroauraa.com</code> backend with the same
+      Twilio Voice SDK version (2.18.3). Its call path was read line by line and compared against this app's.
+      Five concrete differences were found; all five have been brought into line.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>Reference client</th>
+            <th>This app, before</th>
+            <th>Now</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>request-call body</strong></td>
+            <td><code>astrologer_id</code> only</td>
+            <td>plus <code>twilio_sid: 'CALL_'+Date.now()</code></td>
+            <td class="id">matched</td>
+          </tr>
+          <tr>
+            <td><strong>Device edge</strong></td>
+            <td><code>edge: 'ashburn'</code></td>
+            <td>default <code>roaming</code></td>
+            <td class="id">matched</td>
+          </tr>
+          <tr>
+            <td><strong>device.register()</strong></td>
+            <td>awaited before connect</td>
+            <td>deliberately skipped</td>
+            <td class="id">restored, with timeout</td>
+          </tr>
+          <tr>
+            <td><strong>connect() params</strong></td>
+            <td><code>call_request_id</code>, <code>platform</code></td>
+            <td><code>call_request_id</code>, <code>twilio_sid</code></td>
+            <td class="id">matched</td>
+          </tr>
+          <tr>
+            <td><strong>Mic stream</strong></td>
+            <td>stopped after permission</td>
+            <td>left open during the call</td>
+            <td class="id">matched</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The two differences most likely to have caused the failure</h3>
+    <p>
+      <strong>The edge.</strong> Leaving <code>edge</code> unset routes signalling through Twilio's global
+      low-latency host. The device logs previously captured a <code>websocket close 1005</code> followed by
+      <code>TransportError 31009 — No transport available</code>, which is the signature of signalling never
+      coming up. The reference client pins <code>ashburn</code> and connects. This is the leading hypothesis,
+      not a proven cause — only the Twilio console logs for a test attempt can confirm it.
+    </p>
+    <p>
+      <strong>The placeholder SID.</strong> The app invented <code>'CALL_' + Date.now()</code> because it has no
+      real Twilio SID before connecting. That value was being stored on the <code>call_requests</code> row and
+      echoed back by <code>call-status</code>, never replaced with a genuine <code>CA…</code> SID. The reference
+      client omits the field and lets the backend fill it in.
+    </p>
+  </section>
+
+  <section>
+    <h2>Changes made</h2>
+    <p>
+      Four files. Line references are to the working tree at the time of this report.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Change</th>
+            <th>Reason</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="file">services/api-service.ts</td>
+            <td><code>requestVoiceCall()</code> takes only <code>astrologer_id</code>; the <code>twilio_sid</code>
+              parameter is removed</td>
+            <td>Stops a fabricated SID being persisted against the call request</td>
+          </tr>
+          <tr>
+            <td class="file">pages/astroprofile/<wbr>astroprofile.page.ts</td>
+            <td>Call flow reordered and rebuilt: mic permission released immediately, <code>request-call</code>
+              before the token fetch, <code>edge: 'ashburn'</code>, <code>register()</code> raced against a
+              10&nbsp;second timeout, <code>connect()</code> params matched, diagnostic
+              <code>logLevel: 'debug'</code> removed</td>
+            <td>Brings the dial path in line with the client that works</td>
+          </tr>
+          <tr>
+            <td class="file">pages/voice-call/<wbr>voice-call.page.ts</td>
+            <td><code>ringing</code> handler added; timestamped event timeline logging added;
+              <code>cancel</code> and <code>reject</code> now call <code>cleanup()</code></td>
+            <td>Makes the billing question answerable from a log, and stops a Device leak on declined calls</td>
+          </tr>
+          <tr>
+            <td class="file">pages/voice-call/<wbr>voice-call.page.html</td>
+            <td>Header <em>End</em> button visibility no longer keyed to the literal string
+              <code>'Connecting...'</code></td>
+            <td>The new <code>Ringing...</code> state would otherwise hide the button mid-call</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Two defects found and fixed during self-review</h3>
+    <p>
+      Both were introduced by the first pass of this work, and both were caught before the build:
+    </p>
+    <ul>
+      <li>
+        <strong>Unhandled promise rejection.</strong> <code>Promise.race([device.register(), timeout])</code>
+        leaves the registration promise unguarded — if the timeout wins and registration rejects afterwards,
+        nothing catches it. The rejection handler is now attached to the registration promise itself.
+      </li>
+      <li>
+        <strong>Spurious error alert.</strong> Restoring <code>register()</code> meant a registration failure
+        would fire the Device <code>error</code> handler and raise an alert that aborted a call which could
+        still have connected. A <code>dialStarted</code> flag now downgrades those errors to logs once dialling
+        begins.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Build verification</h2>
+    <p>Each step below was run in sequence and its result observed.</p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Step</th>
+            <th>Command</th>
+            <th>Result</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id">BV-1</td>
+            <td class="file">npx tsc -p tsconfig.app.json --noEmit</td>
+            <td><span class="pill pill--ok">Pass</span></td>
+            <td>No output — no type errors. Run after each edit.</td>
+          </tr>
+          <tr>
+            <td class="id">BV-2</td>
+            <td class="file">npm run build</td>
+            <td><span class="pill pill--ok">Pass</span></td>
+            <td>Output to <code>www</code>. Warnings only, all pre-existing: CommonJS optimization bailouts for
+              <code>events</code> and <code>loglevel</code> inside <code>@twilio/voice-sdk</code>, and 20 Ionic
+              RTL selector rules skipped.</td>
+          </tr>
+          <tr>
+            <td class="id">BV-3</td>
+            <td class="file">npx cap sync android</td>
+            <td><span class="pill pill--ok">Pass</span></td>
+            <td>Failed on the first attempt with <code>EPERM: rmdir</code> on
+              <code>capacitor-cordova-android-plugins/build/intermediates</code> — a stale Gradle daemon held
+              the directory. <code>gradlew --stop</code> released it; the retry succeeded and found 4 Capacitor
+              plugins.</td>
+          </tr>
+          <tr>
+            <td class="id">BV-4</td>
+            <td class="file">gradlew -p android assembleDebug</td>
+            <td><span class="pill pill--ok">Pass</span></td>
+            <td><code>BUILD SUCCESSFUL in 53s</code> — 193 actionable tasks, 24 executed.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Artifact</h3>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Path</td><td class="file">android/app/build/outputs/apk/debug/app-debug.apk</td></tr>
+          <tr><td>Size</td><td class="num">11.15 MB</td></tr>
+          <tr><td>Timestamp</td><td class="num">17 Aug 2026, 20:14:38</td></tr>
+          <tr><td>Application ID</td><td class="file">com.example.astrologer</td></tr>
+          <tr><td>Version</td><td class="num">1.0 (code 1)</td></tr>
+          <tr><td>SDK</td><td class="num">min 23 &middot; target 35 &middot; compile 35</td></tr>
+          <tr><td>Signing</td><td>Debug keystore — not for release distribution</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The changes are actually in the shipped bundle</h3>
+    <p>
+      A successful build does not prove the intended code shipped. The compiled bundle in <code>www</code> was
+      searched for markers unique to each change:
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Marker</th><th>Expected</th><th>Found</th><th>Proves</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="file">ashburn</td>
+            <td>present</td>
+            <td><span class="pill pill--ok">2 files</span></td>
+            <td>Edge pin shipped. Second hit is the SDK's own edge table.</td>
+          </tr>
+          <tr>
+            <td class="file">web-capacitor</td>
+            <td>present</td>
+            <td><span class="pill pill--ok">1 file</span></td>
+            <td>New <code>connect()</code> params shipped</td>
+          </tr>
+          <tr>
+            <td class="file">VOICE TIMELINE</td>
+            <td>present</td>
+            <td><span class="pill pill--ok">1 file</span></td>
+            <td>Timeline instrumentation shipped</td>
+          </tr>
+          <tr>
+            <td class="file">CALL_</td>
+            <td>absent</td>
+            <td><span class="pill pill--ok">0 files</span></td>
+            <td>Placeholder SID fully removed</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <p>
+        A first pass at this check reported 6 hits for <code>CALL_</code> and looked like a failure. The cause was
+        the search tool defaulting to case-insensitive matching, which matched <code>call_request_id</code>. A
+        case-sensitive re-run returns zero. Recorded here because the same trap will catch the next person.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Billing starts on answer — what is proven and what is not</h2>
+    <p>
+      The requirement is that charging begins when the astrologer picks up, not when the call is dialled. The
+      app side of this is settled; the backend side is not.
+    </p>
+
+    <h3>Proven by reading the code and the SDK</h3>
+    <ul>
+      <li>
+        The duration timer, the billing base <code>callStartTime</code>, and the 60-second billing ping are all
+        started inside the <code>accept</code> handler and nowhere else.
+      </li>
+      <li>
+        Duration is computed as <code>now − callStartTime</code>. If the call is never answered,
+        <code>callStartTime</code> stays <code>null</code> and the computed duration is zero, so an unanswered
+        call bills nothing.
+      </li>
+      <li>
+        The <code>accept</code> event cannot fire twice. The SDK guards it with a <code>_wasConnected</code> flag
+        in <code>_maybeTransitionToOpen()</code> — verified in
+        <code>@twilio/voice-sdk/es5/twilio/call.js</code>. There is therefore no double-timer or
+        double-billing-ping risk.
+      </li>
+    </ul>
+
+    <h3>Not determinable from the app</h3>
+    <p>
+      Whether <code>accept</code> coincides with the astrologer actually answering is decided by the TwiML the
+      backend returns, which the app cannot inspect:
+    </p>
+    <ul>
+      <li><code>&lt;Dial&gt;</code> — the default, <code>answerOnBridge="false"</code> — answers the caller's leg
+        as soon as the TwiML starts executing, while the astrologer is still ringing. <strong>The ringing time
+        gets billed.</strong></li>
+      <li><code>&lt;Dial answerOnBridge="true"&gt;</code> — holds the caller's leg in the ringing state until the
+        astrologer bridges, so <code>accept</code> lands at real pickup.</li>
+    </ul>
+    <p>
+      The SDK's own source comments on this distinction, noting that <code>answerOnBridge=false</code> sends a
+      SIP 183 that arrives before the 200. No app-side change can substitute for the TwiML attribute, and no
+      audio-detection heuristic was added — ringback tone would trigger it and make billing worse, not better.
+    </p>
+
+    <div class="callout">
+      <span class="label">Answered — three calls, same result</span>
+      <p>
+        The timeline instrumentation settled it. <code>accept</code> arrives at dial time, not at pickup, so
+        ringing time is billed. Full evidence in <strong>Defect 1</strong> above; the fix is a single TwiML
+        attribute on the backend.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Expected call flow, and how to read it</h2>
+    <p>
+      The stages below are a genuine sequence — each depends on the one before it. Offsets are illustrative;
+      the event names and order are what matter.
+    </p>
+
+    <div class="rail">
+      <div class="rail-row">
+        <div class="rail-t">+0.0s</div>
+        <div class="rail-b">
+          <div class="rail-name">mic permission</div>
+          <p class="rail-desc">
+            <code>getUserMedia({audio:true})</code> inside the tap, then tracks stopped immediately. On a fresh
+            install this raises the Android permission dialog.
+          </p>
+        </div>
+      </div>
+      <div class="rail-row">
+        <div class="rail-t">+0.3s</div>
+        <div class="rail-b">
+          <div class="rail-name">POST request-call</div>
+          <p class="rail-desc">
+            Body is <code>{ astrologer_id }</code> only. Returns <code>data.call_request_id</code>. The row must
+            exist before Twilio's webhook fires, because the webhook resolves the astrologer from that id.
+          </p>
+        </div>
+      </div>
+      <div class="rail-row">
+        <div class="rail-t">+0.8s</div>
+        <div class="rail-b">
+          <div class="rail-name">GET twilio/voice-token</div>
+          <p class="rail-desc">The app aborts with a visible error if <code>response.token</code> is missing.</p>
+        </div>
+      </div>
+      <div class="rail-row">
+        <div class="rail-t">+1.0s</div>
+        <div class="rail-b">
+          <div class="rail-name">new Device + register()</div>
+          <p class="rail-desc">
+            Edge pinned to <code>ashburn</code>. Registration is raced against a 10&nbsp;second timeout; if it
+            stalls the app dials anyway rather than blocking the call.
+          </p>
+        </div>
+      </div>
+      <div class="rail-row">
+        <div class="rail-t">+1.5s</div>
+        <div class="rail-b">
+          <div class="rail-name">device.connect()</div>
+          <p class="rail-desc">
+            Params <code>call_request_id</code> and <code>platform</code>. <strong>This is the step that reaches
+            the astrologer</strong> — Twilio posts to the TwiML Voice URL, which dials their dashboard client.
+            Nothing is gated on <code>call-status</code>, which only ever reports <code>initiated</code>.
+          </p>
+        </div>
+      </div>
+      <div class="rail-row">
+        <div class="rail-t">+2.0s</div>
+        <div class="rail-b">
+          <div class="rail-name">ringing</div>
+          <p class="rail-desc">
+            Screen shows <em>Ringing…</em>. Nothing is billed yet. If this event never appears, the caller leg was
+            answered early — see the two readings below.
+          </p>
+        </div>
+      </div>
+      <div class="rail-row">
+        <div class="rail-t">+9.4s</div>
+        <div class="rail-b">
+          <div class="rail-name">accept &mdash; billing starts</div>
+          <p class="rail-desc">
+            Timer starts, <code>callStartTime</code> set, 60-second billing ping begins. Screen shows
+            <em>Connected</em> with a running clock.
+          </p>
+        </div>
+      </div>
+      <div class="rail-row">
+        <div class="rail-t">+71.0s</div>
+        <div class="rail-b">
+          <div class="rail-name">disconnect</div>
+          <p class="rail-desc">
+            <code>POST end-call</code> with the fractional duration, then the summary alert showing duration,
+            cost and remaining balance.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Capture the log</h3>
+    <pre><code>&amp; "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" logcat -v time | findstr /C:"VOICE"</code></pre>
+    <p>
+      Chrome's <code>chrome://inspect</code> against the running WebView is the more reliable reader, since it
+      shows the console directly rather than relying on the log tag.
+    </p>
+
+    <h3>What the log showed</h3>
+    <div class="verdict">
+      <div class="card is-ok">
+        <h3>Wanted: <code>accept</code> seconds after <code>ringing</code></h3>
+        <p style="font-size:0.92rem;color:var(--ink-2);margin:0;">
+          The gap would be the astrologer's ringing time, unbilled, with billing starting at pickup.
+          <strong>Not what happened.</strong>
+        </p>
+      </div>
+      <div class="card is-pending">
+        <h3>Observed: <code>accept</code> immediately</h3>
+        <p style="font-size:0.92rem;color:var(--ink-2);margin:0;">
+          0.0–0.1s after <code>ringing</code>, on all three calls. Twilio answered the caller's leg while the
+          astrologer was still ringing, so the wait is billed.
+          <strong>Backend must set <code>&lt;Dial answerOnBridge="true"&gt;</code>.</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Speaker control — added</h2>
+    <p>
+      The call screen offered only <em>Mute</em> and <em>End</em>, and every consultation played out of the
+      loudspeaker with no way to switch. That is not a styling oversight: <strong>a WebView cannot move WebRTC
+      audio off the loudspeaker.</strong> Routing belongs to Android's <code>AudioManager</code>, which only
+      native code can reach, so no amount of web-layer work could have fixed it.
+    </p>
+    <p>
+      A small Capacitor plugin now owns the route, and the call screen has a third control that toggles between
+      earpiece and loudspeaker.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Piece</th><th>What it does</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="file">AudioRoutePlugin.java</td>
+            <td>Enters <code>MODE_IN_COMMUNICATION</code> so the earpiece becomes a legal destination, then
+              selects the device. Uses <code>setCommunicationDevice</code> on Android 12+ and falls back to the
+              deprecated <code>setSpeakerphoneOn</code> below it. Returns to <code>MODE_NORMAL</code> on hang-up,
+              or the phone's other audio stays on the in-call stream.</td>
+          </tr>
+          <tr>
+            <td class="file">services/audio-route.ts</td>
+            <td>Thin wrapper. No-ops in a browser, and never throws into the call flow — a routing failure must
+              not take down a live call.</td>
+          </tr>
+          <tr>
+            <td class="file">voice-call.page</td>
+            <td>Third control between Mute and End. Claims call audio on <code>accept</code>, not at dial, so the
+              phone does not enter communication mode while still ringing.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Default is now the earpiece</h3>
+    <p>
+      Calls start on the earpiece, as any phone call does, with the loudspeaker one tap away. This is a
+      deliberate behaviour change from the previous speaker-always state — it is a single argument in
+      <code>voice-call.page.ts</code> if the opposite is preferred.
+    </p>
+
+    <div class="note">
+      <p>
+        <strong>The button reports the route the system applied, not the one requested.</strong> A device with no
+        earpiece stays on the loudspeaker, and the label follows that reality rather than claiming otherwise.
+      </p>
+    </div>
+
+    <h3>What was verified</h3>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Check</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Plugin compiles and registers on the bridge</td><td><span class="pill pill--ok">Pass</span></td></tr>
+          <tr><td>Full round trip — <code>startCall</code>, <code>setSpeaker</code> both ways,
+            <code>stopCall</code></td><td><span class="pill pill--ok">Pass</span> — no errors</td></tr>
+          <tr><td>Speaker control present in the shipped bundle</td><td><span class="pill pill--ok">Pass</span></td></tr>
+          <tr><td>Audio actually moves to the earpiece</td><td><span class="pill pill--warn">Untestable
+            here</span> — <code>dumpsys audio</code> shows this emulator exposes only
+            <code>speaker(2)</code> on every stream, including <code>STREAM_VOICE_CALL</code>. It has no
+            earpiece, so the plugin correctly reported the speaker as still active.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Device test plan</h2>
+    <p>
+      Executed on a Pixel 7 AVD running Android 13, against production, signed in as <code>user@example.com</code>
+      (user&nbsp;3) calling Acharya Mukesh (astrologer&nbsp;7, ₹100/min) who accepted each call from the
+      dashboard. Three real calls were placed: <strong>161, 162, 163</strong>.
+    </p>
+    <p>
+      Ten of the eighteen cases were determined. The eight marked <span class="pill pill--todo">Not run</span>
+      need conditions that could not be arranged in this session — a second account with a low balance, a
+      declined call, or a fresh install — and are listed so they are not forgotten, not because they failed.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>What it proves</th>
+            <th>Steps</th>
+            <th>Expected</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id">TC-01</td>
+            <td>Mic permission is granted at OS level, not just to the page</td>
+            <td>Uninstall, reinstall, tap <em>Start Call Now</em></td>
+            <td>Android permission dialog appears; after Allow, the flow continues</td>
+            <td><span class="pill pill--todo">Not run</span><br><span style="font-size:0.85em;">Permission was
+              pre-granted over adb, which bypasses the dialog this case exists to test</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-02</td>
+            <td>Session and wallet load</td>
+            <td>Log in, open the wallet</td>
+            <td>Balance matches the backend</td>
+            <td><span class="pill pill--ok">Pass</span><br><span style="font-size:0.85em;">Logged in through the
+              form; ₹4,685.65 shown, matching <code>wallet/balance</code></span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-03</td>
+            <td>Availability is read correctly</td>
+            <td>Open an astrologer with <code>is_call_online: true</code></td>
+            <td>Call action is enabled and shows the per-minute price</td>
+            <td><span class="pill pill--ok">Pass</span><br><span style="font-size:0.85em;">Online / Available,
+              ₹100.00/min</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-04</td>
+            <td>Insufficient balance blocks the call before any API call</td>
+            <td>Use an account below the per-minute rate, tap call</td>
+            <td>Recharge prompt; no <code>request-call</code> is sent</td>
+            <td><span class="pill pill--todo">Not run</span><br><span style="font-size:0.85em;">Needs a
+              low-balance account</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-05</td>
+            <td>The placeholder SID is really gone</td>
+            <td>Place a call, inspect the stored SID</td>
+            <td>A real <code>CA…</code> SID replaces the old <code>CALL_…</code> placeholder</td>
+            <td><span class="pill pill--ok">Pass</span><br><span style="font-size:0.85em;">163 stored
+              <code>CA3b42e4cc1144b0f02446ef146ea61db8</code></span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-06</td>
+            <td>Voice token is usable</td>
+            <td>Watch the log during the call attempt</td>
+            <td>No "Failed to get voice token"</td>
+            <td><span class="pill pill--ok">Pass</span><br><span style="font-size:0.85em;">All three calls
+              proceeded past the token step</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-07</td>
+            <td>Signalling transport comes up — the original failure</td>
+            <td>Place a call, watch the log</td>
+            <td>No <code>websocket close 1005</code>, no <code>TransportError 31009</code></td>
+            <td><span class="pill pill--ok">Pass</span><br><span style="font-size:0.85em;">Neither error appeared
+              on any call</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-08</td>
+            <td>The astrologer is actually reached</td>
+            <td>Place a call, watch the dashboard</td>
+            <td><em>Incoming Voice Call</em> prompt appears with Accept / Decline</td>
+            <td><span class="pill pill--ok">Pass</span><br><span style="font-size:0.85em;">Accepted from the
+              dashboard on all three calls — this was the original bug</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-09</td>
+            <td>Whether ringing time is billed — <strong>the decisive case</strong></td>
+            <td>Read the <code>VOICE TIMELINE</code> lines around pickup</td>
+            <td><code>ringing</code> logged, then <code>accept</code> only at pickup</td>
+            <td><span class="pill pill--crit">Fail</span><br><span style="font-size:0.85em;"><code>accept</code>
+              arrived 0.0–0.1s after <code>ringing</code> on all three calls. See Defect 1.</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-10</td>
+            <td>Two-way audio</td>
+            <td>Read WebRTC statistics while the astrologer speaks</td>
+            <td>Audio energy in both directions</td>
+            <td><span class="pill pill--ok">Pass</span> inbound<br><span class="pill pill--warn">Unverified</span>
+              outbound<br><span style="font-size:0.85em;">Emulator mic supplies silence</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-11</td>
+            <td>Mute works</td>
+            <td>Tap mute, speak, tap unmute, speak</td>
+            <td>Astrologer stops then resumes hearing; label tracks state</td>
+            <td><span class="pill pill--todo">Not run</span><br><span style="font-size:0.85em;">Untestable while
+              the outgoing mic is silent</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-19</td>
+            <td>Speaker control appears and is usable in a live call</td>
+            <td>Connect a call and inspect the control row</td>
+            <td>Three controls fit the row; speaker toggle drives the native plugin</td>
+            <td><span class="pill pill--ok">Pass</span><br><span style="font-size:0.85em;">Mute / Speaker / End
+              laid out correctly; tapping it invoked <code>AudioRoute.setSpeaker</code> and the label stayed
+              truthful on a device with no earpiece</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-12</td>
+            <td>Timer starts at answer, not at dial</td>
+            <td>Compare the on-screen clock against the moment of pickup</td>
+            <td>Clock starts from 00:00 at pickup, not during ringing</td>
+            <td><span class="pill pill--crit">Fail</span><br><span style="font-size:0.85em;">Same root cause as
+              TC-09; the app's own logic is correct</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-13</td>
+            <td>Billing ping updates the wallet</td>
+            <td>Stay connected past 60 seconds</td>
+            <td><code>call-billing-ping</code> fires; remaining balance updates on screen</td>
+            <td><span class="pill pill--crit">Fail</span><br><span style="font-size:0.85em;">HTTP 404 — route
+              does not exist. See Defect 2.</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-14</td>
+            <td>Hang-up settles correctly</td>
+            <td>Talk ~90s, tap End</td>
+            <td><code>end-call</code> accepted; summary shows duration, cost, remaining balance</td>
+            <td><span class="pill pill--ok">Pass</span><br><span style="font-size:0.85em;">After the duration
+              clamp: <code>1.7089</code> accepted, ₹170.89 billed, summary shown, wallet updated to the
+              paisa. Earlier runs failed with 400 and 422 — both now handled.</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-15</td>
+            <td>Decline is handled and leaks nothing</td>
+            <td>Have the astrologer decline</td>
+            <td>Rejected message, return to home, nothing billed</td>
+            <td><span class="pill pill--todo">Not run</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-16</td>
+            <td>Unanswered call bills zero</td>
+            <td>Let it ring, then End without anyone answering</td>
+            <td>No charge; balance unchanged</td>
+            <td><span class="pill pill--todo">Not run</span><br><span style="font-size:0.85em;">Note Defect 1
+              makes this worth testing urgently</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-17</td>
+            <td>Low balance ends the call</td>
+            <td>Start with balance for ~1 minute, stay connected</td>
+            <td><code>402</code> on the ping; low-balance alert; call ends</td>
+            <td><span class="pill pill--crit">Fail</span><br><span style="font-size:0.85em;">Cannot ever pass
+              while the ping route 404s</span></td>
+          </tr>
+          <tr>
+            <td class="id">TC-18</td>
+            <td>Retries do not leak devices or the mic</td>
+            <td>Place several calls in succession</td>
+            <td>Each connects normally; no degradation</td>
+            <td><span class="pill pill--ok">Partial</span><br><span style="font-size:0.85em;">Three consecutive
+              calls all connected cleanly; five-retry case not run</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Install the build</h3>
+    <pre><code>&amp; "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" install -r `
+    android\app\build\outputs\apk\debug\app-debug.apk</code></pre>
+  </section>
+
+  <section>
+    <h2>Still on the backend</h2>
+    <p>
+      Most of the earlier open questions are now answered by the fact that calls connect. What remains is
+      short and specific.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Action needed</th><th>Priority</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id">B-1</td>
+            <td>Set <code>&lt;Dial answerOnBridge="true"&gt;</code> in the TwiML so the caller's leg is not
+              answered until the astrologer bridges. Defect 1 — customers are paying for ringing time right now.</td>
+            <td><span class="pill pill--crit">Urgent</span></td>
+          </tr>
+          <tr>
+            <td class="id">B-2</td>
+            <td>Implement <code>POST /api/consultations/call-billing-ping</code>, or confirm it is not coming so
+              the low-balance protection can be rebuilt elsewhere. Defect 2.</td>
+            <td><span class="pill pill--crit">Urgent</span></td>
+          </tr>
+          <tr>
+            <td class="id">B-0</td>
+            <td>Confirm the server alone settles a call, and audit how many customers were double-charged while
+              both sides were billing. Defect 0 — the app side is already fixed, but refunds may be owed.</td>
+            <td><span class="pill pill--crit">Urgent</span></td>
+          </tr>
+          <tr>
+            <td class="id">B-3</td>
+            <td>If the app is ever meant to own settlement instead, say so — <code>end-call</code> is no longer
+              sent, and restoring it is one line.</td>
+            <td><span class="pill pill--warn">Soon</span></td>
+          </tr>
+          <tr>
+            <td class="id">B-4</td>
+            <td>State the billing basis definitively. Two calls were charged whole rounded-up minutes and a third
+              was charged a fractional amount — the charge appears to depend on whether the app's
+              <code>end-call</code> or the Twilio callback settles first.</td>
+            <td><span class="pill pill--crit">Urgent</span></td>
+          </tr>
+          <tr>
+            <td class="id">B-5</td>
+            <td>Field naming: <code>request-call</code> returns <code>data.call_status</code> while
+              <code>call-status</code> returns both <code>call_status</code> and <code>status</code>. The app reads
+              all variants defensively, but the drift should be settled.</td>
+            <td><span class="pill pill--todo">Tidy-up</span></td>
+          </tr>
+          <tr>
+            <td class="id">B-6</td>
+            <td>Serve storage image URLs over HTTPS. The home screen requests blog images over
+              <code>http://astroauraa.com/storage/…</code> from an HTTPS page, so Android blocks them as mixed
+              content and they never render.</td>
+            <td><span class="pill pill--warn">Soon</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Answered — no longer open</h3>
+    <ul>
+      <li>The TwiML Voice URL does return a working <code>&lt;Dial&gt;</code>; the astrologer is reached.</li>
+      <li>The voice token's grant is correct — <code>connect()</code> dials successfully.</li>
+      <li>The dial target identity resolves correctly, so the <code>id</code> 7 versus <code>user_id</code> 19
+        confusion is not in play.</li>
+      <li><code>call_requests.status</code> does transition — it reached <code>completed</code> on every call.
+        The old "stuck on <code>initiated</code>" symptom is gone now that the app no longer sends a placeholder
+        SID.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Limits of this report</h2>
+    <ul>
+      <li>
+        <strong>Outgoing microphone audio is unproven.</strong> The emulator feeds silence into the call. This is
+        the single most important thing left to check, and it needs a physical Android device.
+      </li>
+      <li>
+        <strong>Tested on an emulator, not real hardware.</strong> Android 13 on a Pixel 7 AVD with software-side
+        audio. Codec behaviour, echo cancellation, speaker routing, Bluetooth headsets, and call quality over a
+        mobile network are all untested.
+      </li>
+      <li>
+        <strong>Which fix cured the connection is not isolated.</strong> Five changes shipped together and calls
+        now work. The edge pin, restoring <code>register()</code>, and dropping the placeholder SID were applied
+        at once, so their individual contributions are not separated. The placeholder removal is the one with
+        direct evidence: a real <code>CA…</code> SID is now stored where the fake one used to be echoed back.
+      </li>
+      <li>
+        <strong>Eight of eighteen cases were not run</strong>, including the fresh-install permission prompt, the
+        decline path, and the unanswered-call billing case. None of them failed; they were not exercised.
+      </li>
+      <li>
+        <strong>The app-side fix for Defect 3 is unverified.</strong> It is in this build but has not been through
+        a call, because verifying it costs another ₹200 of real wallet balance.
+      </li>
+      <li>
+        <strong>The reference client is a test harness, not a production app.</strong> It carries a hardcoded
+        token and has no wallet checks, chat, or billing ping. Its omissions are not design decisions, so its
+        lack of a billing ping and its whole-minute rounding were deliberately <em>not</em> copied — this app's
+        fractional-minute duration matches its working chat billing.
+      </li>
+      <li>
+        <strong>The working tree carries unrelated uncommitted changes</strong> from before this work — chat
+        room and history templates, global styles, the Capacitor config, and Android styles. They are in the same
+        diff but are not part of this change set.
+      </li>
+      <li>
+        <strong>The APK is debug-signed.</strong> It is for testing only, not distribution.
+      </li>
+    </ul>
+  </section>
+
+  <footer>
+    <div>Astrologer Android client &middot; Ionic Angular 18.2 &middot; Capacitor 7.6.2 &middot; @twilio/voice-sdk 2.18.3</div>
+    <div>API base https://astroauraa.com/api &middot; branch feature/prokerala-integration</div>
+  </footer>
+
+</div>

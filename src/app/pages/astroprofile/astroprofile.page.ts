@@ -448,6 +448,31 @@ this.loadingMessage = 'Connecting to chat...';
     const hasFunds = await this.checkWalletBalance(callPrice);
     if (!hasFunds) return;
 
+    // Held outside the try so every abort path can release the mic and tear the
+    // Twilio device down. Without this each failed attempt leaves a registered
+    // device and an open mic stream behind, and they stack up across retries.
+    let device: any = null;
+    let micStream: MediaStream | null = null;
+    let handedOff = false;
+    // Set once registration/dialling begins, so transient device errors from that point
+    // on are logged rather than turned into an alert that aborts a viable call.
+    let dialStarted = false;
+
+    const releaseCall = () => {
+      this.loadingChat = false;
+      try { micStream?.getTracks().forEach(t => t.stop()); } catch (_) {}
+      try { device?.destroy(); } catch (_) {}
+      micStream = null;
+      device = null;
+    };
+
+    // Step timings for the gap between tapping call and the astrologer's phone
+    // ringing. The voice-call page's own timeline only starts once connect() has
+    // returned, so without this the whole pre-dial stretch was invisible.
+    const dialStart = Date.now();
+    const lap = (label: string) =>
+      console.log(`[VOICE DIAL] +${((Date.now() - dialStart) / 1000).toFixed(2)}s  ${label}`);
+
     try {
 
       // ── STEP 1: show loader ──────────────────────────────────
@@ -455,108 +480,109 @@ this.loadingMessage = 'Connecting to chat...';
       this.loadingMessage = 'Requesting microphone...';
 
       // ── STEP 2: mic permission (must be first user-gesture call) ──
-      await navigator.mediaDevices.getUserMedia({ audio: true });
+      //
+      // The stream is released as soon as the permission is granted. It exists only to
+      // trigger the Android runtime prompt inside the user gesture; Twilio opens its own
+      // capture stream during connect(), and on Android WebView a second open handle on
+      // the mic can leave that capture silent.
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      micStream.getTracks().forEach(t => t.stop());
+      micStream = null;
 
-      // ── STEP 3: get Twilio voice token ───────────────────────
-      this.loadingMessage = 'Getting voice token...';
-      const tokenRes: any = await firstValueFrom(this.apiService.getVoiceToken());
+      lap('mic permission');
 
-      if (!tokenRes?.token) {
-        this.loadingChat = false;
-        await this.showError('Failed to get voice token');
-        return;
-      }
-
-      // ── STEP 4: create Twilio Device (AudioContext created HERE,
-      //            still inside the user-gesture call stack) ────
-      this.loadingMessage = 'Initialising audio...';
-      const device = new Device(tokenRes.token, {
-        codecPreferences: ['opus', 'pcmu'] as any,
-        fakeLocalDTMF: true,
-        enableRingingState: true
-      } as any);
-
-      device.on('error', async (err: any) => {
-        this.loadingChat = false;
-        await this.showError(err?.message || 'Twilio device error');
-      });
-
-      // ── STEP 5: register device ──────────────────────────────
-      this.loadingMessage = 'Registering device...';
-      await device.register();
-
-      // Give Android time to settle audio pipeline
-      await new Promise(r => setTimeout(r, 2000));
-
-      // ── STEP 6: request call from backend ───────────────────
+      // ── STEP 3: request the call and fetch the token together ──
+      //
+      // These were sequential, which cost a whole round trip of dead time before the
+      // astrologer's phone could ring. The token does not depend on the call request,
+      // so both go out at once.
       this.loadingMessage = 'Connecting call...';
-      const twilio_sid = 'CALL_' + Date.now();
+      console.log('[VOICE] requesting call, astrologer_id =', this.astrologerDetails?.id);
 
-      const callRes: any = await firstValueFrom(
-        this.apiService.requestVoiceCall(this.astrologerDetails.id, twilio_sid)
-      );
+      const [callRes, tokenRes]: any[] = await Promise.all([
+        firstValueFrom(this.apiService.requestVoiceCall(this.astrologerDetails.id)),
+        firstValueFrom(this.apiService.getVoiceToken())
+      ]);
 
-      if (!callRes?.data) {
-        this.loadingChat = false;
+      lap('request-call + voice-token');
+
+      const callRequestId = callRes?.data?.call_request_id ?? callRes?.call_request_id;
+
+      if (!callRequestId) {
+        releaseCall();
         await this.showError('Failed to request call');
         return;
       }
 
-      const callRequestId = callRes.data.call_request_id;
       this.saveLastConsult('App\\Models\\CallRequest', callRequestId);
 
-      // ── STEP 7: poll call-status until accepted/rejected ──────
-      this.loadingMessage = 'Waiting for astrologer to accept...';
-
-      const maxAttempts = 20; // 20 × 3s = 60 seconds
-      let callAccepted = false;
-      let realCallSid = '';
-
-      for (let i = 0; i < maxAttempts; i++) {
-        await new Promise(r => setTimeout(r, 3000));
-
-        try {
-          const statusRes: any = await firstValueFrom(
-            this.apiService.getCallStatus(callRequestId)
-          );
-          const callStatus = statusRes?.data?.status;
-
-          if (callStatus === 'accepted') {
-            // Backend sets twilio_sid to the real CA... SID on acceptance
-            realCallSid =
-              statusRes?.data?.twilio_sid ||
-              statusRes?.data?.call_sid || '';
-            callAccepted = true;
-            break;
-          }
-
-          if (callStatus === 'rejected') {
-            this.loadingChat = false;
-            await this.showError('The astrologer has declined your call request.');
-            return;
-          }
-
-          this.loadingMessage = `Waiting for astrologer... (${i + 1}/${maxAttempts})`;
-        } catch {
-          // network hiccup — keep polling
-        }
-      }
-
-      if (!callAccepted) {
-        this.loadingChat = false;
-        await this.showError('No response from the astrologer. Please try again later.');
+      if (!tokenRes?.token) {
+        releaseCall();
+        await this.showError('Failed to get voice token');
         return;
       }
 
-      // ── STEP 8: connect call — pass call_request_id so backend
-      //            TwiML webhook knows which consultation to bridge ─
-      this.loadingMessage = 'Connecting audio...';
+      // ── STEP 5: create Twilio Device ─────────────────────────
+      //
+      // edge is pinned rather than left on the default 'roaming', which routes through
+      // Twilio's global low-latency host. That default is the most likely cause of the
+      // websocket close 1005 / TransportError 31009 seen on Android — the working client
+      // pins ashburn and connects reliably, so we match it.
+      this.loadingMessage = 'Initialising audio...';
+      device = new Device(tokenRes.token, {
+        codecPreferences: ['opus', 'pcmu'] as any,
+        edge: 'ashburn'
+      } as any);
+
+      // Device errors raised during registration are logged, not shown: register() is
+      // best-effort here (see below) and the dial can still succeed after it fails.
+      // Surfacing an alert then would abort a call that is about to connect. Once the
+      // call is handed to the voice-call page, that page owns error reporting.
+      device.on('error', async (err: any) => {
+        console.log('[VOICE] device error', err?.code, err?.message);
+        if (handedOff || dialStarted) return;
+        this.loadingChat = false;
+        await this.showError(err?.message || 'Twilio device error');
+      });
+
+      lap('device created');
+
+      // ── STEP 6: register in the background, dial immediately ──
+      //
+      // register() subscribes the Device to *incoming* calls. This app only places
+      // outgoing ones, and connect() brings up the transport it needs by itself — so
+      // waiting on registration was several seconds of dead air before the astrologer's
+      // phone could even start ringing. It is still started, because a registered
+      // Device recovers a dropped signalling socket more cleanly, but nothing waits
+      // for it. Errors are caught here so a background failure cannot surface as an
+      // unhandled rejection.
+      this.loadingMessage = 'Ringing astrologer...';
+      dialStarted = true;
+
+      Promise.resolve(device.register()).catch((regErr: any) => {
+        console.log('[VOICE] background register failed (harmless for outgoing):', regErr?.message);
+      });
+
+      // Do NOT gate the dial behind /consultations/call-status. That endpoint only ever
+      // reports 'initiated': it logs the request for billing and has no accept/reject
+      // workflow, so waiting for 'accepted' never terminates.
+      //
+      // device.connect() is the step that actually reaches the astrologer — the TwiML
+      // webhook dials their dashboard's Twilio client using call_request_id, which is
+      // what raises their "Incoming Voice Call" prompt. Acceptance happens at the Twilio
+      // layer, and the voice-call page listens for the resulting accept/reject/cancel.
+      console.log('[VOICE] connecting, call_request_id =', callRequestId);
+
       const activeCall = await device.connect({
         params: {
           call_request_id: String(callRequestId),
-          twilio_sid:      realCallSid || twilio_sid
+          platform: 'web-capacitor'
         }
       });
+
+      lap('connect() returned — astrologer is being dialled');
+      console.log('[VOICE] connect() returned, CallSid =',
+        (activeCall as any)?.parameters?.CallSid || '(none yet)');
 
       // ── STEP 8: store everything in the shared service ───────
       this.voiceCallService.clear();
@@ -566,13 +592,28 @@ this.loadingMessage = 'Connecting to chat...';
       this.voiceCallService.astrologerName = this.astrologerDetails.display_name;
       this.voiceCallService.astrologerImage = this.astrologerDetails.profile_image_url;
 
+      // From here the device belongs to the call, not to us — the voice-call
+      // page destroys it on hangup, so releaseCall() must not touch it.
+      handedOff = true;
       this.loadingChat = false;
 
       // ── STEP 9: navigate — voice-call page just reads the service ─
       await this.router.navigate(['/voice-call']);
 
     } catch (err: any) {
-      this.loadingChat = false;
+      if (handedOff) {
+        this.loadingChat = false;
+      } else {
+        releaseCall();
+      }
+
+      // Name an expired session explicitly — the raw backend body for this is
+      // "Unauthenticated.", which tells the user nothing they can act on.
+      if (err?.status === 401 || err?.status === 403) {
+        await this.showError('Your session has expired. Please log in again.');
+        return;
+      }
+
       const body = typeof err?.error === 'string'
         ? (() => { try { return JSON.parse(err.error); } catch { return {}; } })()
         : (err?.error || {});
